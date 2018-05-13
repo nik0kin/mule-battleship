@@ -1,0 +1,42 @@
+{
+  "name": "mule-battleship",
+  "version": "0.1.0-inDev",
+  "private": true,
+  "devDependencies": {
+    "react-addons-test-utils": "^15.6.2",
+    "react-scripts-ts": "2.14.0",
+    "typescript": "2.8.1"
+  },
+  "dependencies": {
+    "@types/enzyme": "^2.8.12",
+    "@types/enzyme-adapter-react-16": "^1.0.1",
+    "@types/jest": "^21.1.1",
+    "@types/lodash": "^4.14.88",
+    "@types/node": "^8.0.31",
+    "@types/react": "^16.0.2",
+    "@types/react-dom": "^16.0.2",
+    "@types/react-redux": "^5.0.9",
+    "enzyme": "^3.2.0",
+    "enzyme-adapter-react-16": "^1.1.0",
+    "lodash": "^4.17.4",
+    "mule-sdk-js": "nik0kin/mule-sdk-js#v3",
+    "react": "^16.0.2",
+    "react-dom": "^16.0.2",
+    "react-redux": "^5.0.2",
+    "redux": "^3.6.0"
+  },
+  "scripts": {
+    "packageSdk": "(yarn unlink mule-sdk-js && echo 'no link') && rm -rf ./node_modules/mule-sdk-js && yarn add nik0kin/mule-sdk-js#v3 --no-lockfile",
+    "devSdk": "(yarn unlink mule-sdk-js && echo 'no link') && rm -rf ./node_modules/mule-sdk-js && yarn link mule-sdk-js",
+    "buildMockSdk": "./buildMockSdk.sh",
+    "useMockSdk": "./useMockSdk.sh",
+    "reMockSdk": "yarn run packageSdk && yarn run buildMockSdk && yarn run useMockSdk",
+    "restartMockSdk": "yarn run packageSdk && yarn run buildMockSdk && yarn run useMockSdk && yarn start",
+    "restartDevMockSdk": "yarn run devSdk && yarn run buildMockSdk && yarn run useMockSdk && yarn start",
+    "start": "react-scripts-ts start",
+    "build": "react-scripts-ts build",
+    "test": "react-scripts-ts test --env=jsdom",
+    "test:debug": "react-scripts-ts --inspect-brk test --runInBand --env=jsdom",
+    "eject": "react-scripts-ts eject"
+  }
+}

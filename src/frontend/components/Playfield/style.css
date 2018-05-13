@@ -1,0 +1,75 @@
+
+.Playfield {
+  --theirs-spot-size: 30px;
+  --yours-spot-size: 22px;
+}
+
+table {
+  border-spacing: 0px;
+  border-right: solid 1px black;
+  border-bottom: solid 1px black;
+}
+
+td {
+  padding: 0;
+  border-right: 1px;
+  border-bottom: 1px;
+  border-left: 0px;
+  border-top: 0px;
+  border-color: #cecece;
+  border-style: solid;
+  text-align: center;
+}
+
+td.top {
+  border-top: 1px #cecece solid;
+  border-bottom: solid 1px black;
+}
+
+td.left {
+  border-left: 1px #cecece solid;
+  border-right: solid 1px black;
+}
+
+td.top.left {
+  border-left: 0;
+  border-top: 0;
+}
+
+td.boat {
+  background-color: #b7b6b6;
+}
+
+
+.your-ships td {
+  width: var(--yours-spot-size);
+  height: var(--yours-spot-size);
+  font-size: .8rem;
+}
+
+.their-ships {
+  margin-left: 213px;
+  margin-top: -30px;
+}
+
+.their-ships td {
+  width: var(--theirs-spot-size);
+  height: var(--theirs-spot-size);
+  font-size: 1rem;
+}
+.their-ships td:not(.top):not(.left) {
+  cursor: pointer;
+}
+
+td.hit-shot,
+td.miss-shot {
+  font-size: 1.2rem;
+}
+
+.hit-shot {
+  background-color: #b7b6b6;
+}
+
+td.selected {
+  border: 2px solid black;
+}

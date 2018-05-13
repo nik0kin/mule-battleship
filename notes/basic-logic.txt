@@ -1,0 +1,31 @@
+#	Class of ship	Size
+1	Carrier	         5
+2	Battleship	     4
+3	Cruiser	         3
+4	Submarine	     3
+5	Destroyer	     2
+
+
+
+Round Robin, waitprogress
+
+Ships & Size could be variable
+
+Player Turn:
+
+ 1. Player1 submits a valid guess
+  - must be in range
+  - must not of been guessed
+
+ 2. Mule Turn Progresses, determines if ship was hit
+
+ 2a. Check for win condition: all of one player's ships sunk
+
+ 3. Both players see result
+  - Player1 see's "You hit something at E5", "You miss at E5", or "You sunk a Carrier with a hit at E5"
+  - Player2 see's "Niko hit your Carrier at E5", etc
+ 
+ 3a. Announce winner
+
+ 5. Start from Step 1 with Player2
+
