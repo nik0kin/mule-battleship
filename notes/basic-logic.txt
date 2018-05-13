@@ -13,19 +13,24 @@ Ships & Size could be variable
 
 Player Turn:
 
- 1. Player1 submits a valid guess
+ 1. Ship placement
+  - round robin placement because Mule limitations
+
+ 1a. Mule validates player 1 & 2 ship placements
+
+ 2. Player1 submits a valid guess
   - must be in range
   - must not of been guessed
 
- 2. Mule Turn Progresses, determines if ship was hit
+ 3. Mule Turn Progresses, determines if ship was hit
 
- 2a. Check for win condition: all of one player's ships sunk
+ 3a. Check for win condition: all of one player's ships sunk
 
- 3. Both players see result
+ 4. Both players see result
   - Player1 see's "You hit something at E5", "You miss at E5", or "You sunk a Carrier with a hit at E5"
   - Player2 see's "Niko hit your Carrier at E5", etc
  
- 3a. Announce winner
+ 4a. Announce winner
 
- 5. Start from Step 1 with Player2
+ 5. Start from Step 2 with Player2
 
