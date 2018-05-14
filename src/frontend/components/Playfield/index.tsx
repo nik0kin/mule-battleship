@@ -2,8 +2,8 @@ import * as React from 'react';
 import * as _ from 'lodash';
 
 import './style.css';
-import { Alignment, Boat, BoatStructure, BoatStructures, Coord, GameState, Shot } from '../../types';
-import { numberToLetter } from '../../../shared';
+import { GameState } from '../../types';
+import { Alignment, Ship, ShipStructure, ShipStructures, Coord, numberToLetter, Shot } from '../../../shared';
 
 type ClickSquareFn = (coord: Coord) => void;
 
@@ -18,10 +18,10 @@ function Playfield({ gameState, selectedCoord, clickSquare }: Props) {
   return (
     <div className="Playfield">
       <div className="your-ships">
-          {getGrid(gameState.yourBoats, gameState.theirShots, _.noop, undefined)}
+          {getGrid(gameState.yourShips, gameState.theirShots, _.noop, undefined)}
       </div>
       <div className="their-ships">
-          {getGrid(gameState.theirBoats, gameState.yourShots, clickSquare, selectedCoord)}
+          {getGrid(gameState.theirShips, gameState.yourShots, clickSquare, selectedCoord)}
       </div>
     </div>
   );
@@ -30,10 +30,10 @@ function Playfield({ gameState, selectedCoord, clickSquare }: Props) {
 export default Playfield;
 
 
-function getGrid(boats: Boat[], opponentShots: Shot[], clickSquare: ClickSquareFn, selectedCoord?: Coord) {
+function getGrid(ships: Ship[], opponentShots: Shot[], clickSquare: ClickSquareFn, selectedCoord?: Coord) {
   let gridHtml: Array<JSX.Element> = [];
   _.times(11, (i) => {
-    gridHtml.push(getRow(i, boats, opponentShots, clickSquare, selectedCoord));
+    gridHtml.push(getRow(i, ships, opponentShots, clickSquare, selectedCoord));
   });
   return (
     <table>
@@ -44,7 +44,7 @@ function getGrid(boats: Boat[], opponentShots: Shot[], clickSquare: ClickSquareF
   );
 }
 
-function getRow(y: number, boats: Boat[], opponentShots: Shot[], clickSquare: ClickSquareFn, selectedCoord?: Coord) {
+function getRow(y: number, ships: Ship[], opponentShots: Shot[], clickSquare: ClickSquareFn, selectedCoord?: Coord) {
   let rowHtml: Array<JSX.Element> = [];
   _.times(11, (x) => {
     const coord: Coord = { x: x - 1, y: y - 1 };
@@ -52,7 +52,7 @@ function getRow(y: number, boats: Boat[], opponentShots: Shot[], clickSquare: Cl
     _class += x === 0 ? 'left ' : '';
     let cellContent: string = _class === 'top ' ? String(x) : _class ===  'left ' ? numberToLetter(y) : '';
     
-    _class += isAnyBoatOnSquare(coord, boats) ? 'boat ' : '';
+    _class += isAnyShipOnSquare(coord, ships) ? 'ship ' : '';
 
     if (selectedCoord) {
       _class += coord.x === selectedCoord.x && coord.y === selectedCoord.y ? 'selected ' : '';
@@ -82,28 +82,28 @@ function getRow(y: number, boats: Boat[], opponentShots: Shot[], clickSquare: Cl
   );
 }
 
-function isAnyBoatOnSquare(coord: Coord, boats: Boat[]): boolean {
-  return _.some(boats, (boat: Boat) => {
-    return isBoatOnSquare(coord, boat);
+function isAnyShipOnSquare(coord: Coord, ships: Ship[]): boolean {
+  return _.some(ships, (ship: Ship) => {
+    return isShipOnSquare(coord, ship);
   });
 }
 
-function isBoatOnSquare(coord: Coord, boat: Boat): boolean {
-  const boatStructure: BoatStructure | undefined = BoatStructures.get(boat.boatType);
+function isShipOnSquare(coord: Coord, ship: Ship): boolean {
+  const shipStructure: ShipStructure | undefined = ShipStructures.get(ship.shipType);
 
-  if (!boatStructure) throw new Error('invalid BoatType: ' + boat.boatType);
+  if (!shipStructure) throw new Error('invalid ShipType: ' + ship.shipType);
 
-  return _.some(boatStructure.squares, (strucutureCoord: Coord) => {
+  return _.some(shipStructure.squares, (strucutureCoord: Coord) => {
     let structureX: number;
     let structureY: number;
 
     // horizontal
-    if (boat.alignment === Alignment.Horizontal) {
-      structureX = boat.coord.x + strucutureCoord.x;
-      structureY = boat.coord.y + strucutureCoord.y;
+    if (ship.alignment === Alignment.Horizontal) {
+      structureX = ship.coord.x + strucutureCoord.x;
+      structureY = ship.coord.y + strucutureCoord.y;
     } else { // vertical
-      structureX = boat.coord.x + strucutureCoord.y;
-      structureY = boat.coord.y + strucutureCoord.x;
+      structureX = ship.coord.x + strucutureCoord.y;
+      structureY = ship.coord.y + strucutureCoord.x;
     }
     
     return coord.x === structureX && coord.y === structureY;

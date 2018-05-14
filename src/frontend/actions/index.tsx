@@ -1,6 +1,6 @@
 
 import * as constants from '../constants';
-import { Coord } from '../types';
+import { Coord } from '../../shared';
 
 export interface ClickSquare {
   type: constants.CLICK_SQUARE;

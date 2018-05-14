@@ -1,5 +1,6 @@
 
-import { Coord, GameState } from './index';
+import { Coord } from '../../shared';
+import { GameState } from './index';
 
 export interface StoreState {
   ui: {

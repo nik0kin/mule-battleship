@@ -8,16 +8,10 @@ import {
   PlayersMap as MulePlayerMap,
 } from 'mule-sdk-js';
 
+import { getGridFromGameBoard, getShipsFromGameState, Grid, Coord } from '../../../shared';
 import {
-  Alignment,
-  Boat,
-  BoatType,
-  Coord,
   GameState,
-  Grid,
   PlayerMap,
-  Square,
-  Shot,
 } from '../../types';
 
 export let muleSDK: SDK;
@@ -60,81 +54,18 @@ export async function getBattleshipGameState(): Promise<GameState> {
   
   // TODO make sure user has session
 
-  // // get Game
-  // const loadedGame: Game = await muleSDK.Games.readQ(mockGameId);
+  // get Game
+  const loadedGame: Game = await muleSDK.Games.readQ(mockGameId);
 
-  // // get GameBoard
-  // const loadedGameBoard: GameBoard = await muleSDK.GameBoards.readQ(loadedGame.gameBoard);
+  // get GameBoard
+  const loadedGameBoard: GameBoard = await muleSDK.GameBoards.readQ(loadedGame.gameBoard);
 
-  // // get GameState
-  // const loadedGameState: MuleGameState = await muleSDK.GameStates.readQ(loadedGameBoard.gameState);
+  // get GameState
+  const loadedGameState: MuleGameState = await muleSDK.GameStates.readQ(loadedGameBoard.gameState);
 
-  // // TODO get History/Turns
+  // TODO get History/Turns
   
-  // const players: PlayerMap = convertToPlayerMap(await muleSDK.Games.getPlayersMapQ(loadedGame));
-
-  const grid1: Grid<Square> = new Grid<Square>(
-    { x: 10, y: 10 },
-    (coord: Coord) => {
-      return {};
-    },
-  );
-  const grid2: Grid<Square> = new Grid<Square>(
-    { x: 10, y: 10 },
-    (coord: Coord) => {
-      return {};
-    },
-  );
-
-  const boats: Boat[] = [
-    {
-      boatType: BoatType.Carrier,
-      coord: { x: 1, y: 1 },
-      alignment: Alignment.Horizontal,
-    },
-    {
-      boatType: BoatType.Battleship,
-      coord: { x: 1, y: 3 },
-      alignment: Alignment.Vertical,
-    },
-    {
-      boatType: BoatType.Cruiser,
-      coord: { x: 9, y: 1 },
-      alignment: Alignment.Vertical,
-    },
-    {
-      boatType: BoatType.Destroyer,
-      coord: { x: 5, y: 5 },
-      alignment: Alignment.Horizontal,
-    },
-    {
-      boatType: BoatType.Destroyer,
-      coord: { x: 5, y: 7 },
-      alignment: Alignment.Horizontal,
-    },
-    {
-      boatType: BoatType.Submarine,
-      coord: { x: 9, y: 9 },
-      alignment: Alignment.Horizontal,
-    },
-    {
-      boatType: BoatType.Submarine,
-      coord: { x: 4, y: 8 },
-      alignment: Alignment.Horizontal,
-    },
-  ];
-
-  const yourShots: Shot[] = [
-    { coord: { x: 0, y: 1 }, hit: true },
-    { coord: { x: 0, y: 2 }, hit: false },
-    { coord: { x: 1, y: 1 }, hit: true },
-    { coord: { x: 5, y: 5 }, hit: false },
-    { coord: { x: 6, y: 6 }, hit: true },
-    { coord: { x: 7, y: 7 }, hit: false },
-    { coord: { x: 8, y: 8 }, hit: true },
-    { coord: { x: 4, y: 7 }, hit: false },
-    { coord: { x: 5, y: 7 }, hit: true },
-  ];
+  const players: PlayerMap = convertToPlayerMap(await muleSDK.Games.getPlayersMapQ(loadedGame));
 
   return {
     mule: {
@@ -146,13 +77,13 @@ export async function getBattleshipGameState(): Promise<GameState> {
     width: 10,
     height: 10,
     
-    yourGrid: grid1,
-    theirGrid: grid2,
+    yourGrid: getGridFromGameBoard(loadedGameBoard, players[1].playerNumber),
+    theirGrid: getGridFromGameBoard(loadedGameBoard, players[2].playerNumber),
     
-    yourBoats: boats,
-    theirBoats: [],
+    yourShips: getShipsFromGameState(loadedGameState, players[1].playerNumber),
+    theirShips: getShipsFromGameState(loadedGameState, players[2].playerNumber),
 
-    yourShots: yourShots,
+    yourShots: [], // yourShots,
     theirShots: [],
   };
 }

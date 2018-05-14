@@ -1,0 +1,22 @@
+{
+  "name" : "Battleship",
+  "turnSubmitStyle" : "roundRobin",
+  "canAutoProgress": true,
+
+  "staticBoardSettings" : {},
+
+  "gameSettings" : {
+    "playerLimit" : 2,
+    "customBoardSettings" : {}
+  },
+
+  "rules" : {
+    "spaces" : [{}],
+    "pieces" : [],
+
+    "dynamicBoard" : true,
+    "board" : [],
+
+    "startingPieces": {}
+  }
+}

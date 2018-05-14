@@ -10,8 +10,3 @@ export * from '../gamestate/types';
 export interface ReduxAction {
   type: string;
 }
-
-export interface Coord {
-  x: number;
-  y: number;
-}

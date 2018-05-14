@@ -2,8 +2,8 @@ import * as React from 'react';
 import * as _ from 'lodash';
 
 import Playfield from '../../containers/Playfield';
-import { Coord, GameState, PlayerMap } from '../../types';
-import { numberToLetter } from '../../../shared';
+import { GameState, PlayerMap } from '../../types';
+import { Coord, numberToLetter } from '../../../shared';
 
 import './style.css';
 

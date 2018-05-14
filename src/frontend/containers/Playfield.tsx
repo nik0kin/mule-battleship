@@ -1,8 +1,9 @@
 import { connect, Dispatch } from 'react-redux';
 
+import { Coord } from '../../shared';
 import Playfield from '../components/Playfield';
 import * as actions from '../actions/';
-import { Coord, StoreState } from '../types';
+import { StoreState } from '../types';
 
 export function mapStateToProps({gameState, ui: {selectedCoord}}: StoreState) {
   return {
