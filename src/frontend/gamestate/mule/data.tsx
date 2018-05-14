@@ -8,9 +8,13 @@ import {
   PlayersMap as MulePlayerMap,
 } from 'mule-sdk-js';
 
-import { getGridFromGameBoard, getShipsFromGameState, Grid, Coord, Shot } from '../../../shared';
+import {
+  getGridFromGameBoard, getShipsFromGameState, getShotsFromGameState,
+  Grid, Coord, Shot
+} from '../../../shared';
 import {
   GameState,
+  Player,
   PlayerMap,
 } from '../../types';
 
@@ -31,10 +35,9 @@ function convertToPlayerMap(playerMap: MulePlayerMap): PlayerMap {
   return reduce(
     playerMap,
     (i: PlayerMap, p: MulePlayerMapPlayer, playerRel: string) => {
-      const playerNumber: number = Number(playerRel);
-      i[playerNumber] = {
+      i[playerRel] = {
         playerId: p.playerId,
-        playerNumber,
+        playerRel,
         name: p.name || 'No Mule Username?',
       };
       return i;
@@ -67,13 +70,13 @@ export async function getBattleshipGameState(): Promise<GameState> {
   
   const players: PlayerMap = convertToPlayerMap(await muleSDK.Games.getPlayersMapQ(loadedGame));
 
-  const currentPlayerRel: number = players[1].playerNumber;
-  const opponentPlayerRel: number = players[2].playerNumber;
+  const currentPlayerRel: string = 'p1';
+  const opponentPlayerRel: string = 'p2';
 
   return {
     mule: {
-//      currentPlayer: players[1], // TODO figure out whos turn it is
-//      players,
+      currentPlayer: players[currentPlayerRel], // TODO figure out whos turn it is
+      players,
       currentTurn: 1,
     },
   
@@ -86,7 +89,7 @@ export async function getBattleshipGameState(): Promise<GameState> {
     yourShips: getShipsFromGameState(loadedGameState, currentPlayerRel),
     theirShips: getShipsFromGameState(loadedGameState, opponentPlayerRel),
 
-    yourShots: loadedGameState.playerVariables[currentPlayerRel].shots as Shot[],
-    theirShots: loadedGameState.playerVariables[opponentPlayerRel].shots as Shot[],
+    yourShots: getShotsFromGameState(loadedGameState, currentPlayerRel),
+    theirShots: getShotsFromGameState(loadedGameState, opponentPlayerRel),
   };
 }

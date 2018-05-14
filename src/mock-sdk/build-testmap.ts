@@ -19,7 +19,7 @@ import {
 const width: number = 10;
 const height: number = 10;
 
-function createSquare(ownerId: number) {
+function createSquare(ownerId: string) {
   return (coord: Coord) => { 
     return { coord, ownerId };
   };
@@ -27,11 +27,11 @@ function createSquare(ownerId: number) {
 
 const p1Squares: Grid<Square> = new Grid(
   { x: width, y: height },
-  createSquare(1),
+  createSquare('p1'),
 );
 const p2Squares: Grid<Square> = new Grid(
   { x: width, y: height },
-  createSquare(2),
+  createSquare('p2'),
 );
 
 const players = {
@@ -43,49 +43,49 @@ const players = {
 const ships: Ship[] = [
   {
     id: 1,
-    ownerId: 1,
+    ownerId: 'p1',
     shipType: ShipType.Carrier,
     coord: { x: 1, y: 1 },
     alignment: Alignment.Horizontal,
   },
   {
     id: 2,
-    ownerId: 1,
+    ownerId: 'p1',
     shipType: ShipType.Battleship,
     coord: { x: 1, y: 3 },
     alignment: Alignment.Vertical,
   },
   {
     id: 3,
-    ownerId: 1,
+    ownerId: 'p1',
     shipType: ShipType.Cruiser,
     coord: { x: 9, y: 1 },
     alignment: Alignment.Vertical,
   },
   {
     id: 4,
-    ownerId: 1,
+    ownerId: 'p1',
     shipType: ShipType.Destroyer,
     coord: { x: 5, y: 5 },
     alignment: Alignment.Horizontal,
   },
   {
     id: 5,
-    ownerId: 1,
+    ownerId: 'p1',
     shipType: ShipType.Destroyer,
     coord: { x: 5, y: 7 },
     alignment: Alignment.Horizontal,
   },
   {
     id: 6,
-    ownerId: 1,
+    ownerId: 'p1',
     shipType: ShipType.Submarine,
     coord: { x: 9, y: 9 },
     alignment: Alignment.Horizontal,
   },
   {
     id: 7,
-    ownerId: 1,
+    ownerId: 'p1',
     shipType: ShipType.Submarine,
     coord: { x: 4, y: 8 },
     alignment: Alignment.Horizontal,
@@ -126,10 +126,10 @@ export function getGameState(): MuleGameState {
     globalVariables: {},
     pieces: getPieceStatesFromShips(),
     playerVariables: {
-      1: {
+      p1: {
         shots: p1Shots
       },
-      2: {
+      p2: {
         shots: []
       },
     },

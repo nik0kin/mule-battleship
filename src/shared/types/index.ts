@@ -2,13 +2,13 @@
 import { Coord } from '../mule-common';
 
 export interface Square {
-  ownerId: number; // playerRel
+  ownerId: string; // playerRel
   coord: Coord;
 }
 
 export interface Ship {
   id: number;
-  ownerId: number;
+  ownerId: string;
   shipType: ShipType;
   coord: Coord;
   alignment: Alignment;

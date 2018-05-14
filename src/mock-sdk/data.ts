@@ -26,11 +26,11 @@ export function initMockData() {
         gameStatus: 'inprogress',
         maxPlayers: 2,
         players: {
-          '1': {
+          'p1': {
             playerId: 'playerId_102',
             playerStatus: 'inGame'
           },
-          '2': {
+          'p2': {
             playerId: 'playerId_103',
             playerStatus: 'inGame'
           },

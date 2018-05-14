@@ -5,7 +5,7 @@ import { BoardSpace, GameBoard, GameState, PieceState } from 'mule-sdk-js';
 import { Coord, getCoordFromString, getCoordString, Grid } from './mule-common';
 export * from './mule-common';
 
-import { Alignment, Ship, ShipType, Square } from './types';
+import { Alignment, Ship, ShipType, Shot, Square } from './types';
 export * from './types';
 
 // 0 = A
@@ -26,7 +26,7 @@ export function getBoardSpaceFromSquare(square: Square): BoardSpace {
   };
 }
 
-export function getGridFromGameBoard(gameBoard: GameBoard, playerRel: number): Grid<Square> {
+export function getGridFromGameBoard(gameBoard: GameBoard, playerRel: string): Grid<Square> {
   return new Grid<Square>(
     { x: 10, y: 10 }, // TODO dont hardcode
     (coord: Coord) => {
@@ -75,16 +75,20 @@ export function getShipTypeFromClass(_class: string): ShipType { // TODO there m
 export function getShipFromPieceSpace(pieceState: PieceState): Ship {
   return {
     id: pieceState.id,
-    ownerId: Number(pieceState.ownerId),
+    ownerId: pieceState.ownerId,
     shipType: getShipTypeFromClass(pieceState.class),
     coord: getCoordFromString(pieceState.locationId),
     alignment: pieceState.attributes.alignment as Alignment
   };
 }
 
-export function getShipsFromGameState(gameState: GameState, playerRel: number): Ship[] {
+export function getShipsFromGameState(gameState: GameState, playerRel: string): Ship[] {
   return gameState.pieces
     .filter(isShipType)
     .filter((pieceState: PieceState) => pieceState.ownerId === String(playerRel))
     .map(getShipFromPieceSpace);
+}
+
+export function getShotsFromGameState(gameState: GameState, playerRel: string): Shot[] {
+  return gameState.playerVariables[playerRel].shots as Shot[];
 }

@@ -6,8 +6,8 @@ import { Player, PlayerMap } from '../../types';
 
 export interface GameState {
   mule: {
-//    currentPlayer: Player;
-//    players: PlayerMap;
+    currentPlayer: Player;
+    players: PlayerMap;
     currentTurn: number;
   };
 

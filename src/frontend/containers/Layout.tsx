@@ -6,7 +6,7 @@ import { connect, Dispatch } from 'react-redux';
 export function mapStateToProps({gameState, ui: {selectedCoord}, pendingTurn}: StoreState) {
 
   return {
-    players: [], // gameState.mule.players,
+    players: gameState.mule.players,
     selectedCoord,
     gameState,
     pendingActions: {} // pendingTurn.actions,
