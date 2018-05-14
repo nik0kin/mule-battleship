@@ -1,0 +1,4 @@
+
+variable amount of ships
+
+salvo mode?
