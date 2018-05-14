@@ -126,12 +126,12 @@ export function getGameState(): MuleGameState {
     globalVariables: {},
     pieces: getPieceStatesFromShips(),
     playerVariables: {
-        1: {
-          shots: []
-        },
-        2: {
-          shots: []
-        },
+      1: {
+        shots: p1Shots
+      },
+      2: {
+        shots: []
+      },
     },
     spaces: [],
   };

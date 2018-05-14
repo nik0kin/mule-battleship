@@ -8,7 +8,7 @@ import {
   PlayersMap as MulePlayerMap,
 } from 'mule-sdk-js';
 
-import { getGridFromGameBoard, getShipsFromGameState, Grid, Coord } from '../../../shared';
+import { getGridFromGameBoard, getShipsFromGameState, Grid, Coord, Shot } from '../../../shared';
 import {
   GameState,
   PlayerMap,
@@ -31,7 +31,7 @@ function convertToPlayerMap(playerMap: MulePlayerMap): PlayerMap {
   return reduce(
     playerMap,
     (i: PlayerMap, p: MulePlayerMapPlayer, playerRel: string) => {
-      const playerNumber: number = Number(playerRel.substring(1));
+      const playerNumber: number = Number(playerRel);
       i[playerNumber] = {
         playerId: p.playerId,
         playerNumber,
@@ -67,6 +67,9 @@ export async function getBattleshipGameState(): Promise<GameState> {
   
   const players: PlayerMap = convertToPlayerMap(await muleSDK.Games.getPlayersMapQ(loadedGame));
 
+  const currentPlayerRel: number = players[1].playerNumber;
+  const opponentPlayerRel: number = players[2].playerNumber;
+
   return {
     mule: {
 //      currentPlayer: players[1], // TODO figure out whos turn it is
@@ -77,13 +80,13 @@ export async function getBattleshipGameState(): Promise<GameState> {
     width: 10,
     height: 10,
     
-    yourGrid: getGridFromGameBoard(loadedGameBoard, players[1].playerNumber),
-    theirGrid: getGridFromGameBoard(loadedGameBoard, players[2].playerNumber),
+    yourGrid: getGridFromGameBoard(loadedGameBoard, currentPlayerRel),
+    theirGrid: getGridFromGameBoard(loadedGameBoard, opponentPlayerRel),
     
-    yourShips: getShipsFromGameState(loadedGameState, players[1].playerNumber),
-    theirShips: getShipsFromGameState(loadedGameState, players[2].playerNumber),
+    yourShips: getShipsFromGameState(loadedGameState, currentPlayerRel),
+    theirShips: getShipsFromGameState(loadedGameState, opponentPlayerRel),
 
-    yourShots: [], // yourShots,
-    theirShots: [],
+    yourShots: loadedGameState.playerVariables[currentPlayerRel].shots as Shot[],
+    theirShots: loadedGameState.playerVariables[opponentPlayerRel].shots as Shot[],
   };
 }
