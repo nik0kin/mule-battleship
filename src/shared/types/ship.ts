@@ -24,7 +24,7 @@ export const DEFAULT_GAME_START_SHIP_SETUP_COUNTS = { // TODO better name
   [ShipType.Cruiser]: 1,
   [ShipType.Submarine]: 2,
   [ShipType.Destroyer]: 2,
-}
+};
 
 export interface ShipStructure {
   squares: Coord[];
