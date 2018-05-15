@@ -1,0 +1,6 @@
+basics
+ - webpack backend to node-readable module for mule backend to consume
+ - setup frontend 'prod' build
+
+then
+ - see gen map & placement actions in a "real" mule environment

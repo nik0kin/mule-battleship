@@ -17,6 +17,15 @@ export enum ShipType {
   Destroyer = 'Destroyer',
 }
 
+
+export const DEFAULT_GAME_START_SHIP_SETUP_COUNTS = { // TODO better name
+  [ShipType.Carrier]: 1,
+  [ShipType.Battleship]: 1,
+  [ShipType.Cruiser]: 1,
+  [ShipType.Submarine]: 2,
+  [ShipType.Destroyer]: 2,
+}
+
 export interface ShipStructure {
   squares: Coord[];
 }

@@ -3,7 +3,7 @@ import { BundleCode } from 'mule-sdk-js';
 import customBoardSettingsValidator from './hooks/customBoardSettingsValidator';
 import boardGenerator from './hooks/boardGenerator';
 import gameStart from './hooks/gameStart';
-import progressRound from './hooks/progressRound';
+import progressTurn from './hooks/progressTurn';
 
 const bundleCode: BundleCode = {
   customBoardSettingsValidator,
@@ -12,12 +12,11 @@ const bundleCode: BundleCode = {
   gameStart,
 
   actions: {
-  //  'OrderUnit': require('./actions/OrderUnit'),
-  //  'OrderBuilding': require('./actions/OrderBuilding')
+  //  'PlaceShips': require('./actions/PlaceShips'),
+  //  'FireShot': require('./actions/FireShot')
   },
 
-  // progressTurn: undefined, // doesnt exist because this is playByMail
-  progressRound,
+  progressTurn
   // winCondition: require('./code/winCondition')
 };
 
