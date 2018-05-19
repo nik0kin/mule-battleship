@@ -37,7 +37,23 @@ export class Grid<T> {
     return this._grid[coord.x][coord.y];
   }
 
+  public set(coord: Coord, t: T): void {
+    this._grid[coord.x][coord.y] = t;
+  }
+
   public toArray(): T[] {
     return _.flatten(this._grid);
   }
+}
+
+export function addCoords(coord1: Coord, coord2: Coord) {
+  return {
+    x: coord1.x + coord2.x,
+    y: coord1.y + coord2.y,
+  };
+}
+
+export function isValidCoord(coord: Coord, gridSize: Coord) {
+  return coord.x < 0 || coord.x >= gridSize.x ||
+    coord.y < 0 || coord.y >= gridSize.y;
 }

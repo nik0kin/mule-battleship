@@ -1,8 +1,8 @@
 
 import { Coord } from '../mule-common';
 
+export * from './actions';
 export * from './ship';
-
 
 export interface Square {
   ownerId: string; // playerRel

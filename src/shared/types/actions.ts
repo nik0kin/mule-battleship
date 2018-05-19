@@ -1,4 +1,4 @@
-import { Action } from 'mule-sdk-js';
+import { Action, VariableMap } from 'mule-sdk-js';
 
 import { Coord } from '../mule-common';
 

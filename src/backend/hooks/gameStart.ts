@@ -6,19 +6,26 @@ import { Alignment, getPieceStateFromShip, DEFAULT_GAME_START_SHIP_SETUP_COUNTS,
 
 
 const gameStartHook: GameStartHook = (M: MuleStateSdk) => {
-  let idIterator: number = 1;
 
+  // for each player
   _.each(M.getPlayerRels(), (lobbyPlayerId: string) => {
+    // 1. add ship pieces
     _.each(DEFAULT_GAME_START_SHIP_SETUP_COUNTS, (count: number, shipType: ShipType) => {
-      const newShip: Ship = {
-        id: idIterator++,
-        ownerId: lobbyPlayerId,
-        shipType,
-        coord: { x: -1, y: -1 },
-        alignment: Alignment.Horizontal
-      };
-      M.setPiece(String(newShip.id), getPieceStateFromShip(newShip));
+      _.times(count, () => {
+        const newShip: Ship = {
+          id: -1,
+          ownerId: lobbyPlayerId,
+          shipType,
+          coord: { x: -1, y: -1 },
+          alignment: Alignment.Horizontal
+        };
+        M.addPiece(getPieceStateFromShip(newShip));
+      });
     });
+
+    // 2. initialize playerVariables
+    M.setPlayerVariable(lobbyPlayerId, 'shipsPlaced', false);
+    M.setPlayerVariable(lobbyPlayerId, 'shots', []);
   });
 
   return M.persistQ();

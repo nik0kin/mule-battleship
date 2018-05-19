@@ -46,7 +46,7 @@ export function getGridFromGameBoard(gameBoard: GameBoard, playerRel: string): G
 
 export function getPieceStateFromShip(ship: Ship): PieceState {
   return {
-    _id: '' + ship.id, // just for mock
+    _id: String(ship.id), // just for mock
     id: ship.id,
     class: String(ship.shipType),
     locationId: getCoordString(ship.coord),
