@@ -54,6 +54,6 @@ export function addCoords(coord1: Coord, coord2: Coord) {
 }
 
 export function isValidCoord(coord: Coord, gridSize: Coord) {
-  return coord.x < 0 || coord.x >= gridSize.x ||
-    coord.y < 0 || coord.y >= gridSize.y;
+  return coord.x >= 0 && coord.x < gridSize.x &&
+    coord.y >= 0 && coord.y < gridSize.y;
 }

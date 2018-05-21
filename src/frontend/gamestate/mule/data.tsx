@@ -47,18 +47,22 @@ function convertToPlayerMap(playerMap: MulePlayerMap): PlayerMap {
 }
 
 export async function getBattleshipGameState(): Promise<GameState> {
-  const mockGameId = 'gameId_1'; // TODO load gameId from ? (do once hooking up to mule-frontend lobby)
+  const mockGameId: string = '5b02150d7856d112557c25b7'; // TODO load gameId from ? (do once hooking up to mule-frontend lobby)
 
   // TODO redux async (thunk, saga, etc)
 
   // for now assume its all loaded been loaded syncronously
 
-  initMuleSdk('http://local.dev');
-  
+  initMuleSdk('http://localhost:313/webservices/');
+
   // TODO make sure user has session
 
   // get Game
   const loadedGame: Game = await muleSDK.Games.readQ(mockGameId);
+
+  if (loadedGame.gameStatus === 'open') {
+    throw new Error('game has not started');
+  }
 
   // get GameBoard
   const loadedGameBoard: GameBoard = await muleSDK.GameBoards.readQ(loadedGame.gameBoard);
@@ -67,7 +71,7 @@ export async function getBattleshipGameState(): Promise<GameState> {
   const loadedGameState: MuleGameState = await muleSDK.GameStates.readQ(loadedGameBoard.gameState);
 
   // TODO get History/Turns
-  
+
   const players: PlayerMap = convertToPlayerMap(await muleSDK.Games.getPlayersMapQ(loadedGame));
 
   const currentPlayerRel: string = 'p1';
@@ -79,13 +83,13 @@ export async function getBattleshipGameState(): Promise<GameState> {
       players,
       currentTurn: 1,
     },
-  
+
     width: 10,
     height: 10,
-    
+
     yourGrid: getGridFromGameBoard(loadedGameBoard, currentPlayerRel),
     theirGrid: getGridFromGameBoard(loadedGameBoard, opponentPlayerRel),
-    
+
     yourShips: getShipsFromGameState(loadedGameState, currentPlayerRel),
     theirShips: getShipsFromGameState(loadedGameState, opponentPlayerRel),
 

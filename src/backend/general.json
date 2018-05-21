@@ -3,7 +3,9 @@
   "turnSubmitStyle" : "roundRobin",
   "canAutoProgress": true,
 
-  "staticBoardSettings" : {},
+  "staticBoardSettings" : {
+    "boardStyle": "linear"
+  },
 
   "gameSettings" : {
     "playerLimit" : 2,

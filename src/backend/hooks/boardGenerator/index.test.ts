@@ -5,6 +5,7 @@ describe('Hookt: boardGenerator', () => {
     boardGenerator({}, {})
       .then((boardSpaces) => {
         expect(boardSpaces).toBeDefined();
+        expect(boardSpaces.length).toBe(200);
         done();
       });
   });

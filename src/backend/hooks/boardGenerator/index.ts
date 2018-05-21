@@ -11,7 +11,7 @@ const boardGenerator: BoardGeneratorHook = (customBoardSettings: VariableMap, ba
   const height: number = 10;
 
   function createSquare(ownerId: string) {
-    return (coord: Coord) => { 
+    return (coord: Coord) => {
       return { coord, ownerId };
     };
   }
@@ -25,7 +25,12 @@ const boardGenerator: BoardGeneratorHook = (customBoardSettings: VariableMap, ba
     createSquare('p2'),
   );
 
-  return Promise.resolve(_.map(p1Squares.toArray(), getBoardSpaceFromSquare));
+  return Promise.resolve(
+    _.map(
+      _.concat(p1Squares.toArray(), p2Squares.toArray()),
+      getBoardSpaceFromSquare,
+    )
+  );
 };
 
 export default boardGenerator;

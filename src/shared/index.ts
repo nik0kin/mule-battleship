@@ -33,7 +33,7 @@ export function getGridFromGameBoard(gameBoard: GameBoard, playerRel: string): G
       const foundBoardSpace = _.find(gameBoard.board, (boardSpace: BoardSpace) => { // TODO not efficient - O(n^2)
         const _coord: Coord = getCoordFromString(boardSpace.id);
         return boardSpace.attributes && boardSpace.attributes.ownerId === playerRel &&
-          coord.x === _coord.x && coord.y === _coord.y; 
+          coord.x === _coord.x && coord.y === _coord.y;
       });
       return {
         ownerId: playerRel,
@@ -46,7 +46,7 @@ export function getGridFromGameBoard(gameBoard: GameBoard, playerRel: string): G
 
 export function getPieceStateFromShip(ship: Ship): PieceState {
   return {
-    _id: String(ship.id), // just for mock
+    _id: '',
     id: ship.id,
     class: String(ship.shipType),
     locationId: getCoordString(ship.coord),

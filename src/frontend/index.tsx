@@ -23,7 +23,7 @@ function onGameStateLoad(initialGameState: GameState) {
       actions: [],
     },
   });
-  
+
   ReactDOM.render(
     <Provider store={store}>
       <App />
@@ -39,6 +39,11 @@ export function bootstrapFrontend(): void {
       (e) => {
         console.log('Something went wrong during initiliziting Mule GameState');
         console.log(e);
+
+        if (e instanceof Error && e.message === 'game has not started') {
+          return alert(e.message); // TODO handle cleaner
+        }
+
         throw e;
       }
     );

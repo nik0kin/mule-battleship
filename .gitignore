@@ -10,8 +10,12 @@
 /build
 /dist/mock-sdk
 
+# til webpack uglifys it
+/dist/bundleCode
+
 # misc
 .DS_Store
 .env
 npm-debug.log
 yarn-error.log
+/tmp
