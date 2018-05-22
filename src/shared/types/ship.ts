@@ -88,3 +88,7 @@ export const ShipStructures: Map<ShipType, ShipStructure> = new Map([
     },
   ],
 ]);
+
+export function getShipStructure(shipType: ShipType): ShipStructure {
+  return ShipStructures.get(shipType) as ShipStructure;
+}

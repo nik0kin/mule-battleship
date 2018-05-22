@@ -40,8 +40,24 @@ td.ship {
   background-color: #b7b6b6;
 }
 
+.your-ships {
+  position: relative;
+}
+
+.your-ships .hint {
+  /* TODO without absolute position */
+  position: absolute;
+  top: 0;
+  left: 260px;
+  width: 290px;
+}
+
+.your-ships .hint > div {
+  margin-top: 10px;
+}
 
 .your-ships td {
+  position: relative;
   width: var(--yours-spot-size);
   height: var(--yours-spot-size);
   font-size: .8rem;

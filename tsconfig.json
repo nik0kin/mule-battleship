@@ -16,6 +16,7 @@
     "strictNullChecks": true
   },
   "exclude": [
+    "tmp",
     "node_modules",
     "build",
     "scripts",

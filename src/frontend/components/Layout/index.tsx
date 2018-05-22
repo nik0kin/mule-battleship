@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as _ from 'lodash';
 
 import Playfield from '../../containers/Playfield';
+import ShipList from '../../containers/ShipList';
 import { GameState, PlayerMap } from '../../types';
 import { Coord, numberToLetter } from '../../../shared';
 
@@ -24,25 +25,11 @@ function Layout({ selectedCoord, gameState, players }: Props) {
           <div className="stuff">
             Turn 1
             <button disabled={!selectedCoord}>
-              {getSubmitButtonText(selectedCoord)}
+              {getSubmitButtonText(getAmountOfShipsRemainingToPlace(), selectedCoord)}
             </button>
           </div>
 
-          <div className="their-ship-list">
-            <div> 1x Carrier - size: 5 </div>
-            <div> 1x Battleship - size: 4 </div>
-            <div> 1x Cruiser - size: 3 </div>
-            <div> 2x Destroyer - size: 2 </div>
-            <div> 2x Submarine - size: 1 </div>
-          </div>
-
-          <div className="your-ship-list">
-            <div> 1x Carrier - size: 5 </div>
-            <div> 1x Battleship - size: 4 </div>
-            <div> 1x Cruiser - size: 3 </div>
-            <div> 2x Destroyer - size: 2 </div>
-            <div> 2x Submarine - size: 1 </div>
-          </div>
+          <ShipList/>
 
           <div className="shot-list"/>
         </div>
@@ -57,7 +44,14 @@ function Layout({ selectedCoord, gameState, players }: Props) {
 
 export default Layout;
 
-function getSubmitButtonText(selectedCoord?: Coord): string {
+function getSubmitButtonText(shipsLeftToBePlaced: number, selectedCoord?: Coord): string {
+
+  if (shipsLeftToBePlaced) {
+    if (shipsLeftToBePlaced === 1) {
+      return 'Place last ship';
+    }
+    return `Place ${shipsLeftToBePlaced} remaining ships`;
+  }
 
   if (selectedCoord) {
     return 'Fire at ' + getBattleshipCoordString(selectedCoord);
@@ -70,4 +64,8 @@ function getSubmitButtonText(selectedCoord?: Coord): string {
 
 function getBattleshipCoordString(coord: Coord): string {
   return numberToLetter(coord.x + 1) + (coord.y + 1);
+}
+
+function getAmountOfShipsRemainingToPlace(): number {
+  return 7; // TODO
 }

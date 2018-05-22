@@ -22,8 +22,36 @@ frontend:
   }
 
  UI:
+  title followed by ship structure grid
+
+  "Click the ship on the left, then click a spot on your grid, click again to rotate"
+
+  table cell turns red if intersection
 
  UX:
+  Prompted to place ships by button, and instructions to right
+
+  1. Click ship on left (or ship in the playfield)
+   - shiplistship border turns dotted to indicate being placed
+
+  2. Click grid cell
+   - unable to click an occupied spot
+   - shiplistship border turns solid to indicate it has been placed
+   - shiplistship border turns solid red to indicate collision
+
+  3. repeat til all ships are placed
+
+  redux:
+   actions:
+    SELECT_SHIPLIST_SHIP
+      - set selectedShipBeingPlaced
+
+    modify CLICK_SQUARE
+     (when placing)
+      - to add actions ShipPlacement
+      - unset selectedShipBeingPlaced
+     (when not placing)
+      - rotate ship, and update ShipPlacement
 
 backend:
  validate Action:

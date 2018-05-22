@@ -21,13 +21,23 @@ export interface Props {
 function Playfield({ gameState, selectedCoord, clickSquare }: Props) {
   const gridSize: Coord = { x: 10, y: 10 }; // TODO dont hardcode gridSize
 
+  const collidingShips: boolean = false; // temp
+
   return (
     <div className="Playfield">
       <div className="your-ships">
-          {getGrid(gridSize, gameState.yourShips, gameState.theirShots, _.noop, undefined)}
+        {getGrid(gridSize, gameState.yourShips, gameState.theirShots, _.noop, undefined)}
+
+        <div className="hint">
+          Click the ship on the left, then click a spot on your grid, click again to rotate
+
+          {collidingShips && <div>
+            Fix colliding ships before you submit your ship placements.
+          </div>}
+        </div>
       </div>
       <div className="their-ships">
-          {getGrid(gridSize, gameState.theirShips, gameState.yourShots, clickSquare, selectedCoord)}
+        {getGrid(gridSize, gameState.theirShips, gameState.yourShots, clickSquare, selectedCoord)}
       </div>
     </div>
   );

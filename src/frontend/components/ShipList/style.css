@@ -1,0 +1,35 @@
+
+.ShipList .list-title {
+  font-weight: bold;
+  margin-bottom: 3px;
+}
+
+.their-ship-list {
+  margin-top: 10px;
+}
+
+.placement-mode .your-ship-list td {
+  cursor: pointer;
+}
+
+.shiplist-ship {
+  border: white;
+  display: inline-block;
+}
+
+.shiplist-ship.placing {
+  border: 2px dotted black;
+}
+
+.shiplist-ship.placed {
+  border: 2px solid black;
+}
+
+.shiplist-ship.collision {
+  border: 2px solid red;
+}
+
+.shiplist-ship td {
+  width: 13px;
+  height: 13px;
+}

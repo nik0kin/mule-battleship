@@ -7,9 +7,9 @@ import {
 
 import {
   addCoords, Coord, DEFAULT_GAME_START_SHIP_SETUP_COUNTS,
-  getShipFromPieceSpace, getPieceStateFromShip, Grid, isValidCoord,
+  getPieceStateFromShip, getShipFromPieceSpace, getShipStructure, Grid, isValidCoord,
   PlaceShipsMuleActionParams, Ship, ShipPlacement,
-  ShipStructure, ShipStructures, ShipType,
+  ShipStructure, ShipType,
 } from '../../shared';
 
 
@@ -63,7 +63,7 @@ function validateQ(M: MuleStateSdk, lobbyPlayerId: string, _actionParams: Variab
 
     // 2e. are the coordinates of each ship square valid and unoccupied?
     const shipType: ShipType = shipPieceState.class as ShipType;
-    const shipStructure: ShipStructure = ShipStructures.get(shipType) as ShipStructure;
+    const shipStructure: ShipStructure = getShipStructure(shipType);
     const invalidShipSquares: Coord[] = [];
 
     _.each(shipStructure.squares, (relativeCoord: Coord) => {
