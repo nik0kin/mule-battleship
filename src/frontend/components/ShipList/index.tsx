@@ -20,7 +20,7 @@ function ShipList({yourShips, theirShips, selectedShipBeingPlaced, selectShipLis
   const isPlacementMode = true; // TODO
 
   return (
-    <div className={'ShipList ' + isPlacementMode ? 'placement-mode' : ''}>
+    <div className={'ShipList ' + (isPlacementMode ? 'placement-mode' : '')}>
       <div className="your-ship-list">
         <div className="list-title"> Your Ships </div>
         {getShipList(yourShips, selectShipListShip, selectedShipBeingPlaced)}

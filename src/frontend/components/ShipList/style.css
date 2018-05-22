@@ -1,7 +1,7 @@
 
 .ShipList .list-title {
   font-weight: bold;
-  margin-bottom: 3px;
+  margin-bottom: 5px;
 }
 
 .their-ship-list {
@@ -13,7 +13,7 @@
 }
 
 .shiplist-ship {
-  border: white;
+  border: 2px solid white;
   display: inline-block;
 }
 
