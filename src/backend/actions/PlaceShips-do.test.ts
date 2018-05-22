@@ -13,9 +13,10 @@ const mbackendSdkMock: Partial<MuleStateSdk> = {
     coord: { x: -1, y: -1 },
     alignment: Alignment.Horizontal
   }),
+  setPiece: () => null,
 };
 
-describe('Action.validate: PlaceShipsAction', () => {
+describe('Action.do: PlaceShipsAction', () => {
   it('should run without error', (done) => {
     const actionParams: VariableMap /* TODO use PlaceShipsMuleActionParams */ = {
       shipPlacements: [
@@ -57,7 +58,7 @@ describe('Action.validate: PlaceShipsAction', () => {
       ]
     };
 
-    placeShipsAction.validateQ(mbackendSdkMock as MuleStateSdk, 'p1', actionParams)
+    placeShipsAction.doQ(mbackendSdkMock as MuleStateSdk, 'p1', actionParams)
       .then(() => {
         done();
       });

@@ -6,13 +6,22 @@ import {
 } from 'mule-sdk-js';
 
 import {
-  addCoords, Coord, getShipFromPieceSpace, getPieceStateFromShip, Grid, isValidCoord,
+  addCoords, Coord, DEFAULT_GAME_START_SHIP_SETUP_COUNTS,
+  getShipFromPieceSpace, getPieceStateFromShip, Grid, isValidCoord,
   PlaceShipsMuleActionParams, Ship, ShipPlacement,
   ShipStructure, ShipStructures, ShipType,
 } from '../../shared';
 
 
-const validateQ: ActionValidateHook = (M: MuleStateSdk, lobbyPlayerId: string, _actionParams: VariableMap) => {
+const PlaceShipsAction: ActionCode = {
+  validateQ,
+  doQ,
+};
+
+export default PlaceShipsAction;
+
+
+function validateQ(M: MuleStateSdk, lobbyPlayerId: string, _actionParams: VariableMap) {
   const gridSize: Coord = {x: 10, y: 10}; // M.getCustomBoardSettings();
   const placedShips: number[] = [];
   const occupiedGrid: Grid<boolean> = new Grid<boolean>(gridSize, () => false);
@@ -39,7 +48,6 @@ const validateQ: ActionValidateHook = (M: MuleStateSdk, lobbyPlayerId: string, _
     if (_.includes(placedShips, shipPlacement.shipId)) {
       throw new Error(`ship(id=${shipPlacement.shipId}) has already been placed`);
     }
-    placedShips.push(shipPlacement.shipId);
 
     // 2c. does ship belong to currentPlayer?
     if (shipPieceState.ownerId !== lobbyPlayerId) {
@@ -78,12 +86,15 @@ const validateQ: ActionValidateHook = (M: MuleStateSdk, lobbyPlayerId: string, _
     placedShips.push(shipPlacement.shipId);
   });
 
-  // 3. TODO are all ships placed?
+  // 3. are all ships placed?
+  if (placedShips.length !== getTotalShipsPerPlayer()) {
+    throw new Error('all ships are not placed');
+  }
 
   return Promise.resolve();
-};
+}
 
-const doQ: ActionValidateHook = (M: MuleStateSdk, lobbyPlayerId: string, _actionParams: VariableMap) => {
+function doQ(M: MuleStateSdk, lobbyPlayerId: string, _actionParams: VariableMap) {
 
   const actionParams: PlaceShipsMuleActionParams = {
     shipPlacements: _actionParams.shipPlacements as ShipPlacement[],
@@ -97,11 +108,14 @@ const doQ: ActionValidateHook = (M: MuleStateSdk, lobbyPlayerId: string, _action
   });
 
   return Promise.resolve();
-};
+}
 
-const PlaceShipsAction: ActionCode = {
-  validateQ,
-  doQ,
-};
-
-export default PlaceShipsAction;
+function getTotalShipsPerPlayer(): number {
+  return _.reduce(
+    DEFAULT_GAME_START_SHIP_SETUP_COUNTS, // TODO dont hardcode
+    (total: number, count: number, shipType: ShipType) => {
+      return total + count;
+    },
+    0
+  );
+}
