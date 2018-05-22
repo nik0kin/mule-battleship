@@ -1,11 +1,12 @@
 
+.ShipList {
+  display: flex;
+  justify-content: space-between;
+}
+
 .ShipList .list-title {
   font-weight: bold;
   margin-bottom: 5px;
-}
-
-.their-ship-list {
-  margin-top: 10px;
 }
 
 .placement-mode .your-ship-list td {
