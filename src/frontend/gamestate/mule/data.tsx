@@ -18,9 +18,9 @@ import {
   PlayerMap,
 } from '../../types';
 
-export let muleSDK: SDK;
+let muleSDK: SDK;
 
-export function initMuleSdk(contextPath: string): void {
+function initMuleSdk(contextPath: string): void {
   muleSDK = initializeMuleSdk(contextPath);
 }
 
@@ -47,18 +47,22 @@ function convertToPlayerMap(playerMap: MulePlayerMap): PlayerMap {
 }
 
 export async function getBattleshipGameState(): Promise<GameState> {
-  const mockGameId: string = '5b02150d7856d112557c25b7'; // TODO load gameId from ? (do once hooking up to mule-frontend lobby)
 
   // TODO redux async (thunk, saga, etc)
 
   // for now assume its all loaded been loaded syncronously
 
   initMuleSdk('http://localhost:313/webservices/');
+  const gameId: string | undefined = muleSDK.fn.getUrlParameter('gameId');
+
+  if (!gameId) {
+    throw new Error('missing gameId in url');
+  }
 
   // TODO make sure user has session
 
   // get Game
-  const loadedGame: Game = await muleSDK.Games.readQ(mockGameId);
+  const loadedGame: Game = await muleSDK.Games.readQ(gameId);
 
   if (loadedGame.gameStatus === 'open') {
     throw new Error('game has not started');
