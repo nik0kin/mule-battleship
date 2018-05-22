@@ -9,6 +9,11 @@
   margin-bottom: 5px;
 }
 
+.ship-name {
+  user-select: none;
+}
+
+.placement-mode .your-ship-list .ship-name,
 .placement-mode .your-ship-list td {
   cursor: pointer;
 }
@@ -31,6 +36,6 @@
 }
 
 .shiplist-ship td {
-  width: 13px;
-  height: 13px;
+  width: 15px;
+  height: 15px;
 }

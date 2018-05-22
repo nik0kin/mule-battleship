@@ -9,6 +9,7 @@ const gameStartHook: GameStartHook = (M: MuleStateSdk) => {
 
   // for each player
   _.each(M.getPlayerRels(), (lobbyPlayerId: string) => {
+
     // 1. add ship pieces
     _.each(DEFAULT_GAME_START_SHIP_SETUP_COUNTS, (count: number, shipType: ShipType) => {
       _.times(count, () => {

@@ -49,11 +49,11 @@ function getShipList(ships: Ship[], selectShipListShip: SelectShipListShipFn, se
     const key: string = ship.id + ' ' + ship.shipType;
     return (
       <div key={key}>
-        <div className="ship-name">
+        <div className="ship-name" onClick={() => selectShipListShip(ship.id)}>
           {ship.shipType}
         </div>
         <div>
-          {getShipListShip(ship, selectedShipBeingPlaced === ship.id, key, selectShipListShip)}
+          {getShipListShip(ship, selectedShipBeingPlaced === ship.id, key)}
         </div>
       </div>
     );
@@ -66,13 +66,13 @@ function getShipList(ships: Ship[], selectShipListShip: SelectShipListShipFn, se
   );
 }
 
-function getShipListShip(ship: Ship, isPlacing: boolean, key: string, selectShipListShip: SelectShipListShipFn): JSX.Element {
+function getShipListShip(ship: Ship, isPlacing: boolean, key: string): JSX.Element {
   const length: number = getShipStructure(ship.shipType).squares.length; // TODO this needs to be changed to show non linear ship structures
   const rowHtml: JSX.Element[] = [];
 
   _.times(length, (i) => {
     rowHtml.push(
-      <td className="ship" onClick={() => selectShipListShip(ship.id)} key={key + '-s' + i}/>
+      <td className="ship" key={key + '-s' + i}/>
     );
   });
 
