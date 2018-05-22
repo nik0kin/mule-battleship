@@ -5,6 +5,7 @@ import { connect, Dispatch } from 'react-redux';
 
 export function mapStateToProps({gameState, ui: {selectedShipBeingPlaced}}: StoreState) {
   return {
+    isPlacementMode: gameState.isPlacementMode,
     yourShips: gameState.yourShips,
     theirShips: gameState.theirShips,
     selectedShipBeingPlaced,

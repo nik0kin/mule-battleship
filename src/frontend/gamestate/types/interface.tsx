@@ -1,4 +1,3 @@
-import * as _ from 'lodash';
 
 import { Ship, Coord, Grid, Square, Shot } from '../../../shared';
 
@@ -15,6 +14,8 @@ export interface GameState {
   height: number;
   yourGrid: Grid<Square>;
   theirGrid: Grid<Square>;
+
+  isPlacementMode: boolean;
 
   yourShips: Ship[];
   theirShips: Ship[];

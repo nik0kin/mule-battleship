@@ -9,15 +9,20 @@ import './style.css';
 type SelectShipListShipFn = (shipId: number) => void;
 
 export interface Props {
+  isPlacementMode: boolean;
   yourShips: Ship[];
   theirShips: Ship[];
   selectedShipBeingPlaced: number | undefined;
   selectShipListShip: SelectShipListShipFn;
 }
 
-function ShipList({yourShips, theirShips, selectedShipBeingPlaced, selectShipListShip}: Props) {
-
-  const isPlacementMode = true; // TODO
+function ShipList({
+  isPlacementMode,
+  yourShips,
+  theirShips,
+  selectedShipBeingPlaced,
+  selectShipListShip
+}: Props) {
 
   return (
     <div className={'ShipList ' + (isPlacementMode ? 'placement-mode' : '')}>

@@ -9,8 +9,9 @@ import {
 } from 'mule-sdk-js';
 
 import {
+  Coord,
   getGridFromGameBoard, getShipsFromGameState, getShotsFromGameState,
-  Grid, Coord, Shot
+  Grid, isPlacementMode, Shot
 } from '../../../shared';
 import {
   GameState,
@@ -93,6 +94,8 @@ export async function getBattleshipGameState(): Promise<GameState> {
 
     yourGrid: getGridFromGameBoard(loadedGameBoard, currentPlayerRel),
     theirGrid: getGridFromGameBoard(loadedGameBoard, opponentPlayerRel),
+
+    isPlacementMode: isPlacementMode(loadedGameState),
 
     yourShips: getShipsFromGameState(loadedGameState, currentPlayerRel),
     theirShips: getShipsFromGameState(loadedGameState, opponentPlayerRel),

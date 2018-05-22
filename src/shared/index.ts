@@ -5,15 +5,13 @@ import { BoardSpace, GameBoard, GameState, PieceState } from 'mule-sdk-js';
 import { Coord, getCoordFromString, getCoordString, Grid } from './mule-common';
 export * from './mule-common';
 
-import { Alignment, Ship, ShipType, Shot, Square } from './types';
+import {
+  Alignment, BattleshipPlayerVariables, PlayerVariablesMap,
+  Ship, ShipType, Shot, Square,
+} from './types';
 export * from './types';
 
-// 0 = A
-export function numberToLetter(i: number): string {
-  return String.fromCharCode(64 + i);
-}
-
-
+export * from './utils';
 
 export function getBoardSpaceFromSquare(square: Square): BoardSpace {
   return {
@@ -91,4 +89,16 @@ export function getShipsFromGameState(gameState: GameState, playerRel: string): 
 
 export function getShotsFromGameState(gameState: GameState, playerRel: string): Shot[] {
   return gameState.playerVariables[playerRel].shots as Shot[];
+}
+
+export function getPlayerVariablesFromGameState(gameState: GameState): PlayerVariablesMap {
+  return gameState.playerVariables as any as PlayerVariablesMap;
+}
+
+export function isPlacementMode(gameState: GameState): boolean {
+  const playerVariables: PlayerVariablesMap = getPlayerVariablesFromGameState(gameState);
+
+  return _.some(playerVariables, (playerVars: BattleshipPlayerVariables) => {
+    return !playerVars.hasPlacedShips;
+  });
 }

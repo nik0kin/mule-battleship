@@ -24,7 +24,7 @@ const gameStartHook: GameStartHook = (M: MuleStateSdk) => {
     });
 
     // 2. initialize playerVariables
-    M.setPlayerVariable(lobbyPlayerId, 'shipsPlaced', false);
+    M.setPlayerVariable(lobbyPlayerId, 'hasPlacedShips', false);
     M.setPlayerVariable(lobbyPlayerId, 'shots', []);
   });
 
