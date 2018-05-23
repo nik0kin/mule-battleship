@@ -2,13 +2,13 @@
 import * as _ from 'lodash';
 import { Action, BoardSpace, GameBoard, GameState, PieceState } from 'mule-sdk-js';
 
-import { Coord, getCoordFromString, getCoordString, Grid } from './mule-common';
+import { Coord, getCoordFromString, getCoordString, Grid, isValidCoord } from './mule-common';
 export * from './mule-common';
 
 import {
-  Alignment, BattleshipPlayerVariables, getPlaceShipsParamsFromAction,
+  Alignment, BattleshipPlayerVariables, getPlaceShipsParamsFromAction, getShipStructure,
   isPlaceShipsAction, PlaceShipsMuleActionParams, PlayerVariablesMap,
-  Ship, ShipPlacement, ShipType, Shot, Square,
+  Ship, ShipPlacement, ShipStructure, ShipType, Shot, Square,
 } from './types';
 export * from './types';
 
@@ -116,7 +116,7 @@ export function getAllShips(lobbyPlayerId: string, playersShips: Ship[], pending
 }
 
 
-function getShipsFromPendingActions(lobbyPlayerId: string, playersShips: Ship[], pendingActions: Action[]): Ship[] {
+export function getShipsFromPendingActions(lobbyPlayerId: string, playersShips: Ship[], pendingActions: Action[]): Ship[] {
   return _.reduce(
     _.filter(pendingActions, isPlaceShipsAction),
     (ships: Ship[], action: Action): Ship[] => {
@@ -152,4 +152,42 @@ export function isShipPlaced(shipId: number, pendingActions: Action[]): boolean 
       });
     }
   );
+}
+
+export function isAnyShipOnSquare(gridSize: Coord, coord: Coord, ships: Ship[]): boolean {
+  if (!isValidCoord(coord, gridSize)) {
+    return false;
+  }
+
+  return _.some(ships, (ship: Ship) => {
+    return isShipOnSquare(coord, ship);
+  });
+}
+
+export function isShipOnSquare(coord: Coord, ship: Ship): boolean {
+  const shipStructure: ShipStructure = getShipStructure(ship.shipType);
+
+  if (!shipStructure) throw new Error('invalid ShipType: ' + ship.shipType);
+
+  return _.some(shipStructure.squares, (strucutureCoord: Coord) => {
+    let structureX: number;
+    let structureY: number;
+
+    // horizontal
+    if (ship.alignment === Alignment.Horizontal) {
+      structureX = ship.coord.x + strucutureCoord.x;
+      structureY = ship.coord.y + strucutureCoord.y;
+    } else { // vertical
+      structureX = ship.coord.x + strucutureCoord.y;
+      structureY = ship.coord.y + strucutureCoord.x;
+    }
+
+    return coord.x === structureX && coord.y === structureY;
+  });
+}
+
+export function getShotOnSquare(coord: Coord, shots: Shot[]): Shot | undefined {
+  return _.find(shots, (shot: Shot) => {
+    return shot.coord.x === coord.x && shot.coord.y === coord.y;
+  });
 }

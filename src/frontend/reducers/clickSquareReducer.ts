@@ -3,7 +3,7 @@ import { Action } from 'mule-sdk-js';
 
 import {
   Alignment, Coord,
-  getPlaceShipsAction,
+  getShipsFromPendingActions, getPlaceShipsAction, isAnyShipOnSquare,
   PlaceShipsMuleAction, PlaceShipsMuleActionParams, ShipPlacement
 } from '../../shared';
 
@@ -43,6 +43,14 @@ export function clickSquareReducer(state: StoreState, clickSquareAction: ClickSq
   }
 
   // if not being placed, but is clicked (rotate)
+  if (state.gameState.isPlacementMode && !state.ui.selectedShipBeingPlaced && clickSquareAction.lobbyPlayerId === 'p1') {
+
+    // check if a ship occupies the coord
+    if (isAnyShipOnSquare({ x: state.gameState.width, y: state.gameState.height }, coord, getShipsFromPendingActions('p1', state.gameState.yourShips, state.pendingTurn.actions))) {
+      // rotate
+      console.log('rotate');
+    }
+  }
 
   if (clickSquareAction.lobbyPlayerId === 'p2') {
     // TODO shots logic

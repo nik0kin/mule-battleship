@@ -2,4 +2,4 @@
 
 A implementation of Battleship using React/Redux and NodeJS/Mule
 
-Work in Progress... 10%
+Work in Progress... 15%

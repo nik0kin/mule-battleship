@@ -48,12 +48,13 @@ frontend:
   redux:
    actions:
     SELECT_SHIPLIST_SHIP
-      - set selectedShipBeingPlaced
+     X- set selectedShipBeingPlaced
 
     modify CLICK_SQUARE
      (when placing)
-      - to add actions ShipPlacement
-      - unset selectedShipBeingPlaced
+     X- to add actions ShipPlacement
+     X- unset selectedShipBeingPlaced
+      - look for collisions
      (when not placing)
       - rotate ship, and update ShipPlacement
 

@@ -6,7 +6,8 @@ import './style.css';
 import { GameState } from '../../types';
 import {
   Alignment,
-  Coord, getAllShips, isValidCoord,
+  Coord, getAllShips, getShotOnSquare,
+  isAnyShipOnSquare,
   Ship, ShipStructure, ShipStructures,
   numberToLetter, Shot,
 } from '../../../shared';
@@ -130,40 +131,4 @@ function getRow(
   );
 }
 
-function isAnyShipOnSquare(gridSize: Coord, coord: Coord, ships: Ship[]): boolean {
-  if (!isValidCoord(coord, gridSize)) {
-    return false;
-  }
 
-  return _.some(ships, (ship: Ship) => {
-    return isShipOnSquare(coord, ship);
-  });
-}
-
-function isShipOnSquare(coord: Coord, ship: Ship): boolean {
-  const shipStructure: ShipStructure | undefined = ShipStructures.get(ship.shipType);
-
-  if (!shipStructure) throw new Error('invalid ShipType: ' + ship.shipType);
-
-  return _.some(shipStructure.squares, (strucutureCoord: Coord) => {
-    let structureX: number;
-    let structureY: number;
-
-    // horizontal
-    if (ship.alignment === Alignment.Horizontal) {
-      structureX = ship.coord.x + strucutureCoord.x;
-      structureY = ship.coord.y + strucutureCoord.y;
-    } else { // vertical
-      structureX = ship.coord.x + strucutureCoord.y;
-      structureY = ship.coord.y + strucutureCoord.x;
-    }
-
-    return coord.x === structureX && coord.y === structureY;
-  });
-}
-
-function getShotOnSquare(coord: Coord, shots: Shot[]): Shot | undefined {
-  return _.find(shots, (shot: Shot) => {
-    return shot.coord.x === coord.x && shot.coord.y === coord.y;
-  });
-}
