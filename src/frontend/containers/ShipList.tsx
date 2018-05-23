@@ -1,13 +1,15 @@
+import { connect, Dispatch } from 'react-redux';
+
 import ShipList from '../components/ShipList';
 import * as actions from '../actions/';
 import { StoreState } from '../types/index';
-import { connect, Dispatch } from 'react-redux';
 
-export function mapStateToProps({gameState, ui: {selectedShipBeingPlaced}}: StoreState) {
+export function mapStateToProps({gameState, ui: {selectedShipBeingPlaced}, pendingTurn}: StoreState) {
   return {
     isPlacementMode: gameState.isPlacementMode,
     yourShips: gameState.yourShips,
     theirShips: gameState.theirShips,
+    pendingActions: pendingTurn.actions,
     selectedShipBeingPlaced,
   };
 }

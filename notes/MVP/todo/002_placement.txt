@@ -32,14 +32,18 @@ frontend:
   Prompted to place ships by button, and instructions to right
 
   1. Click ship on left (or ship in the playfield)
-   - shiplistship border turns dotted to indicate being placed
+  X- shiplistship border turns dotted to indicate being placed
+
+  1a. Click occupied grid cell to rotate ship
 
   2. Click grid cell
    - unable to click an occupied spot
-   - shiplistship border turns solid to indicate it has been placed
+  X- shiplistship border turns solid to indicate it has been placed
    - shiplistship border turns solid red to indicate collision
 
   3. repeat til all ships are placed
+
+  4. click button to send Turn
 
   redux:
    actions:

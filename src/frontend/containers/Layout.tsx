@@ -1,7 +1,8 @@
+import { connect, Dispatch } from 'react-redux';
+
 import Layout from '../components/Layout';
 import * as actions from '../actions/';
 import { StoreState } from '../types/index';
-import { connect, Dispatch } from 'react-redux';
 
 export function mapStateToProps({gameState, ui: {selectedCoord}, pendingTurn}: StoreState) {
 

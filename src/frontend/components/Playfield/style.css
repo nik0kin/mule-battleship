@@ -81,6 +81,10 @@ td.ship {
   cursor: pointer;
 }
 
+.their-ships.shooting-ships {
+  /* MVP-4 */
+}
+
 td.hit-shot,
 td.miss-shot {
   font-size: 1.2rem;

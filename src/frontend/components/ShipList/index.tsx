@@ -1,8 +1,9 @@
 import * as React from 'react';
 import * as _ from 'lodash';
+import { Action } from 'mule-sdk-js';
 
 import Playfield from '../../containers/Playfield';
-import { getShipStructure, Ship, ShipStructure, ShipType } from '../../../shared';
+import { getShipStructure, isShipPlaced, Ship, ShipStructure, ShipType } from '../../../shared';
 
 import './style.css';
 
@@ -12,6 +13,7 @@ export interface Props {
   isPlacementMode: boolean;
   yourShips: Ship[];
   theirShips: Ship[];
+  pendingActions: Action[];
   selectedShipBeingPlaced: number | undefined;
   selectShipListShip: SelectShipListShipFn;
 }
@@ -20,6 +22,7 @@ function ShipList({
   isPlacementMode,
   yourShips,
   theirShips,
+  pendingActions,
   selectedShipBeingPlaced,
   selectShipListShip
 }: Props) {
@@ -28,12 +31,12 @@ function ShipList({
     <div className={'ShipList ' + (isPlacementMode ? 'placement-mode' : '')}>
       <div className="your-ship-list">
         <div className="list-title"> Your Ships </div>
-        {getShipList(yourShips, selectShipListShip, selectedShipBeingPlaced)}
+        {getShipList(yourShips, pendingActions, selectShipListShip, selectedShipBeingPlaced)}
       </div>
 
       <div className="their-ship-list">
         <div className="list-title"> Opponent's Ships </div>
-        {getShipList(theirShips, _.noop, undefined)}
+        {getShipList(theirShips, [], _.noop, undefined)}
       </div>
     </div>
   );
@@ -41,19 +44,26 @@ function ShipList({
 
 export default ShipList;
 
-function getShipList(ships: Ship[], selectShipListShip: SelectShipListShipFn, selectedShipBeingPlaced: number | undefined): JSX.Element {
+function getShipList(
+  ships: Ship[],
+  pendingActions: Action[],
+  selectShipListShip: SelectShipListShipFn,
+  selectedShipBeingPlaced: number | undefined
+): JSX.Element {
   const sortedShips: Ship[] = _.sortBy(ships, (ship: Ship) => {
-    return -getShipStructure(ship.shipType).squares.length;
+    return -getShipStructure(ship.shipType).squares.length; // longest first
   });
+
   const shipsHtml: JSX.Element[] = _.map(sortedShips, (ship: Ship) => {
     const key: string = ship.id + ' ' + ship.shipType;
+
     return (
       <div key={key} onClick={() => selectShipListShip(ship.id)}>
         <div className="ship-name">
           {ship.shipType}
         </div>
         <div>
-          {getShipListShip(ship, selectedShipBeingPlaced === ship.id, key)}
+          {getShipListShip(ship, selectedShipBeingPlaced === ship.id, isShipPlaced(ship.id, pendingActions), key)}
         </div>
       </div>
     );
@@ -66,7 +76,7 @@ function getShipList(ships: Ship[], selectShipListShip: SelectShipListShipFn, se
   );
 }
 
-function getShipListShip(ship: Ship, isPlacing: boolean, key: string): JSX.Element {
+function getShipListShip(ship: Ship, isPlacing: boolean, isPlaced: boolean, key: string): JSX.Element {
   const length: number = getShipStructure(ship.shipType).squares.length; // TODO this needs to be changed to show non linear ship structures
   const rowHtml: JSX.Element[] = [];
 
@@ -80,7 +90,10 @@ function getShipListShip(ship: Ship, isPlacing: boolean, key: string): JSX.Eleme
 
   if (isPlacing) {
     className += ' placing';
+  } else if (isPlaced) {
+    className += ' placed';
   }
+
 
   return (
     <table className={className}>

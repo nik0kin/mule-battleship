@@ -1,11 +1,12 @@
 import * as React from 'react';
 import * as _ from 'lodash';
+import { Action } from 'mule-sdk-js';
 
 import './style.css';
 import { GameState } from '../../types';
 import {
   Alignment,
-  Coord, isValidCoord,
+  Coord, getAllShips, isValidCoord,
   Ship, ShipStructure, ShipStructures,
   numberToLetter, Shot,
 } from '../../../shared';
@@ -16,25 +17,33 @@ export interface Props {
   selectedCoord?: Coord;
   selectedShipBeingPlaced?: number;
   gameState: GameState;
+  pendingActions: Action[];
 
   clickSquare: ClickSquareFn;
 }
 
-function Playfield({ gameState, selectedCoord, selectedShipBeingPlaced, clickSquare }: Props) {
+function Playfield({ gameState, selectedCoord, selectedShipBeingPlaced, pendingActions, clickSquare }: Props) {
   const gridSize: Coord = { x: 10, y: 10 }; // TODO dont hardcode gridSize
 
   const collidingShips: boolean = false; // temp
 
+  const yourShipsAndPendingShipPlacements = getAllShips('p1', gameState.yourShips, pendingActions);
+
   let yourShipsClassNames: string = 'your-ships ';
+  let theirShipsClassNames: string = 'their-ships ';
 
   if (gameState.isPlacementMode && selectedShipBeingPlaced ) {
     yourShipsClassNames += 'placing-ships';
   }
 
+  if (!gameState.isPlacementMode) {
+    theirShipsClassNames += 'shooting-ships';
+  }
+
   return (
     <div className="Playfield">
       <div className={yourShipsClassNames}>
-        {getGrid('p1', gridSize, gameState.yourShips, gameState.theirShots, _.noop, undefined)}
+        {getGrid('p1', gridSize, yourShipsAndPendingShipPlacements, gameState.theirShots, clickSquare, undefined)}
 
         <div className="hint">
           Click the ship on the left, then click a spot on your grid, click again to rotate
@@ -44,7 +53,7 @@ function Playfield({ gameState, selectedCoord, selectedShipBeingPlaced, clickSqu
           </div>}
         </div>
       </div>
-      <div className="their-ships">
+      <div className={theirShipsClassNames}>
         {getGrid('p2', gridSize, gameState.theirShips, gameState.yourShots, clickSquare, selectedCoord)}
       </div>
     </div>
@@ -85,8 +94,7 @@ function getRow(
   selectedCoord?: Coord
 ) {
   let rowHtml: Array<JSX.Element> = [];
-  _.times(gridSize.x + 1,
-    (x) => {
+  _.times(gridSize.x + 1, (x) => {
     const coord: Coord = { x: x - 1, y: y - 1 };
     let _class: string = y === 0 ? 'top ' : '';
     _class += x === 0 ? 'left ' : '';

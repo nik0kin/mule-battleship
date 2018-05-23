@@ -1,13 +1,14 @@
 
 import * as _ from 'lodash';
-import { BoardSpace, GameBoard, GameState, PieceState } from 'mule-sdk-js';
+import { Action, BoardSpace, GameBoard, GameState, PieceState } from 'mule-sdk-js';
 
 import { Coord, getCoordFromString, getCoordString, Grid } from './mule-common';
 export * from './mule-common';
 
 import {
-  Alignment, BattleshipPlayerVariables, PlayerVariablesMap,
-  Ship, ShipType, Shot, Square,
+  Alignment, BattleshipPlayerVariables, getPlaceShipsParamsFromAction,
+  isPlaceShipsAction, PlaceShipsMuleActionParams, PlayerVariablesMap,
+  Ship, ShipPlacement, ShipType, Shot, Square,
 } from './types';
 export * from './types';
 
@@ -101,4 +102,54 @@ export function isPlacementMode(gameState: GameState): boolean {
   return _.some(playerVariables, (playerVars: BattleshipPlayerVariables) => {
     return !playerVars.hasPlacedShips;
   });
+}
+
+export function getAllShips(lobbyPlayerId: string, playersShips: Ship[], pendingActions: Action[]): Ship[] {
+
+  return _.uniqBy(
+    _.concat(
+      getShipsFromPendingActions(lobbyPlayerId, playersShips, pendingActions), // add ships from pending PlaceShips Action
+      playersShips,
+    ),
+    'id',
+  );
+}
+
+
+function getShipsFromPendingActions(lobbyPlayerId: string, playersShips: Ship[], pendingActions: Action[]): Ship[] {
+  return _.reduce(
+    _.filter(pendingActions, isPlaceShipsAction),
+    (ships: Ship[], action: Action): Ship[] => {
+      _.each(getPlaceShipsParamsFromAction(action).shipPlacements, (shipPlacement: ShipPlacement) => {
+
+        // TODO is this a flatmap?
+
+        const ship: Ship = _.find(playersShips, (_ship: Ship) => _ship.id === shipPlacement.shipId) as Ship;
+
+        const phantomShip: Ship = {
+          id: shipPlacement.shipId,
+          ownerId: lobbyPlayerId,
+          shipType: ship.shipType,
+          coord: shipPlacement.coord,
+          alignment: shipPlacement.alignment
+        };
+
+        ships.push(phantomShip);
+      });
+
+      return ships;
+    },
+    [],
+  );
+}
+
+export function isShipPlaced(shipId: number, pendingActions: Action[]): boolean {
+  return _.some(
+    _.filter(pendingActions, isPlaceShipsAction),
+    (action: Action) => {
+      return _.some(getPlaceShipsParamsFromAction(action).shipPlacements, (shipPlacement: ShipPlacement) => {
+        return shipPlacement.shipId === shipId;
+      });
+    }
+  );
 }

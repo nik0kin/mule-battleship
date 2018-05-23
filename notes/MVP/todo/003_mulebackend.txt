@@ -2,6 +2,8 @@ basics
 X- webpack backend to node-readable module for mule backend to consume
  - setup backend 'prod' build (uglifed and saved in dist/)
  - setup frontend 'prod' build (uglifed and saved in dist/)
+ - dont hardcode first player as 'p1'
+  - show message if you arent the correct player
 
 then
  - see gen map & placement actions in a "real" mule environment
