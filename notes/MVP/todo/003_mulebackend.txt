@@ -5,3 +5,5 @@ X- webpack backend to node-readable module for mule backend to consume
 
 then
  - see gen map & placement actions in a "real" mule environment
+ - update jenkins
+ - update mule-frontend to link to battleship

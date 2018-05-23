@@ -11,6 +11,7 @@ import {
 } from '../constants';
 import { StoreState } from '../types';
 
+import { clickSquareReducer } from './clickSquareReducer';
 
 export function generalReducer(state: StoreState, action: {type: string}): StoreState {
   // return {
@@ -22,17 +23,8 @@ export function generalReducer(state: StoreState, action: {type: string}): Store
 
   switch (action.type) {
     case CLICK_SQUARE:
-      const clickPlotAction: ClickSquare = action as ClickSquare;
-      return {
-        ...state,
-        ui: {
-          ...state.ui,
-          selectedCoord: {
-            x: clickPlotAction.x,
-            y: clickPlotAction.y,
-          },
-        },
-      };
+      const clickSquareAction: ClickSquare = action as ClickSquare;
+      return clickSquareReducer(state, clickSquareAction);
 
     case SELECT_SHIPLIST_SHIP:
       const selectShipListShipAction: SelectShipListShip = action as SelectShipListShip;

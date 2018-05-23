@@ -48,8 +48,8 @@ function getShipList(ships: Ship[], selectShipListShip: SelectShipListShipFn, se
   const shipsHtml: JSX.Element[] = _.map(sortedShips, (ship: Ship) => {
     const key: string = ship.id + ' ' + ship.shipType;
     return (
-      <div key={key}>
-        <div className="ship-name" onClick={() => selectShipListShip(ship.id)}>
+      <div key={key} onClick={() => selectShipListShip(ship.id)}>
+        <div className="ship-name">
           {ship.shipType}
         </div>
         <div>

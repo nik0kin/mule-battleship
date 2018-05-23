@@ -6,13 +6,15 @@ import { Coord } from '../../shared';
 
 export interface ClickSquare {
   type: constants.CLICK_SQUARE;
+  lobbyPlayerId: string; // which grid? (p1 or p2)
   x: number;
   y: number;
 }
 
-export function clickSquare(coord: Coord): ClickSquare {
+export function clickSquare(lobbyPlayerId: string, coord: Coord): ClickSquare {
   return {
     type: constants.CLICK_SQUARE,
+    lobbyPlayerId,
     x: coord.x,
     y: coord.y,
   };
