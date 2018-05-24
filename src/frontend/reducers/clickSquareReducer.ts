@@ -4,7 +4,7 @@ import { Action } from 'mule-sdk-js';
 import {
   Alignment, Coord,
   getShipsFromPendingActions, getShipOnSquare, getPlaceShipsActionParamsFromMuleAction,
-  getPlaceShipsActionWithNewShipPlacement, getPlaceShipsMuleActionFromParams,
+  getPlaceShipsActionWithNewShipPlacement, getPlaceShipsMuleActionFromParams, getRotatedAlignment,
   isAnyShipOnSquare,
   PlaceShipsMuleAction, PlaceShipsMuleActionParams, Ship, ShipPlacement,
 } from '../../shared';
@@ -102,12 +102,4 @@ function getPlaceShipsActionWithRotation(pendingPlacementAction: Action, shipId:
   };
 
   return getPlaceShipsMuleActionFromParams(newParams);
-}
-
-function getRotatedAlignment(alignment: Alignment): Alignment {
-  if (alignment === Alignment.Horizontal) {
-    return Alignment.Vertical;
-  } else {
-    return Alignment.Horizontal;
-  }
 }

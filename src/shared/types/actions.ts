@@ -3,7 +3,7 @@ import { Action, VariableMap } from 'mule-sdk-js';
 
 import { Coord } from '../mule-common';
 
-import { Alignment } from './ship';
+import { Alignment } from './alignment';
 
 export type PlaceShipsMuleAction = 'PlaceShips';
 

@@ -1,6 +1,8 @@
 
 import { Coord } from '../mule-common';
 
+import { Alignment } from './alignment';
+
 export interface Ship {
   id: number;
   ownerId: string;
@@ -28,11 +30,6 @@ export const DEFAULT_GAME_START_SHIP_SETUP_COUNTS = { // TODO better name
 
 export interface ShipStructure {
   squares: Coord[];
-}
-
-export enum Alignment {
-  Vertical,
-  Horizontal,
 }
 
 // horizontal structures

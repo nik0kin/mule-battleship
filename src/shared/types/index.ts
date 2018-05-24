@@ -2,6 +2,7 @@
 import { Coord } from '../mule-common';
 
 export * from './actions';
+export * from './alignment';
 export * from './ship';
 
 export interface PlayerVariablesMap {
