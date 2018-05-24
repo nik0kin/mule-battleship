@@ -17,8 +17,21 @@ export interface ShipPlacement {
   alignment: Alignment;
 }
 
-export function getPlaceShipsAction(existingAction: Action | undefined, newShipPlacement: ShipPlacement) {
-  const existingShipPlacements: ShipPlacement[] = (existingAction && existingAction.params.shipPlacements as ShipPlacement[]) || [];
+export function getPlaceShipsMuleActionFromParams(placeShipsMuleActionParams: PlaceShipsMuleActionParams): Action {
+  return {
+    type: 'PlaceShips',
+    params: placeShipsMuleActionParams as any as VariableMap,
+  } as Action;
+}
+
+export function getPlaceShipsActionParamsFromMuleAction(action?: Action): PlaceShipsMuleActionParams {
+  return {
+    shipPlacements: (action && action.params.shipPlacements as ShipPlacement[]) || []
+  };
+}
+
+export function getPlaceShipsActionWithNewShipPlacement(existingAction: Action | undefined, newShipPlacement: ShipPlacement) {
+  const existingShipPlacements: ShipPlacement[] = getPlaceShipsActionParamsFromMuleAction(existingAction).shipPlacements;
 
   const newParams: PlaceShipsMuleActionParams = {
     shipPlacements: _.uniqBy(
@@ -30,10 +43,7 @@ export function getPlaceShipsAction(existingAction: Action | undefined, newShipP
     )
   };
 
-  return {
-    type: 'PlaceShips',
-    params: newParams as any as VariableMap,
-  } as Action;
+  return getPlaceShipsMuleActionFromParams(newParams);
 }
 
 export function isPlaceShipsAction(action: Action): boolean {

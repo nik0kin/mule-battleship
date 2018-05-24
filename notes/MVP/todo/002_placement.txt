@@ -56,7 +56,7 @@ frontend:
      X- unset selectedShipBeingPlaced
       - look for collisions
      (when not placing)
-      - rotate ship, and update ShipPlacement
+     X- rotate ship, and update ShipPlacement
 
 backend:
  validate Action:

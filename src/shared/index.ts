@@ -164,6 +164,16 @@ export function isAnyShipOnSquare(gridSize: Coord, coord: Coord, ships: Ship[]):
   });
 }
 
+export function getShipOnSquare(gridSize: Coord, coord: Coord, ships: Ship[]): Ship | undefined {
+  if (!isValidCoord(coord, gridSize)) {
+    return undefined;
+  }
+
+  return _.find(ships, (ship: Ship) => {
+    return isShipOnSquare(coord, ship);
+  });
+}
+
 export function isShipOnSquare(coord: Coord, ship: Ship): boolean {
   const shipStructure: ShipStructure = getShipStructure(ship.shipType);
 

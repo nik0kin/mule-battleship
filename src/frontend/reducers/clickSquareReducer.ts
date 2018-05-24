@@ -1,10 +1,12 @@
-
+import * as _ from 'lodash';
 import { Action } from 'mule-sdk-js';
 
 import {
   Alignment, Coord,
-  getShipsFromPendingActions, getPlaceShipsAction, isAnyShipOnSquare,
-  PlaceShipsMuleAction, PlaceShipsMuleActionParams, ShipPlacement
+  getShipsFromPendingActions, getShipOnSquare, getPlaceShipsActionParamsFromMuleAction,
+  getPlaceShipsActionWithNewShipPlacement, getPlaceShipsMuleActionFromParams,
+  isAnyShipOnSquare,
+  PlaceShipsMuleAction, PlaceShipsMuleActionParams, Ship, ShipPlacement,
 } from '../../shared';
 
 import {
@@ -36,7 +38,7 @@ export function clickSquareReducer(state: StoreState, clickSquareAction: ClickSq
       },
       pendingTurn: {
         actions: [
-          getPlaceShipsAction(state.pendingTurn.actions[0], newShipPlacement) // actions[0] will be undefined or a PlaceShips action
+          getPlaceShipsActionWithNewShipPlacement(state.pendingTurn.actions[0], newShipPlacement) // actions[0] will be undefined or a PlaceShips action
         ]
       }
     };
@@ -45,10 +47,21 @@ export function clickSquareReducer(state: StoreState, clickSquareAction: ClickSq
   // if not being placed, but is clicked (rotate)
   if (state.gameState.isPlacementMode && !state.ui.selectedShipBeingPlaced && clickSquareAction.lobbyPlayerId === 'p1') {
 
-    // check if a ship occupies the coord
-    if (isAnyShipOnSquare({ x: state.gameState.width, y: state.gameState.height }, coord, getShipsFromPendingActions('p1', state.gameState.yourShips, state.pendingTurn.actions))) {
-      // rotate
-      console.log('rotate');
+    const ship: Ship | undefined = getShipOnSquare({ x: state.gameState.width, y: state.gameState.height }, coord, getShipsFromPendingActions('p1', state.gameState.yourShips, state.pendingTurn.actions));
+
+    if (ship) {
+      return {
+        ...state,
+        ui: {
+          ...state.ui,
+          selectedShipBeingPlaced: undefined,
+        },
+        pendingTurn: {
+          actions: [
+            getPlaceShipsActionWithRotation(state.pendingTurn.actions[0], ship.id) // actions[0] will be undefined or a PlaceShips action
+          ]
+        }
+      };
     }
   }
 
@@ -69,4 +82,32 @@ export function clickSquareReducer(state: StoreState, clickSquareAction: ClickSq
 
 
   return state;
+}
+
+function getPlaceShipsActionWithRotation(pendingPlacementAction: Action, shipId: number): Action {
+  const placeShipsActionParams: PlaceShipsMuleActionParams = getPlaceShipsActionParamsFromMuleAction(pendingPlacementAction);
+
+  const newParams: PlaceShipsMuleActionParams = {
+    shipPlacements: _.map(placeShipsActionParams.shipPlacements, (shipPlacement: ShipPlacement) => {
+      if (shipPlacement.shipId === shipId) {
+        return {
+          shipId,
+          coord: shipPlacement.coord,
+          alignment: getRotatedAlignment(shipPlacement.alignment)
+        };
+      } else {
+        return shipPlacement;
+      }
+    })
+  };
+
+  return getPlaceShipsMuleActionFromParams(newParams);
+}
+
+function getRotatedAlignment(alignment: Alignment): Alignment {
+  if (alignment === Alignment.Horizontal) {
+    return Alignment.Vertical;
+  } else {
+    return Alignment.Horizontal;
+  }
 }
