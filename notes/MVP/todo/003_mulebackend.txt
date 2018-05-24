@@ -1,10 +1,11 @@
 basics
 X- webpack backend to node-readable module for mule backend to consume
 X- setup backend 'prod' build (uglifed and saved in dist/)
- - setup frontend 'prod' build (uglifed and saved in dist/)
+X- setup frontend 'prod' build (uglifed and saved in dist/)
  - dont hardcode first player as 'p1'
   - get session
   - show message if you arent the correct player
+ - check it's a Battleship Game
 
 then
  - see gen map & placement actions in a "real" mule environment

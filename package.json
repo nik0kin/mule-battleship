@@ -1,5 +1,6 @@
 {
   "name": "mule-battleship",
+  "homepage": "./",
   "version": "0.1.0-inDev",
   "private": true,
   "devDependencies": {
@@ -38,7 +39,7 @@
     "offlineBackup": "mkdir -p tmp && cp -r ./node_modules/mule-sdk-js ./tmp",
     "useOfflineBackup": "rm -rf ./node_modules/mule-sdk-js && cp -r ./tmp/mule-sdk-js ./node_modules/",
     "start": "react-scripts-ts start",
-    "build": "react-scripts-ts build",
+    "build": "react-scripts-ts build && rm -r dist/frontend && mv build dist/frontend",
     "test": "react-scripts-ts test --env=jsdom",
     "test:debug": "react-scripts-ts --inspect-brk test --runInBand --env=jsdom",
     "eject": "react-scripts-ts eject"

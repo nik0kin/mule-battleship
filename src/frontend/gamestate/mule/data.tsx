@@ -53,7 +53,16 @@ export async function getBattleshipGameState(): Promise<GameState> {
 
   // for now assume its all loaded been loaded syncronously
 
-  initMuleSdk('http://localhost:313/webservices/');
+  const hostname: string = window && window.location && window.location.hostname;
+
+  let muleApiPath: string;
+  if (hostname === 'localhost') {
+    muleApiPath = 'http://localhost:313/webservices/';
+  } else {
+    muleApiPath = '/webservices/';
+  }
+
+  initMuleSdk(muleApiPath);
   const gameId: string | undefined = muleSDK.fn.getUrlParameter('gameId');
 
   if (!gameId) {
