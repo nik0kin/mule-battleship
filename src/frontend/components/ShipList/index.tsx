@@ -39,7 +39,7 @@ function ShipList({
 
   if (isPlacementMode) {
     const shipPlacements: ShipPlacement[] = getPlaceShipsParamsFromAction(pendingActions[0]).shipPlacements;
-    invalidShipPlacements = getInvalidShipPlacements(yourLobbyPlayerId, yourShips, shipPlacements);
+    invalidShipPlacements = getInvalidShipPlacements(yourLobbyPlayerId, gridSize, yourShips, shipPlacements);
   }
 
   return (

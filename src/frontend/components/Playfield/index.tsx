@@ -32,7 +32,7 @@ function Playfield({ gameState, selectedCoord, selectedShipBeingPlaced, pendingA
 
   if (gameState.isPlacementMode) {
     const shipPlacements: ShipPlacement[] = getPlaceShipsParamsFromAction(pendingActions[0]).shipPlacements;
-    invalidShipPlacements = getInvalidShipPlacements(gameState.yourLobbyPlayerId, gameState.yourShips, shipPlacements);
+    invalidShipPlacements = getInvalidShipPlacements(gameState.yourLobbyPlayerId, gridSize, gameState.yourShips, shipPlacements);
   }
 
   const yourShipsAndPendingShipPlacements = getAllShips(gameState.yourLobbyPlayerId, gameState.yourShips, pendingActions);

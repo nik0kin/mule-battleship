@@ -5,7 +5,10 @@ import { Action } from 'mule-sdk-js';
 import Playfield from '../../containers/Playfield';
 import ShipList from '../../containers/ShipList';
 import { GameState, PlayerMap } from '../../types';
-import { Coord, getTotalShipsPerPlayer, numberToLetter } from '../../../shared';
+import {
+  Coord, getPlaceShipsActionParamsFromMuleAction, getTotalShipsPerPlayer,
+  numberToLetter, ShipPlacement,
+} from '../../../shared';
 
 import './style.css';
 
@@ -27,7 +30,7 @@ function Layout({ selectedCoord, gameState, players, pendingActions }: Props) {
           <div className="stuff">
             Turn 1
             <button disabled={!selectedCoord}>
-              {getSubmitButtonText(gameState.isPlacementMode, getAmountOfShipsRemainingToPlace(pendingActions), selectedCoord)}
+              {getSubmitButtonText(gameState.isPlacementMode, getAmountOfShipsRemainingToPlace(gameState.isPlacementMode, pendingActions), selectedCoord)}
             </button>
           </div>
 
@@ -70,9 +73,10 @@ function getBattleshipCoordString(coord: Coord): string {
   return numberToLetter(coord.x + 1) + (coord.y + 1);
 }
 
-function getAmountOfShipsRemainingToPlace(pendingActions: Action[]): number {
-  if (pendingActions[0] && pendingActions[0].params && pendingActions[0].params.shipPlacements) {
-    return getTotalShipsPerPlayer() - (pendingActions[0].params.shipPlacements as any[]).length;
+function getAmountOfShipsRemainingToPlace(isPlacementMode: boolean, pendingActions: Action[]): number {
+  if (isPlacementMode) {
+    const pendingPlacements: number = getPlaceShipsActionParamsFromMuleAction(pendingActions[0]).shipPlacements.length;
+    return getTotalShipsPerPlayer() - pendingPlacements;
   } else {
     return 0;
   }

@@ -2,11 +2,11 @@
 import * as _ from 'lodash';
 
 import {
-  Alignment, getShipStructure,
+  Alignment, getAlignmentOffset, getShipStructure,
   Ship, ShipStructure,
 } from './types';
 import {
-  getPendingShipFromShipPlacement, ShipPlacement,
+  getPendingShipFromShipPlacement, findOneShip, isValidCoord, ShipPlacement,
 } from './';
 import { addCoords, areCoordsEqual, Coord } from './mule-common';
 
@@ -39,24 +39,24 @@ function isShipOnShip(ship1: Ship, ship2: Ship): boolean {
 }
 
 function getPendingShipFromShipsAndShipPlacement(lobbyPlayerId: string, playerShips: Ship[], shipPlacement: ShipPlacement): Ship {
-  const ship: Ship = _.find(playerShips, (_ship: Ship) => _ship.id === shipPlacement.shipId) as Ship;
+  const ship: Ship = findOneShip(playerShips, shipPlacement.shipId);
   return getPendingShipFromShipPlacement(ship, shipPlacement);
 }
 
-function getAlignmentOffset(coord: Coord, alignment: Alignment): Coord {
-  if (alignment === Alignment.Horizontal) {
-    return coord;
-  } else {
-    return {
-      x: coord.y,
-      y: coord.x,
-    };
-  }
-}
-
-export function getInvalidShipPlacements(lobbyPlayerId: string, playerShips: Ship[], shipPlacements: ShipPlacement[]) {
+export function getInvalidShipPlacements(lobbyPlayerId: string, gridSize: Coord, playerShips: Ship[], shipPlacements: ShipPlacement[]) {
   return _.concat(
     getShipPlacementCollisions(lobbyPlayerId, playerShips, shipPlacements),
-    [] // getOutOfBoundsShipPlacements(gridSize, shipPlacements),
+    getOutOfBoundsShipPlacements(gridSize, playerShips, shipPlacements),
   );
+}
+
+export function getOutOfBoundsShipPlacements(gridSize: Coord, playerShips: Ship[], shipPlacements: ShipPlacement[]) {
+  return _.filter(shipPlacements, (shipPlacement: ShipPlacement) => {
+    const ship: Ship = findOneShip(playerShips, shipPlacement.shipId);
+    const shipStructure: ShipStructure = getShipStructure(ship.shipType);
+    return _.some(shipStructure.squares, (offset1: Coord) => {
+      const coord = addCoords(shipPlacement.coord, getAlignmentOffset(offset1, shipPlacement.alignment));
+      return !isValidCoord(coord, gridSize);
+    });
+  });
 }
