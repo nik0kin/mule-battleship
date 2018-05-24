@@ -56,7 +56,7 @@ function Playfield({ gameState, selectedCoord, selectedShipBeingPlaced, pendingA
         <div className="hint">
           Click the ship on the left, then click a spot on your grid, click again to rotate
 
-          {invalidShipPlacements.length && <div>
+          {!!invalidShipPlacements.length && <div>
             Fix colliding ships before you submit your ship placements.
           </div>}
         </div>

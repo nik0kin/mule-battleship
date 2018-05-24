@@ -10,7 +10,7 @@ export function mapStateToProps({gameState, ui: {selectedCoord}, pendingTurn}: S
     players: gameState.mule.players,
     selectedCoord,
     gameState,
-    pendingActions: {} // pendingTurn.actions,
+    pendingActions: pendingTurn.actions,
   };
 }
 

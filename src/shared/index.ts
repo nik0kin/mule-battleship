@@ -20,6 +20,7 @@ import {
 export * from './actions';
 
 export * from './collisions';
+export * from './ship';
 export * from './utils';
 
 export function getBoardSpaceFromSquare(square: Square): BoardSpace {

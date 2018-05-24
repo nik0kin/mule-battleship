@@ -7,7 +7,7 @@ import {
 
 import {
   addCoords, Coord, DEFAULT_GAME_START_SHIP_SETUP_COUNTS,
-  getPieceStateFromShip, getShipFromPieceSpace, getShipStructure, Grid, isValidCoord,
+  getPieceStateFromShip, getShipFromPieceSpace, getShipStructure, getTotalShipsPerPlayer, Grid, isValidCoord,
   PlaceShipsMuleActionParams, Ship, ShipPlacement,
   ShipStructure, ShipType,
 } from '../../shared';
@@ -110,12 +110,3 @@ function doQ(M: MuleStateSdk, lobbyPlayerId: string, _actionParams: VariableMap)
   return Promise.resolve();
 }
 
-function getTotalShipsPerPlayer(): number {
-  return _.reduce(
-    DEFAULT_GAME_START_SHIP_SETUP_COUNTS, // TODO dont hardcode
-    (total: number, count: number, shipType: ShipType) => {
-      return total + count;
-    },
-    0
-  );
-}
