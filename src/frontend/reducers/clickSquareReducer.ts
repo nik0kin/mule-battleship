@@ -53,13 +53,13 @@ export function clickSquareReducer(state: StoreState, clickSquareAction: ClickSq
     && clickSquareAction.lobbyPlayerId === state.gameState.yourLobbyPlayerId
   ) {
 
-    const ship: Ship | undefined = getShipOnSquare(
+    const shipOnClickedSquare: Ship | undefined = getShipOnSquare(
       { x: state.gameState.width, y: state.gameState.height },
       coord,
       getShipsFromPendingActions(state.gameState.yourLobbyPlayerId, state.gameState.yourShips, state.pendingTurn.actions)
     );
 
-    if (ship) {
+    if (shipOnClickedSquare) {
       return {
         ...state,
         ui: {
@@ -68,7 +68,7 @@ export function clickSquareReducer(state: StoreState, clickSquareAction: ClickSq
         },
         pendingTurn: {
           actions: [
-            getPlaceShipsActionWithRotation(state.pendingTurn.actions[0], ship.id) // actions[0] will be undefined or a PlaceShips action
+            getPlaceShipsActionWithRotation(state.pendingTurn.actions[0], shipOnClickedSquare.id) // actions[0] will be undefined or a PlaceShips action
           ]
         }
       };

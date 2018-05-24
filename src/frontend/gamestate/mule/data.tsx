@@ -82,6 +82,8 @@ export async function getBattleshipGameState(): Promise<GameState> {
   const currentPlayerRel: string = 'p1';
   const opponentPlayerRel: string = 'p2';
 
+  const gridSize = { x: 10, y: 10 };
+
   return {
     mule: {
       currentPlayer: players[currentPlayerRel], // TODO figure out whos turn it is
@@ -92,11 +94,11 @@ export async function getBattleshipGameState(): Promise<GameState> {
     yourLobbyPlayerId: currentPlayerRel,
     theirLobbyPlayerId: opponentPlayerRel,
 
-    width: 10,
-    height: 10,
+    width: gridSize.x,
+    height: gridSize.y,
 
-    yourGrid: getGridFromGameBoard(loadedGameBoard, currentPlayerRel),
-    theirGrid: getGridFromGameBoard(loadedGameBoard, opponentPlayerRel),
+    yourGrid: getGridFromGameBoard(gridSize, loadedGameBoard, currentPlayerRel),
+    theirGrid: getGridFromGameBoard(gridSize, loadedGameBoard, opponentPlayerRel),
 
     isPlacementMode: isPlacementMode(loadedGameState),
 

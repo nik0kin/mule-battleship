@@ -6,7 +6,7 @@ import './style.css';
 import { GameState } from '../../types';
 import {
   Alignment, Coord, doesShipIdExistInShipPlacements,
-  getAllShips, getInvalidShipPlacements, getPlaceShipsParamsFromAction, getShotOnSquare,
+  getAllShipsIncludingPendingActions, getInvalidShipPlacements, getPlaceShipsParamsFromAction, getShotOnSquare,
   getShipOnSquare,
   Ship, ShipPlacement, ShipStructure, ShipStructures,
   numberToLetter, Shot,
@@ -35,7 +35,7 @@ function Playfield({ gameState, selectedCoord, selectedShipBeingPlaced, pendingA
     invalidShipPlacements = getInvalidShipPlacements(gameState.yourLobbyPlayerId, gridSize, gameState.yourShips, shipPlacements);
   }
 
-  const yourShipsAndPendingShipPlacements = getAllShips(gameState.yourLobbyPlayerId, gameState.yourShips, pendingActions);
+  const yourShipsAndPendingShipPlacements: Ship[] = getAllShipsIncludingPendingActions(gameState.yourLobbyPlayerId, gameState.yourShips, pendingActions);
 
   let yourShipsClassNames: string = 'your-ships ';
   let theirShipsClassNames: string = 'their-ships ';
