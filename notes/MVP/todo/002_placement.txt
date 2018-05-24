@@ -39,7 +39,7 @@ frontend:
   2. Click grid cell
    - unable to click an occupied spot
   X- shiplistship border turns solid to indicate it has been placed
-   - shiplistship border turns solid red to indicate collision
+  X- shiplistship border turns solid red to indicate collision
 
   3. repeat til all ships are placed
 
@@ -54,7 +54,7 @@ frontend:
      (when placing)
      X- to add actions ShipPlacement
      X- unset selectedShipBeingPlaced
-      - look for collisions
+     X- look for collisions
      (when not placing)
      X- rotate ship, and update ShipPlacement
 

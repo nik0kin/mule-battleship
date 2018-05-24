@@ -21,6 +21,10 @@ td {
   text-align: center;
 }
 
+td.clickable {
+  cursor: pointer;
+}
+
 td.top {
   border-top: 1px #cecece solid;
   border-bottom: solid 1px black;

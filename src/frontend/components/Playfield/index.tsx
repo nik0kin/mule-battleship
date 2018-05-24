@@ -51,7 +51,17 @@ function Playfield({ gameState, selectedCoord, selectedShipBeingPlaced, pendingA
   return (
     <div className="Playfield">
       <div className={yourShipsClassNames}>
-        {getGrid(gameState.yourLobbyPlayerId, gridSize, yourShipsAndPendingShipPlacements, invalidShipPlacements, gameState.theirShots, clickSquare, undefined)}
+        {getGrid(
+          gameState.isPlacementMode,
+          gameState.yourLobbyPlayerId,
+          gridSize,
+          yourShipsAndPendingShipPlacements,
+          invalidShipPlacements,
+          gameState.theirShots,
+          clickSquare,
+          selectedShipBeingPlaced,
+          undefined,
+        )}
 
         <div className="hint">
           Click the ship on the left, then click a spot on your grid, click again to rotate
@@ -62,7 +72,17 @@ function Playfield({ gameState, selectedCoord, selectedShipBeingPlaced, pendingA
         </div>
       </div>
       <div className={theirShipsClassNames}>
-        {getGrid(gameState.theirLobbyPlayerId, gridSize, gameState.theirShips, [], gameState.yourShots, clickSquare, selectedCoord)}
+        {getGrid(
+          gameState.isPlacementMode,
+          gameState.theirLobbyPlayerId,
+          gridSize,
+          gameState.theirShips,
+          [],
+          gameState.yourShots,
+          clickSquare,
+          selectedShipBeingPlaced,
+          selectedCoord,
+        )}
       </div>
     </div>
   );
@@ -72,17 +92,30 @@ export default Playfield;
 
 
 function getGrid(
+  isPlacementMode: boolean,
   lobbyPlayerId: string,
   gridSize: Coord,
   ships: Ship[],
   invalidShipPlacements: ShipPlacement[],
   opponentShots: Shot[],
   clickSquare: ClickSquareFn,
+  selectedShipBeingPlaced?: number,
   selectedCoord?: Coord
 ) {
   let gridHtml: Array<JSX.Element> = [];
   _.times(gridSize.y + 1, (i) => {
-    gridHtml.push(getRow(lobbyPlayerId, gridSize, i, ships, invalidShipPlacements, opponentShots, clickSquare, selectedCoord));
+    gridHtml.push(getRow(
+      isPlacementMode,
+      lobbyPlayerId,
+      gridSize,
+      i,
+      ships,
+      invalidShipPlacements,
+      opponentShots,
+      clickSquare,
+      selectedShipBeingPlaced,
+      selectedCoord,
+    ));
   });
   return (
     <table>
@@ -94,6 +127,7 @@ function getGrid(
 }
 
 function getRow(
+  isPlacementMode: boolean,
   lobbyPlayerId: string,
   gridSize: Coord,
   y: number,
@@ -101,7 +135,8 @@ function getRow(
   invalidShipPlacements: ShipPlacement[],
   opponentShots: Shot[],
   clickSquare: ClickSquareFn,
-  selectedCoord?: Coord
+  selectedShipBeingPlaced?: number,
+  selectedCoord?: Coord,
 ) {
   let rowHtml: Array<JSX.Element> = [];
   _.times(gridSize.x + 1, (x) => {
@@ -124,9 +159,12 @@ function getRow(
 
     const possibleShot: Shot | undefined = getShotOnSquare(coord, opponentShots);
     if (possibleShot) {
-      _class += possibleShot.hit ? 'hit-shot' : 'miss-shot';
+      _class += possibleShot.hit ? 'hit-shot ' : 'miss-shot ';
       cellContent = possibleShot.hit ? 'X' : '/';
     }
+
+    const isClickable: boolean = isPlacementMode && (!!selectedShipBeingPlaced || !!possibleShip)/* TODO  non placement mode logic || () */;
+    _class += isClickable ? 'clickable ' : '';
 
     function onClickSquare() {
       if (coord.x === -1 || coord.y === -1) return;
