@@ -15,6 +15,7 @@ type SelectShipListShipFn = (shipId: number) => void;
 
 export interface Props {
   isPlacementMode: boolean;
+  yourLobbyPlayerId: string;
   gridSize: Coord;
   yourShips: Ship[];
   theirShips: Ship[];
@@ -25,6 +26,7 @@ export interface Props {
 
 function ShipList({
   isPlacementMode,
+  yourLobbyPlayerId,
   gridSize,
   yourShips,
   theirShips,
@@ -37,7 +39,7 @@ function ShipList({
 
   if (isPlacementMode) {
     const shipPlacements: ShipPlacement[] = getPlaceShipsParamsFromAction(pendingActions[0]).shipPlacements;
-    invalidShipPlacements = getInvalidShipPlacements('p1', yourShips, shipPlacements);
+    invalidShipPlacements = getInvalidShipPlacements(yourLobbyPlayerId, yourShips, shipPlacements);
   }
 
   return (

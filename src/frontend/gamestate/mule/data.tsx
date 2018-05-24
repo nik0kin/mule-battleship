@@ -89,6 +89,9 @@ export async function getBattleshipGameState(): Promise<GameState> {
       currentTurn: 1,
     },
 
+    yourLobbyPlayerId: currentPlayerRel,
+    theirLobbyPlayerId: opponentPlayerRel,
+
     width: 10,
     height: 10,
 

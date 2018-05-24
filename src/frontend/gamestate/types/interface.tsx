@@ -10,6 +10,9 @@ export interface GameState {
     currentTurn: number;
   };
 
+  yourLobbyPlayerId: string;
+  theirLobbyPlayerId: string;
+
   width: number;
   height: number;
   yourGrid: Grid<Square>;

@@ -32,10 +32,10 @@ function Playfield({ gameState, selectedCoord, selectedShipBeingPlaced, pendingA
 
   if (gameState.isPlacementMode) {
     const shipPlacements: ShipPlacement[] = getPlaceShipsParamsFromAction(pendingActions[0]).shipPlacements;
-    invalidShipPlacements = getInvalidShipPlacements('p1', gameState.yourShips, shipPlacements);
+    invalidShipPlacements = getInvalidShipPlacements(gameState.yourLobbyPlayerId, gameState.yourShips, shipPlacements);
   }
 
-  const yourShipsAndPendingShipPlacements = getAllShips('p1', gameState.yourShips, pendingActions);
+  const yourShipsAndPendingShipPlacements = getAllShips(gameState.yourLobbyPlayerId, gameState.yourShips, pendingActions);
 
   let yourShipsClassNames: string = 'your-ships ';
   let theirShipsClassNames: string = 'their-ships ';
@@ -51,7 +51,7 @@ function Playfield({ gameState, selectedCoord, selectedShipBeingPlaced, pendingA
   return (
     <div className="Playfield">
       <div className={yourShipsClassNames}>
-        {getGrid('p1', gridSize, yourShipsAndPendingShipPlacements, invalidShipPlacements, gameState.theirShots, clickSquare, undefined)}
+        {getGrid(gameState.yourLobbyPlayerId, gridSize, yourShipsAndPendingShipPlacements, invalidShipPlacements, gameState.theirShots, clickSquare, undefined)}
 
         <div className="hint">
           Click the ship on the left, then click a spot on your grid, click again to rotate
@@ -62,7 +62,7 @@ function Playfield({ gameState, selectedCoord, selectedShipBeingPlaced, pendingA
         </div>
       </div>
       <div className={theirShipsClassNames}>
-        {getGrid('p2', gridSize, gameState.theirShips, [], gameState.yourShots, clickSquare, selectedCoord)}
+        {getGrid(gameState.theirLobbyPlayerId, gridSize, gameState.theirShips, [], gameState.yourShots, clickSquare, selectedCoord)}
       </div>
     </div>
   );

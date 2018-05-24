@@ -22,7 +22,10 @@ export function clickSquareReducer(state: StoreState, clickSquareAction: ClickSq
     y: clickSquareAction.y,
   };
 
-  if (state.gameState.isPlacementMode && state.ui.selectedShipBeingPlaced && clickSquareAction.lobbyPlayerId === 'p1') {
+  if (
+    state.gameState.isPlacementMode && state.ui.selectedShipBeingPlaced
+    && clickSquareAction.lobbyPlayerId === state.gameState.yourLobbyPlayerId
+  ) {
 
     const newShipPlacement: ShipPlacement = {
       shipId: state.ui.selectedShipBeingPlaced,
@@ -45,9 +48,16 @@ export function clickSquareReducer(state: StoreState, clickSquareAction: ClickSq
   }
 
   // if not being placed, but is clicked (rotate)
-  if (state.gameState.isPlacementMode && !state.ui.selectedShipBeingPlaced && clickSquareAction.lobbyPlayerId === 'p1') {
+  if (
+    state.gameState.isPlacementMode && !state.ui.selectedShipBeingPlaced
+    && clickSquareAction.lobbyPlayerId === state.gameState.yourLobbyPlayerId
+  ) {
 
-    const ship: Ship | undefined = getShipOnSquare({ x: state.gameState.width, y: state.gameState.height }, coord, getShipsFromPendingActions('p1', state.gameState.yourShips, state.pendingTurn.actions));
+    const ship: Ship | undefined = getShipOnSquare(
+      { x: state.gameState.width, y: state.gameState.height },
+      coord,
+      getShipsFromPendingActions(state.gameState.yourLobbyPlayerId, state.gameState.yourShips, state.pendingTurn.actions)
+    );
 
     if (ship) {
       return {
@@ -65,7 +75,7 @@ export function clickSquareReducer(state: StoreState, clickSquareAction: ClickSq
     }
   }
 
-  if (clickSquareAction.lobbyPlayerId === 'p2') {
+  if (clickSquareAction.lobbyPlayerId === state.gameState.theirLobbyPlayerId) {
     // TODO shots logic
 
     return {
