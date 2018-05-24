@@ -46,14 +46,19 @@ export class Grid<T> {
   }
 }
 
-export function addCoords(coord1: Coord, coord2: Coord) {
+
+export function areCoordsEqual(coord1: Coord, coord2: Coord) {
+  return coord1.x === coord2.x && coord1.y === coord2.y;
+}
+
+export function addCoords(coord1: Coord, coord2: Coord): Coord {
   return {
     x: coord1.x + coord2.x,
     y: coord1.y + coord2.y,
   };
 }
 
-export function isValidCoord(coord: Coord, gridSize: Coord) {
+export function isValidCoord(coord: Coord, gridSize: Coord): boolean {
   return coord.x >= 0 && coord.x < gridSize.x &&
     coord.y >= 0 && coord.y < gridSize.y;
 }

@@ -7,6 +7,7 @@ import { StoreState } from '../types/index';
 export function mapStateToProps({gameState, ui: {selectedShipBeingPlaced}, pendingTurn}: StoreState) {
   return {
     isPlacementMode: gameState.isPlacementMode,
+    gridSize: { x: gameState.width, y: gameState.height },
     yourShips: gameState.yourShips,
     theirShips: gameState.theirShips,
     pendingActions: pendingTurn.actions,

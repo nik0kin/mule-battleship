@@ -31,7 +31,7 @@
   border: 2px solid black;
 }
 
-.shiplist-ship.collision {
+.shiplist-ship.placed.collision {
   border: 2px solid red;
 }
 

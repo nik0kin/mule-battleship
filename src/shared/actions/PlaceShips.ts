@@ -1,9 +1,8 @@
 import * as _ from 'lodash';
 import { Action, VariableMap } from 'mule-sdk-js';
 
+import { Alignment } from '../';
 import { Coord } from '../mule-common';
-
-import { Alignment } from './alignment';
 
 export type PlaceShipsMuleAction = 'PlaceShips';
 
@@ -30,7 +29,7 @@ export function getPlaceShipsActionParamsFromMuleAction(action?: Action): PlaceS
   };
 }
 
-export function getPlaceShipsActionWithNewShipPlacement(existingAction: Action | undefined, newShipPlacement: ShipPlacement) {
+export function getPlaceShipsActionWithNewShipPlacement(existingAction: Action | undefined, newShipPlacement: ShipPlacement): Action {
   const existingShipPlacements: ShipPlacement[] = getPlaceShipsActionParamsFromMuleAction(existingAction).shipPlacements;
 
   const newParams: PlaceShipsMuleActionParams = {
@@ -39,7 +38,7 @@ export function getPlaceShipsActionWithNewShipPlacement(existingAction: Action |
         newShipPlacement,
         ...existingShipPlacements,
       ],
-      'shipId',
+      (shipPlacement: ShipPlacement) => shipPlacement.shipId,
     )
   };
 
@@ -50,6 +49,17 @@ export function isPlaceShipsAction(action: Action): boolean {
   return action.type === 'PlaceShips';
 }
 
-export function getPlaceShipsParamsFromAction(action: Action): PlaceShipsMuleActionParams {
+export function getPlaceShipsParamsFromAction(action: Action | undefined): PlaceShipsMuleActionParams {
+  if (!action) {
+    return {
+      shipPlacements: [],
+    };
+  }
   return action.params as any as PlaceShipsMuleActionParams;
+}
+
+export function doesShipIdExistInShipPlacements(shipPlacements: ShipPlacement[], shipId: number): boolean {
+  return _.some(shipPlacements, (shipPlacement: ShipPlacement): boolean => {
+    return shipPlacement.shipId === shipId;
+  });
 }

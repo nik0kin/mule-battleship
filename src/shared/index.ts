@@ -6,12 +6,20 @@ import { Coord, getCoordFromString, getCoordString, Grid, isValidCoord } from '.
 export * from './mule-common';
 
 import {
-  Alignment, BattleshipPlayerVariables, getPlaceShipsParamsFromAction, getShipStructure,
-  isPlaceShipsAction, PlaceShipsMuleActionParams, PlayerVariablesMap,
-  Ship, ShipPlacement, ShipStructure, ShipType, Shot, Square,
+  Alignment, BattleshipPlayerVariables, getShipStructure,
+  PlayerVariablesMap,
+  Ship, ShipStructure, ShipType, Shot, Square,
 } from './types';
 export * from './types';
 
+import {
+  getPlaceShipsParamsFromAction,
+  isPlaceShipsAction, PlaceShipsMuleActionParams,
+  ShipPlacement
+} from './actions';
+export * from './actions';
+
+export * from './collisions';
 export * from './utils';
 
 export function getBoardSpaceFromSquare(square: Square): BoardSpace {
@@ -111,10 +119,13 @@ export function getAllShips(lobbyPlayerId: string, playersShips: Ship[], pending
       getShipsFromPendingActions(lobbyPlayerId, playersShips, pendingActions), // add ships from pending PlaceShips Action
       playersShips,
     ),
-    'id',
+    getIdFromShip,
   );
 }
 
+function getIdFromShip(ship: Ship): number {
+  return ship.id;
+}
 
 export function getShipsFromPendingActions(lobbyPlayerId: string, playersShips: Ship[], pendingActions: Action[]): Ship[] {
   return _.reduce(
@@ -126,15 +137,9 @@ export function getShipsFromPendingActions(lobbyPlayerId: string, playersShips: 
 
         const ship: Ship = _.find(playersShips, (_ship: Ship) => _ship.id === shipPlacement.shipId) as Ship;
 
-        const phantomShip: Ship = {
-          id: shipPlacement.shipId,
-          ownerId: lobbyPlayerId,
-          shipType: ship.shipType,
-          coord: shipPlacement.coord,
-          alignment: shipPlacement.alignment
-        };
+        const pendingShip: Ship = getPendingShipFromShipPlacement(ship, shipPlacement);
 
-        ships.push(phantomShip);
+        ships.push(pendingShip);
       });
 
       return ships;
@@ -142,6 +147,20 @@ export function getShipsFromPendingActions(lobbyPlayerId: string, playersShips: 
     [],
   );
 }
+
+export function getPendingShipFromShipPlacement(ship: Ship, shipPlacement: ShipPlacement): Ship {
+  if (ship.id !== shipPlacement.shipId) throw new Error('bad shipids in getPendingShipFromShipPlacement()');
+
+  return _.assign(
+    {},
+    ship,
+    {
+      coord: shipPlacement.coord,
+      alignment: shipPlacement.alignment,
+    }
+  );
+}
+
 
 export function isShipPlaced(shipId: number, pendingActions: Action[]): boolean {
   return _.some(

@@ -40,6 +40,10 @@ td.ship {
   background-color: #b7b6b6;
 }
 
+td.ship.collision {
+  background-color: red;
+}
+
 .your-ships {
   position: relative;
 }

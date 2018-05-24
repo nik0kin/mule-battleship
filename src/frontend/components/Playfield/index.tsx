@@ -5,10 +5,10 @@ import { Action } from 'mule-sdk-js';
 import './style.css';
 import { GameState } from '../../types';
 import {
-  Alignment,
-  Coord, getAllShips, getShotOnSquare,
-  isAnyShipOnSquare,
-  Ship, ShipStructure, ShipStructures,
+  Alignment, Coord, doesShipIdExistInShipPlacements,
+  getAllShips, getInvalidShipPlacements, getPlaceShipsParamsFromAction, getShotOnSquare,
+  getShipOnSquare,
+  Ship, ShipPlacement, ShipStructure, ShipStructures,
   numberToLetter, Shot,
 } from '../../../shared';
 
@@ -24,9 +24,16 @@ export interface Props {
 }
 
 function Playfield({ gameState, selectedCoord, selectedShipBeingPlaced, pendingActions, clickSquare }: Props) {
-  const gridSize: Coord = { x: 10, y: 10 }; // TODO dont hardcode gridSize
+  const gridSize: Coord = { x: gameState.width, y: gameState.height };
 
   const collidingShips: boolean = false; // temp
+
+  let invalidShipPlacements: ShipPlacement[] = [];
+
+  if (gameState.isPlacementMode) {
+    const shipPlacements: ShipPlacement[] = getPlaceShipsParamsFromAction(pendingActions[0]).shipPlacements;
+    invalidShipPlacements = getInvalidShipPlacements('p1', gameState.yourShips, shipPlacements);
+  }
 
   const yourShipsAndPendingShipPlacements = getAllShips('p1', gameState.yourShips, pendingActions);
 
@@ -44,18 +51,18 @@ function Playfield({ gameState, selectedCoord, selectedShipBeingPlaced, pendingA
   return (
     <div className="Playfield">
       <div className={yourShipsClassNames}>
-        {getGrid('p1', gridSize, yourShipsAndPendingShipPlacements, gameState.theirShots, clickSquare, undefined)}
+        {getGrid('p1', gridSize, yourShipsAndPendingShipPlacements, invalidShipPlacements, gameState.theirShots, clickSquare, undefined)}
 
         <div className="hint">
           Click the ship on the left, then click a spot on your grid, click again to rotate
 
-          {collidingShips && <div>
+          {invalidShipPlacements.length && <div>
             Fix colliding ships before you submit your ship placements.
           </div>}
         </div>
       </div>
       <div className={theirShipsClassNames}>
-        {getGrid('p2', gridSize, gameState.theirShips, gameState.yourShots, clickSquare, selectedCoord)}
+        {getGrid('p2', gridSize, gameState.theirShips, [], gameState.yourShots, clickSquare, selectedCoord)}
       </div>
     </div>
   );
@@ -68,13 +75,14 @@ function getGrid(
   lobbyPlayerId: string,
   gridSize: Coord,
   ships: Ship[],
+  invalidShipPlacements: ShipPlacement[],
   opponentShots: Shot[],
   clickSquare: ClickSquareFn,
   selectedCoord?: Coord
 ) {
   let gridHtml: Array<JSX.Element> = [];
   _.times(gridSize.y + 1, (i) => {
-    gridHtml.push(getRow(lobbyPlayerId, gridSize, i, ships, opponentShots, clickSquare, selectedCoord));
+    gridHtml.push(getRow(lobbyPlayerId, gridSize, i, ships, invalidShipPlacements, opponentShots, clickSquare, selectedCoord));
   });
   return (
     <table>
@@ -90,6 +98,7 @@ function getRow(
   gridSize: Coord,
   y: number,
   ships: Ship[],
+  invalidShipPlacements: ShipPlacement[],
   opponentShots: Shot[],
   clickSquare: ClickSquareFn,
   selectedCoord?: Coord
@@ -101,7 +110,13 @@ function getRow(
     _class += x === 0 ? 'left ' : '';
     let cellContent: string = _class === 'top ' ? String(x) : _class ===  'left ' ? numberToLetter(y) : '';
 
-    _class += isAnyShipOnSquare(gridSize, coord, ships) ? 'ship ' : '';
+    const possibleShip: Ship | undefined = getShipOnSquare(gridSize, coord, ships);
+    if (possibleShip) {
+      _class += 'ship ';
+
+      const isCollided: boolean = doesShipIdExistInShipPlacements(invalidShipPlacements, possibleShip.id);
+      _class += isCollided ? 'collision ' : '';
+    }
 
     if (selectedCoord) {
       _class += coord.x === selectedCoord.x && coord.y === selectedCoord.y ? 'selected ' : '';
