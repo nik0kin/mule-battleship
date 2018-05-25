@@ -1,0 +1,4 @@
+goal: best ux without drag n drop
+
+ship outlines (on grid)
+  - black, then red when ship is sunk?
