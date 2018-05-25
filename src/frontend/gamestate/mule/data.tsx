@@ -72,10 +72,9 @@ export async function getBattleshipGameState(): Promise<GameState> {
 
   // load session
   let user: User;
-  let inGame: boolean = false;
+  let lobbyPlayerId: string = '';
   try {
     user = await muleSDK.Users.sessionQ();
-    console.log(user);
   } catch (e) {
     throw new Error('user has no session');
   }
@@ -98,17 +97,17 @@ export async function getBattleshipGameState(): Promise<GameState> {
   const players: PlayerMap = convertToPlayerMap(await muleSDK.Games.getPlayersMapQ(loadedGame));
 
   // check if player is playing
-  each(players, (player: Player, lobbyPlayerId: string) => {
+  each(players, (player: Player, _lobbyPlayerId: string) => {
     if (player.playerId === user._id) {
-      inGame = true;
+      lobbyPlayerId = _lobbyPlayerId;
     }
   });
-  if (!inGame) {
+  if (!lobbyPlayerId) {
     throw new Error('user is not in game');
   }
 
-  const currentPlayerRel: string = 'p1';
-  const opponentPlayerRel: string = 'p2';
+  const currentPlayerRel: string = lobbyPlayerId;
+  const opponentPlayerRel: string = 'p1' === lobbyPlayerId ? 'p2' : 'p1';
 
   const gridSize = { x: 10, y: 10 };
 
