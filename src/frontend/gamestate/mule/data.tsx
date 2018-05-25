@@ -1,4 +1,4 @@
-import { reduce } from 'lodash';
+import { each, reduce } from 'lodash';
 
 import {
   initializeMuleSdk,
@@ -6,6 +6,7 @@ import {
   Game, GameBoard, TurnProgressStyle,
   GameState as MuleGameState,
   PlayersMap as MulePlayerMap,
+  User,
 } from 'mule-sdk-js';
 
 import {
@@ -69,7 +70,15 @@ export async function getBattleshipGameState(): Promise<GameState> {
     throw new Error('missing gameId in url');
   }
 
-  // TODO make sure user has session
+  // load session
+  let user: User;
+  let inGame: boolean = false;
+  try {
+    user = await muleSDK.Users.sessionQ();
+    console.log(user);
+  } catch (e) {
+    throw new Error('user has no session');
+  }
 
   // get Game
   const loadedGame: Game = await muleSDK.Games.readQ(gameId);
@@ -87,6 +96,16 @@ export async function getBattleshipGameState(): Promise<GameState> {
   // TODO get History/Turns
 
   const players: PlayerMap = convertToPlayerMap(await muleSDK.Games.getPlayersMapQ(loadedGame));
+
+  // check if player is playing
+  each(players, (player: Player, lobbyPlayerId: string) => {
+    if (player.playerId === user._id) {
+      inGame = true;
+    }
+  });
+  if (!inGame) {
+    throw new Error('user is not in game');
+  }
 
   const currentPlayerRel: string = 'p1';
   const opponentPlayerRel: string = 'p2';

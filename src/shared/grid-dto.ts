@@ -1,3 +1,4 @@
+import { find } from 'lodash';
 import { BoardSpace, GameBoard } from 'mule-sdk-js';
 
 import { Coord, getCoordFromString, getCoordString, Grid, isValidCoord } from './mule-common';
@@ -18,7 +19,7 @@ export function getGridFromGameBoard(gridSize: Coord, gameBoard: GameBoard, play
   return new Grid<Square>(
     gridSize,
     (coord: Coord) => {
-      const foundBoardSpace: BoardSpace | undefined = gameBoard.board.find((boardSpace: BoardSpace): boolean => { // TODO not efficient - O(n^2)
+      const foundBoardSpace: BoardSpace | undefined = find(gameBoard.board, (boardSpace: BoardSpace): boolean => { // TODO not efficient - O(n^2)
         const _coord: Coord = getCoordFromString(boardSpace.id);
         return !!boardSpace.attributes && boardSpace.attributes.ownerId === playerRel &&
           coord.x === _coord.x && coord.y === _coord.y;

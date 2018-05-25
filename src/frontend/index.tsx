@@ -1,3 +1,4 @@
+import { includes } from 'lodash';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
@@ -32,6 +33,12 @@ function onGameStateLoad(initialGameState: GameState) {
   );
 }
 
+const messagesToShow: string[] = [
+  'game has not started',
+  'user has no session',
+  'user is not in game',
+];
+
 export function bootstrapFrontend(): void {
   getInitialGameState()
     .then(
@@ -40,7 +47,7 @@ export function bootstrapFrontend(): void {
         console.log('Something went wrong during initiliziting Mule GameState');
         console.log(e);
 
-        if (e instanceof Error && e.message === 'game has not started') {
+        if (e instanceof Error && includes(messagesToShow, e.message)) {
           return alert(e.message); // TODO handle cleaner
         }
 
