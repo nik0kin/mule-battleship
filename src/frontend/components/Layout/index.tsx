@@ -10,6 +10,8 @@ import {
   numberToLetter, ShipPlacement,
 } from '../../../shared';
 
+import { WaitingIndicator } from './waiting-indicator';
+
 import './style.css';
 
 export interface Props {
@@ -27,12 +29,14 @@ function Layout({ selectedCoord, gameState, players, pendingActions }: Props) {
       <div className="container">
         <div className="gameinfo">
 
-          <div className="stuff">
-            Turn 1
-            <button disabled={!selectedCoord}>
-              {getSubmitButtonText(gameState.isPlacementMode, getAmountOfShipsRemainingToPlace(gameState.isPlacementMode, pendingActions), selectedCoord)}
-            </button>
+          <div className="current-turn-info">
+            <div> Turn 1 </div>
+            <WaitingIndicator/>
+            <div className="short-description"> Your Placement </div>
           </div>
+          <button className="submit-button" disabled={!selectedCoord}>
+            {getSubmitButtonText(gameState.isPlacementMode, getAmountOfShipsRemainingToPlace(gameState.isPlacementMode, pendingActions), selectedCoord)}
+          </button>
 
           <ShipList/>
 

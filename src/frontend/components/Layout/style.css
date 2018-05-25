@@ -15,17 +15,28 @@ h1 {
   padding-right: 10px;
 }
 
-.stuff {
+.current-turn-info {
   display: flex;
   align-items: center;
   justify-content: space-around;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  font-size: 1rem;
 }
 
-button {
-  font-size: 1rem;
-  background-color: white;
+.current-turn-info .short-description {
+  font-weight: bold;
+}
+
+.waiting-indicator {
+  font-size: .8rem;
+}
+
+.submit-button {
+  padding: 8px;
   border: 2px black solid;
+  margin-bottom: 12px;
+  background-color: white;
+  font-size: 1rem;
 }
 
 .gameboard {
