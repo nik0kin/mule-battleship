@@ -5,9 +5,11 @@ X- setup frontend 'prod' build (uglifed and saved in dist/)
 X- dont hardcode first player as 'p1'
  X- get session
  X- show message if you arent the correct player
- - check it's a Battleship Game
+X- check it's a Battleship Game
 
 then
+ - place if its your turn
+ - submit button reducer
  - see gen map & placement actions in a "real" mule environment
  - update jenkins
 X- update mule-frontend to link to battleship

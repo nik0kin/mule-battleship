@@ -10,3 +10,5 @@ export * from './ship-dto';
 export * from './shot';
 export * from './shot-dto';
 export * from './utils';
+
+export const RULEBUNDLE_NAME = 'Battleship';

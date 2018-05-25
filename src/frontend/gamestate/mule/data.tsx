@@ -12,7 +12,7 @@ import {
 import {
   Coord,
   getGridFromGameBoard, getShipsFromGameState, getShotsFromGameState,
-  Grid, isPlacementMode, Shot
+  Grid, isPlacementMode, RULEBUNDLE_NAME, Shot,
 } from '../../../shared';
 import {
   GameState,
@@ -84,6 +84,10 @@ export async function getBattleshipGameState(): Promise<GameState> {
 
   if (loadedGame.gameStatus === 'open') {
     throw new Error('game has not started');
+  }
+
+  if (loadedGame.ruleBundle.name !== RULEBUNDLE_NAME) {
+    throw new Error(`gameId RuleBundle does not match ${RULEBUNDLE_NAME}: ` + loadedGame.ruleBundle.name);
   }
 
   // get GameBoard
