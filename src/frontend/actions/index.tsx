@@ -20,6 +20,16 @@ export function clickSquare(lobbyPlayerId: string, coord: Coord): ClickSquare {
   };
 }
 
+export interface ClickSubmit {
+  type: constants.CLICK_SUBMIT;
+}
+
+export function clickSubmit(): ClickSubmit {
+  return {
+    type: constants.CLICK_SUBMIT,
+  };
+}
+
 export interface SelectShipListShip {
   type: constants.SELECT_SHIPLIST_SHIP;
   shipId: number;

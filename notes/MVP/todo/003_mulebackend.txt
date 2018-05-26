@@ -7,7 +7,7 @@ X- dont hardcode first player as 'p1'
  X- show message if you arent the correct player
 X- check it's a Battleship Game
 
- - place if its your turn
+X- place if its your turn
   - your turn & you havent placed
     - Desc: Your Placement
     - Button: Place x ships

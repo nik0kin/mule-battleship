@@ -2,11 +2,10 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import { Action } from 'mule-sdk-js';
 
-import Playfield from '../../containers/Playfield';
 import {
   Coord, doesShipIdExistInShipPlacements,
   getPlaceShipsParamsFromAction, getInvalidShipPlacements, getShipStructure, isShipPlaced,
-  Ship, ShipPlacement, ShipStructure, ShipType,
+  Ship, ShipPlacement,
 } from '../../../shared';
 
 import './style.css';

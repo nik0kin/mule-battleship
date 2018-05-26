@@ -1,5 +1,5 @@
 
-import { MuleStateSdk, CustomBoardSettingsValidatorHook, VariableMap } from 'mule-sdk-js';
+import { CustomBoardSettingsValidatorHook, VariableMap } from 'mule-sdk-js';
 
 const customBoardSettingsValidator: CustomBoardSettingsValidatorHook = (customBoardSettings: VariableMap) => {
   const invalidSettings = {};

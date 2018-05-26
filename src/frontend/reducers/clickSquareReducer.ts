@@ -5,18 +5,16 @@ import {
   Alignment, Coord,
   getShipsFromPendingActions, getShipOnSquare, getPlaceShipsActionParamsFromMuleAction,
   getPlaceShipsActionWithNewShipPlacement, getPlaceShipsMuleActionFromParams, getRotatedAlignment,
-  isAnyShipOnSquare,
-  PlaceShipsMuleAction, PlaceShipsMuleActionParams, Ship, ShipPlacement,
+  PlaceShipsMuleActionParams, Ship, ShipPlacement,
 } from '../../shared';
 
 import {
   ClickSquare,
-  SelectShipListShip,
-  RemovePendingAction,
+//  RemovePendingAction,
 } from '../actions';
 import { StoreState } from '../types';
 
-export function clickSquareReducer(state: StoreState, clickSquareAction: ClickSquare) {
+export function clickSquareReducer(state: StoreState, clickSquareAction: ClickSquare): StoreState {
   const coord: Coord = {
     x: clickSquareAction.x,
     y: clickSquareAction.y,

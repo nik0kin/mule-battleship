@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+// import * as _ from 'lodash';
 import { Action } from 'mule-sdk-js';
 
 import Playfield from '../../containers/Playfield';
@@ -7,7 +7,7 @@ import ShipList from '../../containers/ShipList';
 import { GameState, PlayerMap } from '../../types';
 import {
   Coord, getPlaceShipsActionParamsFromMuleAction, getTotalShipsPerPlayer,
-  numberToLetter, ShipPlacement,
+  numberToLetter,
 } from '../../../shared';
 
 import { WaitingIndicator } from './waiting-indicator';
@@ -25,6 +25,8 @@ export interface Props {
 function Layout({ isYourTurn, selectedCoord, gameState, players, pendingActions }: Props) {
   const theirName: string = gameState.mule.players[gameState.theirLobbyPlayerId].name;
 
+  const shipsLeftToBePlaced: number = getAmountOfShipsRemainingToPlace(gameState.isPlacementMode, pendingActions);
+
   return (
     <div>
       <h1> mBattleship </h1>
@@ -36,12 +38,12 @@ function Layout({ isYourTurn, selectedCoord, gameState, players, pendingActions 
             <WaitingIndicator/>
             <div className="short-description"> {getShortDescription(isYourTurn)} </div>
           </div>
-          <button className="submit-button" disabled={!selectedCoord}>
+          <button className="submit-button" disabled={!shipsLeftToBePlaced || !selectedCoord}>
             {getSubmitButtonText(
               isYourTurn,
               theirName,
               gameState.isPlacementMode,
-              getAmountOfShipsRemainingToPlace(gameState.isPlacementMode, pendingActions),
+              shipsLeftToBePlaced,
               selectedCoord,
             )}
           </button>

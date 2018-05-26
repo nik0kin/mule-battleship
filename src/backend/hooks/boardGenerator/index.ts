@@ -1,11 +1,10 @@
 
 import * as _ from 'lodash';
-import { BoardSpace, MuleStateSdk, BoardGeneratorHook, VariableMap } from 'mule-sdk-js';
+import { BoardGeneratorHook, VariableMap } from 'mule-sdk-js';
 
 import { Coord, getBoardSpaceFromSquare, Grid, Square } from '../../../shared';
 
 const boardGenerator: BoardGeneratorHook = (customBoardSettings: VariableMap, battleshipRules: VariableMap) => {
-  const boardSpaces: BoardSpace[] = [];
 
   const width: number = 10;
   const height: number = 10;

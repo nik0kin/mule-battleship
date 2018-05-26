@@ -41,6 +41,10 @@ export class Grid<T> {
     this._grid[coord.x][coord.y] = t;
   }
 
+  public getSize(): Coord {
+    return this.size;
+  }
+
   public toArray(): T[] {
     return _.flatten(this._grid);
   }

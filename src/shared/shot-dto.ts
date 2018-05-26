@@ -1,4 +1,4 @@
-import { GameState, PieceState } from 'mule-sdk-js';
+import { GameState } from 'mule-sdk-js';
 
 import { Shot } from './types';
 

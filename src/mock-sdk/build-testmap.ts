@@ -3,13 +3,13 @@ import * as _ from 'lodash';
 import {
   GameBoard, BoardSpace,
   GameState as MuleGameState,
-  PieceState, VariableMap,
+  PieceState,
 } from 'mule-sdk-js';
 
 import {
   Alignment,
   Coord,
-  getBoardSpaceFromSquare, getCoordString, getPieceStateFromShip,
+  getBoardSpaceFromSquare, getPieceStateFromShip,
   Grid,
   Ship, ShipType,
   Shot,
@@ -20,7 +20,7 @@ const width: number = 10;
 const height: number = 10;
 
 function createSquare(ownerId: string) {
-  return (coord: Coord) => { 
+  return (coord: Coord) => {
     return { coord, ownerId };
   };
 }
@@ -29,15 +29,12 @@ const p1Squares: Grid<Square> = new Grid(
   { x: width, y: height },
   createSquare('p1'),
 );
+/*
 const p2Squares: Grid<Square> = new Grid(
   { x: width, y: height },
   createSquare('p2'),
 );
-
-const players = {
-  1: {playerId: '313', name: 'Nik', playerNumber: 1},
-  2: {playerId: '14', name: 'Nadia', playerNumber: 2},
-};
+*/
 
 
 const ships: Ship[] = [

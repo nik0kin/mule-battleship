@@ -1,7 +1,7 @@
 
-import { MuleStateSdk, PieceState, VariableMap } from 'mule-sdk-js';
+import { MuleStateSdk, VariableMap } from 'mule-sdk-js';
 
-import { Alignment, getPieceStateFromShip, Ship, ShipType /* PlaceShipsMuleActionParams */ } from '../../shared';
+import { Alignment, getPieceStateFromShip, ShipType /* PlaceShipsMuleActionParams */ } from '../../shared';
 
 import placeShipsAction from './PlaceShips';
 

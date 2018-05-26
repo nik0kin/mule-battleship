@@ -1,12 +1,12 @@
 
 import * as _ from 'lodash';
 import {
-  ActionCode, ActionValidateHook, ActionExecuteHook,
+  ActionCode,
   MuleStateSdk, PieceState, VariableMap,
 } from 'mule-sdk-js';
 
 import {
-  addCoords, Coord, DEFAULT_GAME_START_SHIP_SETUP_COUNTS,
+  addCoords, Coord,
   getPieceStateFromShip, getShipFromPieceSpace, getShipStructure, getTotalShipsPerPlayer, Grid, isValidCoord,
   PlaceShipsMuleActionParams, Ship, ShipPlacement,
   ShipStructure, ShipType,

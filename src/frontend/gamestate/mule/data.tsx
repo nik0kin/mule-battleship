@@ -3,7 +3,7 @@ import { each, reduce } from 'lodash';
 import {
   initializeMuleSdk,
   SDK,
-  Game, GameBoard, TurnProgressStyle,
+  Game, GameBoard,
   GameState as MuleGameState,
   History,
   PlayersMap as MulePlayerMap,
@@ -11,9 +11,8 @@ import {
 } from 'mule-sdk-js';
 
 import {
-  Coord,
   getGridFromGameBoard, getShipsFromGameState, getShotsFromGameState,
-  Grid, isPlacementMode, RULEBUNDLE_NAME, Shot
+  isPlacementMode, RULEBUNDLE_NAME
 } from '../../../shared';
 import {
   GameState,

@@ -2,7 +2,7 @@
 import * as _ from 'lodash';
 
 import {
-  Alignment, getAlignmentOffset, getShipStructure,
+  getAlignmentOffset, getShipStructure,
   Ship, ShipStructure,
 } from './types';
 import {

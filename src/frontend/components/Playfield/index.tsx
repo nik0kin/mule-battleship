@@ -5,10 +5,10 @@ import { Action } from 'mule-sdk-js';
 import './style.css';
 import { GameState } from '../../types';
 import {
-  Alignment, Coord, doesShipIdExistInShipPlacements,
+  Coord, doesShipIdExistInShipPlacements,
   getAllShipsIncludingPendingActions, getInvalidShipPlacements, getPlaceShipsParamsFromAction, getShotOnSquare,
   getShipOnSquare,
-  Ship, ShipPlacement, ShipStructure, ShipStructures,
+  Ship, ShipPlacement,
   numberToLetter, Shot,
 } from '../../../shared';
 
@@ -25,8 +25,6 @@ export interface Props {
 
 function Playfield({ gameState, selectedCoord, selectedShipBeingPlaced, pendingActions, clickSquare }: Props) {
   const gridSize: Coord = { x: gameState.width, y: gameState.height };
-
-  const collidingShips: boolean = false; // temp
 
   let invalidShipPlacements: ShipPlacement[] = [];
 

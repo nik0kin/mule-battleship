@@ -2,6 +2,9 @@
 export const CLICK_SQUARE = 'CLICK_SQUARE';
 export type CLICK_SQUARE = typeof CLICK_SQUARE;
 
+export const CLICK_SUBMIT = 'CLICK_SUBMIT';
+export type CLICK_SUBMIT = typeof CLICK_SUBMIT;
+
 export const SELECT_SHIPLIST_SHIP = 'SELECT_SHIPLIST_SHIP';
 export type SELECT_SHIPLIST_SHIP = typeof SELECT_SHIPLIST_SHIP;
 

@@ -2,29 +2,28 @@
 import {
   ClickSquare,
   SelectShipListShip,
-  RemovePendingAction,
+//  RemovePendingAction,
 } from '../actions';
 import {
   CLICK_SQUARE,
+  CLICK_SUBMIT,
   SELECT_SHIPLIST_SHIP,
-  REMOVE_PENDING_ACTION,
+//  REMOVE_PENDING_ACTION,
 } from '../constants';
 import { StoreState } from '../types';
 
+import { clickSubmitReducer } from './clickSubmit';
 import { clickSquareReducer } from './clickSquareReducer';
 
 export function generalReducer(state: StoreState, action: {type: string}): StoreState {
-  // return {
-  //   ...state,
-  //   pendingTurn: {
-  //   //  actions: reduceReduxAgentAction(state.pendingTurn.actions, action)
-  //   },
-  // };
 
   switch (action.type) {
     case CLICK_SQUARE:
       const clickSquareAction: ClickSquare = action as ClickSquare;
       return clickSquareReducer(state, clickSquareAction);
+
+    case CLICK_SUBMIT:
+      return clickSubmitReducer(state);
 
     case SELECT_SHIPLIST_SHIP:
       const selectShipListShipAction: SelectShipListShip = action as SelectShipListShip;

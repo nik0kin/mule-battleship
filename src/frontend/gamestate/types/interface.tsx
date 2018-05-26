@@ -1,5 +1,5 @@
 
-import { Ship, Coord, Grid, Square, Shot } from '../../../shared';
+import { Ship, Grid, Square, Shot } from '../../../shared';
 
 import { Player, PlayerMap } from '../../types';
 
