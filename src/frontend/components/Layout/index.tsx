@@ -15,13 +15,15 @@ import { WaitingIndicator } from './waiting-indicator';
 import './style.css';
 
 export interface Props {
+  isYourTurn: boolean;
   selectedCoord?: Coord;
   players: PlayerMap;
   gameState: GameState;
   pendingActions: Action[];
 }
 
-function Layout({ selectedCoord, gameState, players, pendingActions }: Props) {
+function Layout({ isYourTurn, selectedCoord, gameState, players, pendingActions }: Props) {
+  const theirName: string = gameState.mule.players[gameState.theirLobbyPlayerId].name;
 
   return (
     <div>
@@ -32,10 +34,16 @@ function Layout({ selectedCoord, gameState, players, pendingActions }: Props) {
           <div className="current-turn-info">
             <div> Turn 1 </div>
             <WaitingIndicator/>
-            <div className="short-description"> Your Placement </div>
+            <div className="short-description"> {getShortDescription(isYourTurn)} </div>
           </div>
           <button className="submit-button" disabled={!selectedCoord}>
-            {getSubmitButtonText(gameState.isPlacementMode, getAmountOfShipsRemainingToPlace(gameState.isPlacementMode, pendingActions), selectedCoord)}
+            {getSubmitButtonText(
+              isYourTurn,
+              theirName,
+              gameState.isPlacementMode,
+              getAmountOfShipsRemainingToPlace(gameState.isPlacementMode, pendingActions),
+              selectedCoord,
+            )}
           </button>
 
           <ShipList/>
@@ -53,7 +61,17 @@ function Layout({ selectedCoord, gameState, players, pendingActions }: Props) {
 
 export default Layout;
 
-function getSubmitButtonText(isPlacementMode: boolean, shipsLeftToBePlaced: number, selectedCoord?: Coord): string {
+function getSubmitButtonText(
+  isYourTurn: boolean,
+  opponentName: string,
+  isPlacementMode: boolean,
+  shipsLeftToBePlaced: number,
+  selectedCoord?: Coord
+): string {
+
+  if (!isYourTurn) {
+    return `Waiting on ${opponentName}\'s Ship Placement`;
+  }
 
   if (shipsLeftToBePlaced) {
     if (shipsLeftToBePlaced === 1) {
@@ -83,5 +101,13 @@ function getAmountOfShipsRemainingToPlace(isPlacementMode: boolean, pendingActio
     return getTotalShipsPerPlayer() - pendingPlacements;
   } else {
     return 0;
+  }
+}
+
+function getShortDescription(isYourTurn: boolean): string {
+  if (isYourTurn) {
+    return 'Your Placement';
+  } else {
+    return 'Opponent Placement';
   }
 }

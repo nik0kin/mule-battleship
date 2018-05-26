@@ -8,6 +8,7 @@ export interface GameState {
     currentPlayer: Player;
     players: PlayerMap;
     currentTurn: number;
+    isYourTurn: boolean;
   };
 
   yourLobbyPlayerId: string;

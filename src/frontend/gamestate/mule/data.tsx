@@ -5,6 +5,7 @@ import {
   SDK,
   Game, GameBoard, TurnProgressStyle,
   GameState as MuleGameState,
+  History,
   PlayersMap as MulePlayerMap,
   User,
 } from 'mule-sdk-js';
@@ -12,7 +13,7 @@ import {
 import {
   Coord,
   getGridFromGameBoard, getShipsFromGameState, getShotsFromGameState,
-  Grid, isPlacementMode, RULEBUNDLE_NAME, Shot,
+  Grid, isPlacementMode, RULEBUNDLE_NAME, Shot
 } from '../../../shared';
 import {
   GameState,
@@ -96,7 +97,10 @@ export async function getBattleshipGameState(): Promise<GameState> {
   // get GameState
   const loadedGameState: MuleGameState = await muleSDK.GameStates.readQ(loadedGameBoard.gameState);
 
-  // TODO get History/Turns
+  // get History
+  const history: History = await muleSDK.Historys.readGamesHistoryQ(loadedGame._id);
+
+  // TODO get Turns
 
   const players: PlayerMap = convertToPlayerMap(await muleSDK.Games.getPlayersMapQ(loadedGame));
 
@@ -115,11 +119,14 @@ export async function getBattleshipGameState(): Promise<GameState> {
 
   const gridSize = { x: 10, y: 10 };
 
+  const nextTurnsLobbyPlayerId: string = muleSDK.fn.getWhosTurnIsIt(history);
+
   return {
     mule: {
-      currentPlayer: players[currentPlayerRel], // TODO figure out whos turn it is
+      currentPlayer: players[currentPlayerRel],
       players,
       currentTurn: 1,
+      isYourTurn: currentPlayerRel === nextTurnsLobbyPlayerId,
     },
 
     yourLobbyPlayerId: currentPlayerRel,

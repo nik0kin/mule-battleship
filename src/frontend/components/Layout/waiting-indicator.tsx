@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 export interface Props {
-  seconds: number;
+  totalTicks: number;
 }
 
 export class WaitingIndicator extends React.Component {
@@ -9,17 +9,17 @@ export class WaitingIndicator extends React.Component {
 
   constructor(props: Props) {
     super(props);
-    this.state = { seconds: 0 };
+    this.state = { totalTicks: 0 };
   }
 
   tick() {
     this.setState((prevState: Props) => ({
-      seconds: prevState.seconds + 1
+      totalTicks: prevState.totalTicks + 1
     }));
   }
 
   componentDidMount() {
-    this.interval = setInterval(() => this.tick(), 1000);
+    this.interval = setInterval(() => this.tick(), 500);
   }
 
   componentWillUnmount() {
@@ -28,7 +28,7 @@ export class WaitingIndicator extends React.Component {
 
   render() {
     return (
-      <div className="waiting-indicator"> {getWaitingIndicator(false, (this.state as Props).seconds)} </div>
+      <div className="waiting-indicator"> {getWaitingIndicator(false, (this.state as Props).totalTicks)} </div>
     );
   }
 }
@@ -38,17 +38,10 @@ function getWaitingIndicator(yourTurn: boolean, seconds: number) {
   if (yourTurn) {
     return <span>...</span>;
   } else {
-    const num: number = seconds % 3;
+    const indicatorString: string = '  Waiting on Opponent  ';
 
-    switch (num) {
-      case 0:
-        return <span>..o</span>;
-      case 1:
-        return <span>o..</span>;
-      case 2:
-        return <span>.o.</span>;
-      default:
-        return <span>...</span>;
-    }
+    const num: number = seconds % indicatorString.length;
+
+    return <span>{indicatorString.substring(num, num + 5)}</span>;
   }
 }

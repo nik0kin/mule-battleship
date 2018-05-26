@@ -7,8 +7,20 @@ X- dont hardcode first player as 'p1'
  X- show message if you arent the correct player
 X- check it's a Battleship Game
 
-then
  - place if its your turn
+  - your turn & you havent placed
+    - Desc: Your Placement
+    - Button: Place x ships
+  - your turn & you have placed = First Turn
+    - Desc: Your Shot
+  - opponent placement turn & you have placed
+    - Desc: Opponent Placement
+    - Button: Waiting on Ted's Ship Placement
+  - opponent placement turn & you havent placed
+    - Desc: Opponent Placement
+    - Button: Waiting on Ted's Ship Placement
+
+then
  - submit button reducer
  - see gen map & placement actions in a "real" mule environment
  - update jenkins

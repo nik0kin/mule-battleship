@@ -7,6 +7,7 @@ import { StoreState } from '../types/index';
 export function mapStateToProps({gameState, ui: {selectedCoord}, pendingTurn}: StoreState) {
 
   return {
+    isYourTurn: gameState.mule.isYourTurn,
     players: gameState.mule.players,
     selectedCoord,
     gameState,
