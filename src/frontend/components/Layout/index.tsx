@@ -55,8 +55,8 @@ function Layout({ isYourTurn, selectedCoord, gameState, players, pendingActions 
         <div className="gameboard">
           <Playfield/>
         </div>
-        <div className="chat"/>
       </div>
+      <div className="chat"/>
     </div>
   );
 }

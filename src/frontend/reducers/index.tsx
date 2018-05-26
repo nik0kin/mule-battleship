@@ -1,31 +1,36 @@
 
 import {
   ClickSquare,
+  LoadMuleStateSuccess,
+  LoadMuleStateFailure,
   SelectShipListShip,
 //  RemovePendingAction,
 } from '../actions';
-import {
-  CLICK_SQUARE,
-  CLICK_SUBMIT,
-  SELECT_SHIPLIST_SHIP,
-//  REMOVE_PENDING_ACTION,
-} from '../constants';
+import * as constants from '../constants';
 import { StoreState } from '../types';
 
 import { clickSubmitReducer } from './clickSubmit';
-import { clickSquareReducer } from './clickSquareReducer';
+import { clickSquareReducer } from './clickSquare';
+import { loadMuleStateSuccessReducer, loadMuleStateFailureReducer } from './loadMuleState';
 
 export function generalReducer(state: StoreState, action: {type: string}): StoreState {
 
   switch (action.type) {
-    case CLICK_SQUARE:
+    case constants.LOAD_MULE_STATE_SUCCESS:
+      const loadMuleStateSuccess: LoadMuleStateSuccess = action as LoadMuleStateSuccess;
+      return loadMuleStateSuccessReducer(state, loadMuleStateSuccess);
+    case constants.LOAD_MULE_STATE_FAILURE:
+      const loadMuleStateFailure: LoadMuleStateFailure = action as LoadMuleStateFailure;
+      return loadMuleStateFailureReducer(state, loadMuleStateFailure);
+
+    case constants.CLICK_SQUARE:
       const clickSquareAction: ClickSquare = action as ClickSquare;
       return clickSquareReducer(state, clickSquareAction);
 
-    case CLICK_SUBMIT:
+    case constants.CLICK_SUBMIT:
       return clickSubmitReducer(state);
 
-    case SELECT_SHIPLIST_SHIP:
+    case constants.SELECT_SHIPLIST_SHIP:
       const selectShipListShipAction: SelectShipListShip = action as SelectShipListShip;
       return {
         ...state,

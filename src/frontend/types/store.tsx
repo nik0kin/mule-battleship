@@ -8,7 +8,12 @@ export interface StoreState {
     selectedCoord?: Coord;
     selectedShipBeingPlaced?: number;
   };
+
+  isGameStateLoaded: boolean;
   gameState: GameState;
+
+  loadError?: Error;
+
   pendingTurn: {
     actions: Action[]
   };

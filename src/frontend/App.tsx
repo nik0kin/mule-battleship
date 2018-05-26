@@ -1,11 +1,11 @@
 import * as React from 'react';
 import './App.css';
-import Layout from './containers/Layout';
+import LoadScreen from './containers/LoadScreen';
 
 function App() {
   return (
     <div>
-      <Layout/>
+      <LoadScreen/>
     </div>
   );
 }

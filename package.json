@@ -24,7 +24,8 @@
     "react": "^16.0.2",
     "react-dom": "^16.0.2",
     "react-redux": "^5.0.2",
-    "redux": "^3.6.0"
+    "redux": "^3.6.0",
+    "redux-saga": "^0.16.0"
   },
   "scripts": {
     "packageSdk": "(yarn unlink mule-sdk-js && echo 'no link') && rm -rf ./node_modules/mule-sdk-js && yarn add nik0kin/mule-sdk-js#v3 --no-lockfile",

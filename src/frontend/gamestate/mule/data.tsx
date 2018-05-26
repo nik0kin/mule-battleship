@@ -50,22 +50,9 @@ function convertToPlayerMap(playerMap: MulePlayerMap): PlayerMap {
 
 export async function getBattleshipGameState(): Promise<GameState> {
 
-  // TODO redux async (thunk, saga, etc)
+  initMuleSdk(getMuleApiPath());
 
-  // for now assume its all loaded been loaded syncronously
-
-  const hostname: string = window && window.location && window.location.hostname;
-
-  let muleApiPath: string;
-  if (hostname === 'localhost') {
-    muleApiPath = 'http://localhost:313/webservices/';
-  } else {
-    muleApiPath = '/webservices/';
-  }
-
-  initMuleSdk(muleApiPath);
   const gameId: string | undefined = muleSDK.fn.getUrlParameter('gameId');
-
   if (!gameId) {
     throw new Error('missing gameId in url');
   }
@@ -145,4 +132,14 @@ export async function getBattleshipGameState(): Promise<GameState> {
     yourShots: getShotsFromGameState(loadedGameState, currentPlayerRel),
     theirShots: getShotsFromGameState(loadedGameState, opponentPlayerRel),
   };
+}
+
+function getMuleApiPath(): string {
+  const hostname: string = window && window.location && window.location.hostname;
+
+  if (hostname === 'localhost') {
+    return 'http://localhost:313/webservices/';
+  } else {
+    return '/webservices/';
+  }
 }

@@ -2,6 +2,8 @@
 import * as constants from '../constants';
 import { Coord } from '../../shared';
 
+export * from './mule';
+
 // UI
 
 export interface ClickSquare {
