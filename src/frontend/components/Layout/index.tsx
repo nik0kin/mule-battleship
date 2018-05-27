@@ -14,15 +14,18 @@ import { WaitingIndicator } from './waiting-indicator';
 
 import './style.css';
 
+type ClickSubmitFn = (pendingTurn: {actions: Action[]}) => void;
+
 export interface Props {
   isYourTurn: boolean;
   selectedCoord?: Coord;
   players: PlayerMap;
   gameState: GameState;
   pendingActions: Action[];
+  clickSubmit: ClickSubmitFn;
 }
 
-function Layout({ isYourTurn, selectedCoord, gameState, players, pendingActions }: Props) {
+function Layout({ isYourTurn, selectedCoord, gameState, players, pendingActions, clickSubmit }: Props) {
   const theirName: string = gameState.mule.players[gameState.theirLobbyPlayerId].name;
 
   const shipsLeftToBePlaced: number = getAmountOfShipsRemainingToPlace(gameState.isPlacementMode, pendingActions);
@@ -38,7 +41,11 @@ function Layout({ isYourTurn, selectedCoord, gameState, players, pendingActions 
             <WaitingIndicator/>
             <div className="short-description"> {getShortDescription(isYourTurn)} </div>
           </div>
-          <button className="submit-button" disabled={!shipsLeftToBePlaced || !selectedCoord}>
+          <button
+            className="submit-button"
+            onClick={() => clickSubmit({actions: pendingActions})}
+            disabled={isSubmitButtonDisabled(gameState.isPlacementMode, shipsLeftToBePlaced)}
+          >
             {getSubmitButtonText(
               isYourTurn,
               theirName,
@@ -63,6 +70,12 @@ function Layout({ isYourTurn, selectedCoord, gameState, players, pendingActions 
 
 export default Layout;
 
+function isSubmitButtonDisabled(isPlacementMode: boolean, shipsLeftToBePlaced: number): boolean {
+  const enabled: boolean = isPlacementMode && shipsLeftToBePlaced === 0; // || shot mode logic
+
+  return !enabled;
+}
+
 function getSubmitButtonText(
   isYourTurn: boolean,
   opponentName: string,
@@ -81,7 +94,7 @@ function getSubmitButtonText(
     }
     return `Place ${shipsLeftToBePlaced} remaining ships`;
   } else if (isPlacementMode) {
-    return 'Submit Turn - NYI';
+    return 'Submit Turn';
   }
 
   if (selectedCoord) {

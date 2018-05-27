@@ -1,4 +1,5 @@
 import { connect, Dispatch } from 'react-redux';
+import { Action } from 'mule-sdk-js';
 
 import Layout from '../components/Layout';
 import * as actions from '../actions/';
@@ -17,6 +18,7 @@ export function mapStateToProps({gameState, ui: {selectedCoord}, pendingTurn}: S
 
 export function mapDispatchToProps(dispatch: Dispatch<actions.RemovePendingAction>) {
   return {
+    clickSubmit: (pendingTurn: {actions: Action[]}) => dispatch(actions.clickSubmit(pendingTurn)),
     removePendingAction: (index: number) => dispatch(actions.removePendingAction(index)),
   };
 }

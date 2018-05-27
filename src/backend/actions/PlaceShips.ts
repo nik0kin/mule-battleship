@@ -6,7 +6,7 @@ import {
 } from 'mule-sdk-js';
 
 import {
-  addCoords, Coord,
+  addCoords, Coord, getAlignmentOffset,
   getPieceStateFromShip, getShipFromPieceSpace, getShipStructure, getTotalShipsPerPlayer, Grid, isValidCoord,
   PlaceShipsMuleActionParams, Ship, ShipPlacement,
   ShipStructure, ShipType,
@@ -57,7 +57,7 @@ function validateQ(M: MuleStateSdk, lobbyPlayerId: string, _actionParams: Variab
     // 2d. is the ship placement coordinates valid?
     if (!isValidCoord(shipPlacement.coord, gridSize)) {
       throw new Error(
-        `invalid shipPlacement coord: ${shipPlacement.coord.x},${shipPlacement.coord.y}`
+        `invalid shipPlacement coord: ${shipPlacement.coord.x},${shipPlacement.coord.y} (shipId=${shipPlacement.shipId})`
       );
     }
 
@@ -67,7 +67,10 @@ function validateQ(M: MuleStateSdk, lobbyPlayerId: string, _actionParams: Variab
     const invalidShipSquares: Coord[] = [];
 
     _.each(shipStructure.squares, (relativeCoord: Coord) => {
-      const shipSquareCoord: Coord = addCoords(shipPlacement.coord, relativeCoord);
+      const shipSquareCoord: Coord = addCoords(
+        shipPlacement.coord,
+        getAlignmentOffset(relativeCoord, shipPlacement.alignment)
+      );
 
       if (!isValidCoord(shipSquareCoord, gridSize) || occupiedGrid.get(shipSquareCoord)) {
         invalidShipSquares.push(shipSquareCoord);
@@ -77,9 +80,10 @@ function validateQ(M: MuleStateSdk, lobbyPlayerId: string, _actionParams: Variab
     });
 
     if (invalidShipSquares.length) {
+      const invalidShipSquaresStr: string = JSON.stringify(invalidShipSquares);
       throw new Error(
-        `invalid shipPlacement coord: ${shipPlacement.coord.x},${shipPlacement.coord.y}
-         with ${invalidShipSquares.toString} ship square(s)`
+        `invalid shipPlacement coord: ${shipPlacement.coord.x},${shipPlacement.coord.y} (shipId=${shipPlacement.shipId})
+         with ${invalidShipSquaresStr} ship square(s)`
       );
     }
 
@@ -107,6 +111,6 @@ function doQ(M: MuleStateSdk, lobbyPlayerId: string, _actionParams: VariableMap)
     M.setPiece('' + shipPlacement.shipId, getPieceStateFromShip(ship));
   });
 
-  return Promise.resolve();
+  return M.persistQ();
 }
 

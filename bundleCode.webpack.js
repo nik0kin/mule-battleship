@@ -18,7 +18,7 @@ var babelOptions = {
 };
 
 module.exports = (env) => {
-  var isProd = env.prod;
+  var isProd = env && env.prod;
 
   var plugins = [];
 

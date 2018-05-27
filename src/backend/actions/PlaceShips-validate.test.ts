@@ -7,6 +7,7 @@ import placeShipsAction from './PlaceShips';
 
 const mbackendSdkMock: Partial<MuleStateSdk> = {
   getPiece: (pieceId: string) => getPieceStateFromShip({
+    _id: pieceId,
     id: Number(pieceId),
     ownerId: 'p1',
     shipType: ShipType.Battleship,
@@ -14,6 +15,44 @@ const mbackendSdkMock: Partial<MuleStateSdk> = {
     alignment: Alignment.Horizontal
   }),
 };
+
+const placeShipsWithRotationsActionParams: VariableMap = {
+  shipPlacements: [
+    {
+      shipId: 9819112,
+      coord: {x: 6, y: 4},
+      alignment: 1
+    },
+    {
+      shipId: 14723,
+      coord: {x: 6, y: 3},
+      alignment: 1
+    },
+    {
+      shipId: 5528858,
+      coord: {x: 5, y: 3},
+      alignment: 0
+    },
+    {
+      shipId: 1010484,
+      coord: {x: 5, y: 2},
+      alignment: 1
+    },
+    {
+      shipId: 7231084,
+      coord: {x: 5, y: 1},
+      alignment: 1
+    },
+    {
+      shipId: 7471961,
+      coord: {x: 4, y: 1},
+      alignment: 0
+    },
+    {
+      shipId: 2489142,
+      coord: {x: 4, y: 0},
+      alignment: 1
+    }]};
 
 describe('Action.validate: PlaceShipsAction', () => {
   it('should run without error', (done) => {
@@ -58,6 +97,13 @@ describe('Action.validate: PlaceShipsAction', () => {
     };
 
     placeShipsAction.validateQ(mbackendSdkMock as MuleStateSdk, 'p1', actionParams)
+      .then(() => {
+        done();
+      });
+  });
+
+  it('should run without error2', (done) => {
+    placeShipsAction.validateQ(mbackendSdkMock as MuleStateSdk, 'p1', placeShipsWithRotationsActionParams)
       .then(() => {
         done();
       });

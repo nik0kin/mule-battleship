@@ -4,6 +4,7 @@ import { Coord } from '../mule-common';
 import { Alignment } from './alignment';
 
 export interface Ship {
+  _id: string;
   id: number;
   ownerId: string;
   shipType: ShipType;

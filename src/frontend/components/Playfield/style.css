@@ -52,10 +52,6 @@ td.ship.collision {
   position: relative;
 }
 
-.your-ships.placing-ships td {
-  cursor: pointer;
-}
-
 .your-ships .hint {
   /* TODO without absolute position */
   position: absolute;

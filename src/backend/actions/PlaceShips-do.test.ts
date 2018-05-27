@@ -7,6 +7,7 @@ import placeShipsAction from './PlaceShips';
 
 const mbackendSdkMock: Partial<MuleStateSdk> = {
   getPiece: (pieceId: string) => getPieceStateFromShip({
+    _id: pieceId,
     id: Number(pieceId),
     ownerId: 'p1',
     shipType: ShipType.Battleship,

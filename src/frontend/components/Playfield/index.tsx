@@ -7,7 +7,7 @@ import { GameState } from '../../types';
 import {
   Coord, doesShipIdExistInShipPlacements,
   getAllShipsIncludingPendingActions, getInvalidShipPlacements, getPlaceShipsParamsFromAction, getShotOnSquare,
-  getShipOnSquare,
+  getShipOnSquare, isValidCoord,
   Ship, ShipPlacement,
   numberToLetter, Shot,
 } from '../../../shared';
@@ -161,7 +161,7 @@ function getRow(
       cellContent = possibleShot.hit ? 'X' : '/';
     }
 
-    const isClickable: boolean = isPlacementMode && (!!selectedShipBeingPlaced || !!possibleShip)/* TODO  non placement mode logic || () */;
+    const isClickable: boolean = isValidCoord(coord, gridSize) && isPlacementMode && (!!selectedShipBeingPlaced || !!possibleShip)/* TODO  non placement mode logic || () */;
     _class += isClickable ? 'clickable ' : '';
 
     function onClickSquare() {

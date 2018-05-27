@@ -23,9 +23,11 @@ X- place if its your turn
 then
 X- redux-saga
  X- loading while state loads
- - submit button reducer
-  - if (isYourTurn && isPlacementMode && getPlacementsLeft === 0)
+X- submit button reducer
+ X- if (isYourTurn && isPlacementMode && getPlacementsLeft === 0) submitTurn()
+ - disable button while submitting
  - see gen map & placement actions in a "real" mule environment
+  - change currentTurnNumber & isYourTurn, which prevents user from submitting
  - update jenkins
 X- update mule-frontend to link to battleship
 

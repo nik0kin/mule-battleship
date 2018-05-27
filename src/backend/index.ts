@@ -1,5 +1,6 @@
 import { BundleCode } from 'mule-sdk-js';
 
+import { PLACE_SHIPS_MULE_ACTION } from '../shared';
 
 import customBoardSettingsValidator from './hooks/customBoardSettingsValidator';
 import boardGenerator from './hooks/boardGenerator';
@@ -14,7 +15,7 @@ const bundleCode: BundleCode = {
   gameStart,
 
   actions: {
-    PlaceShipsMuleAction: placeShipsAction,
+    [PLACE_SHIPS_MULE_ACTION]: placeShipsAction,
   //  'FireShot': require('./actions/FireShot')
   },
 

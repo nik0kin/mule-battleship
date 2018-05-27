@@ -20,12 +20,30 @@ import {
   PlayerMap,
 } from '../../types';
 
+let gameId: string | undefined;
+let currentLobbyPlayerId: string;
+
 let muleSDK: SDK;
 
 function initMuleSdk(contextPath: string): void {
   muleSDK = initializeMuleSdk(contextPath);
 }
 
+export function getSdk(): SDK {
+  return muleSDK;
+}
+
+export function getGameId(): string {
+  if (!gameId) {
+    throw 'gameId doesnt exist';
+  }
+
+  return gameId;
+}
+
+export function getLobbyPlayerId(): string {
+  return currentLobbyPlayerId;
+}
 
 interface MulePlayerMapPlayer {
   playerId: string;
@@ -52,7 +70,7 @@ export async function getBattleshipGameState(): Promise<GameState> {
 
   initMuleSdk(getMuleApiPath());
 
-  const gameId: string | undefined = muleSDK.fn.getUrlParameter('gameId');
+  gameId = muleSDK.fn.getUrlParameter('gameId');
   if (!gameId) {
     throw new Error('missing gameId in url');
   }
@@ -99,6 +117,7 @@ export async function getBattleshipGameState(): Promise<GameState> {
   if (!lobbyPlayerId) {
     throw new Error('user is not in game');
   }
+  currentLobbyPlayerId = lobbyPlayerId;
 
   const currentPlayerRel: string = lobbyPlayerId;
   const opponentPlayerRel: string = 'p1' === lobbyPlayerId ? 'p2' : 'p1';

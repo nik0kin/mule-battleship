@@ -7,7 +7,7 @@ import { getCoordString, getCoordFromString } from './mule-common';
 
 export function getPieceStateFromShip(ship: Ship): PieceState {
   return {
-    _id: '',
+    _id: ship._id,
     id: ship.id,
     class: String(ship.shipType),
     locationId: getCoordString(ship.coord),
@@ -35,6 +35,7 @@ export function getShipTypeFromClass(_class: string): ShipType { // TODO there m
 
 export function getShipFromPieceSpace(pieceState: PieceState): Ship {
   return {
+    _id: pieceState._id,
     id: pieceState.id,
     ownerId: pieceState.ownerId,
     shipType: getShipTypeFromClass(pieceState.class),

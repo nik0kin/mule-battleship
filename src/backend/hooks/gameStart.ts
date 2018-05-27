@@ -14,6 +14,7 @@ const gameStartHook: GameStartHook = (M: MuleStateSdk) => {
     _.each(DEFAULT_GAME_START_SHIP_SETUP_COUNTS, (count: number, shipType: ShipType) => {
       _.times(count, () => {
         const newShip: Ship = {
+          _id: '', // addPiece will generate a realId after persistQ
           id: -1,
           ownerId: lobbyPlayerId,
           shipType,

@@ -9,7 +9,7 @@ import {
 import { Coord } from '../mule-common';
 import { getIdFromShip, findOneShip } from '../ship';
 
-export type PlaceShipsMuleAction = 'PlaceShips';
+export const PLACE_SHIPS_MULE_ACTION: string = 'PlaceShips';
 
 export interface PlaceShipsMuleActionParams {
   shipPlacements: ShipPlacement[];

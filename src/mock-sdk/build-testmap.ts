@@ -39,6 +39,7 @@ const p2Squares: Grid<Square> = new Grid(
 
 const ships: Ship[] = [
   {
+    _id: '1',
     id: 1,
     ownerId: 'p1',
     shipType: ShipType.Carrier,
@@ -46,6 +47,7 @@ const ships: Ship[] = [
     alignment: Alignment.Horizontal,
   },
   {
+    _id: '2',
     id: 2,
     ownerId: 'p1',
     shipType: ShipType.Battleship,
@@ -53,6 +55,7 @@ const ships: Ship[] = [
     alignment: Alignment.Vertical,
   },
   {
+    _id: '3',
     id: 3,
     ownerId: 'p1',
     shipType: ShipType.Cruiser,
@@ -60,6 +63,7 @@ const ships: Ship[] = [
     alignment: Alignment.Vertical,
   },
   {
+    _id: '4',
     id: 4,
     ownerId: 'p1',
     shipType: ShipType.Destroyer,
@@ -67,6 +71,7 @@ const ships: Ship[] = [
     alignment: Alignment.Horizontal,
   },
   {
+    _id: '5',
     id: 5,
     ownerId: 'p1',
     shipType: ShipType.Destroyer,
@@ -74,6 +79,7 @@ const ships: Ship[] = [
     alignment: Alignment.Horizontal,
   },
   {
+    _id: '6',
     id: 6,
     ownerId: 'p1',
     shipType: ShipType.Submarine,
@@ -81,6 +87,7 @@ const ships: Ship[] = [
     alignment: Alignment.Horizontal,
   },
   {
+    _id: '7',
     id: 7,
     ownerId: 'p1',
     shipType: ShipType.Submarine,
