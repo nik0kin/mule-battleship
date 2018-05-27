@@ -26,11 +26,21 @@ X- redux-saga
 X- submit button reducer
  X- if (isYourTurn && isPlacementMode && getPlacementsLeft === 0) submitTurn()
 X- disable button while submitting
- - see gen map & placement actions in a "real" mule environment
-  - change currentTurnNumber & isYourTurn, which prevents user from submitting
- - update jenkins
+x- see gen map & placement actions in a "real" mule environment
+ X- change currentTurnNumber & isYourTurn, which prevents user from submitting
 X- update mule-frontend to link to battleship
 
-
+X- servers-notes folder in notes-repo
+ - update jenkins
+  X- mule.tgp.io (domains)
+    - ssl
+   X- runs newest jenkins
+     - jobs
+      - watch/rebuild mdev/mule/mule-models
+      - watch/rebuild battleship
+   X- nginx
+    - mule server
+     - uses zion.tgp.io for db
+      - lock down mongo port, it should only be accessible by localhost and mule.tgp.io
  - Mule Backend doesnt catch bad id and doesnt send 404
  - Mule SDK doesnt reject promise if its 400
