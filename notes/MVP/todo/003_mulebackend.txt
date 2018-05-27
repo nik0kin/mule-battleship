@@ -25,7 +25,7 @@ X- redux-saga
  X- loading while state loads
 X- submit button reducer
  X- if (isYourTurn && isPlacementMode && getPlacementsLeft === 0) submitTurn()
- - disable button while submitting
+X- disable button while submitting
  - see gen map & placement actions in a "real" mule environment
   - change currentTurnNumber & isYourTurn, which prevents user from submitting
  - update jenkins

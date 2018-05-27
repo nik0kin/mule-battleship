@@ -130,7 +130,7 @@ export async function getBattleshipGameState(): Promise<GameState> {
     mule: {
       currentPlayer: players[currentPlayerRel],
       players,
-      currentTurn: 1,
+      currentTurn: history.currentTurn,
       isYourTurn: currentPlayerRel === nextTurnsLobbyPlayerId,
     },
 

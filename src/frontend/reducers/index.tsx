@@ -4,6 +4,8 @@ import {
   LoadMuleStateSuccess,
   LoadMuleStateFailure,
   SelectShipListShip,
+  SubmitTurnSuccess,
+  SubmitTurnFailure,
 //  RemovePendingAction,
 } from '../actions';
 import * as constants from '../constants';
@@ -12,6 +14,7 @@ import { StoreState } from '../types';
 import { clickSubmitReducer } from './clickSubmit';
 import { clickSquareReducer } from './clickSquare';
 import { loadMuleStateSuccessReducer, loadMuleStateFailureReducer } from './loadMuleState';
+import { submitTurnSuccessReducer, submitTurnFailureReducer } from './submitTurn';
 
 export function generalReducer(state: StoreState, action: {type: string}): StoreState {
 
@@ -29,6 +32,13 @@ export function generalReducer(state: StoreState, action: {type: string}): Store
 
     case constants.CLICK_SUBMIT:
       return clickSubmitReducer(state);
+
+    case constants.SUBMIT_TURN_SUCCESS:
+      const submitTurnSuccess: SubmitTurnSuccess = action as SubmitTurnSuccess;
+      return submitTurnSuccessReducer(state, submitTurnSuccess);
+    case constants.SUBMIT_TURN_FAILURE:
+      const submitTurnFailure: SubmitTurnFailure = action as SubmitTurnFailure;
+      return submitTurnFailureReducer(state, submitTurnFailure);
 
     case constants.SELECT_SHIPLIST_SHIP:
       const selectShipListShipAction: SelectShipListShip = action as SelectShipListShip;

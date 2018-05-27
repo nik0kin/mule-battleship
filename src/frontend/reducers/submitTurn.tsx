@@ -5,6 +5,14 @@ export function submitTurnSuccessReducer(state: StoreState, submitTurnSuccess: S
   return {
     ...state,
     isSubmitting: false,
+    gameState: {
+      ...state.gameState,
+      mule: {
+        ...state.gameState.mule,
+        isYourTurn: false,
+        currentTurn: submitTurnSuccess.playTurnResponse.turnNumber,
+      }
+    },
   };
 }
 

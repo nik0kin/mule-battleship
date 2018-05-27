@@ -38,14 +38,14 @@ function Layout({ isYourTurn, selectedCoord, gameState, players, pendingActions,
         <div className="gameinfo">
 
           <div className="current-turn-info">
-            <div> Turn 1 </div>
+            <div> Turn {gameState.mule.currentTurn} </div>
             <WaitingIndicator/>
             <div className="short-description"> {getShortDescription(isYourTurn)} </div>
           </div>
           <button
             className="submit-button"
             onClick={() => clickSubmit({actions: pendingActions})}
-            disabled={!isSubmitting && isSubmitButtonDisabled(gameState.isPlacementMode, shipsLeftToBePlaced)}
+            disabled={!isSubmitting && isYourTurn && isSubmitButtonDisabled(gameState.isPlacementMode, shipsLeftToBePlaced)}
           >
             {getSubmitButtonText(
               isYourTurn,
