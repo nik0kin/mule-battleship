@@ -12,6 +12,7 @@ export interface StoreState {
   isGameStateLoaded: boolean;
   gameState: GameState;
 
+  isSubmitting: boolean;
   loadError?: Error;
 
   pendingTurn: {

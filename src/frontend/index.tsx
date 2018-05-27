@@ -24,6 +24,7 @@ export function bootstrapFrontend(): void {
         selectedCoord: undefined
       },
       isGameStateLoaded: false,
+      isSubmitting: false,
       gameState: {} as GameState,
       pendingTurn: {
         actions: [],

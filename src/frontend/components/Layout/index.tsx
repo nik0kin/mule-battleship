@@ -23,9 +23,10 @@ export interface Props {
   gameState: GameState;
   pendingActions: Action[];
   clickSubmit: ClickSubmitFn;
+  isSubmitting: boolean;
 }
 
-function Layout({ isYourTurn, selectedCoord, gameState, players, pendingActions, clickSubmit }: Props) {
+function Layout({ isYourTurn, selectedCoord, gameState, players, pendingActions, clickSubmit, isSubmitting }: Props) {
   const theirName: string = gameState.mule.players[gameState.theirLobbyPlayerId].name;
 
   const shipsLeftToBePlaced: number = getAmountOfShipsRemainingToPlace(gameState.isPlacementMode, pendingActions);
@@ -44,7 +45,7 @@ function Layout({ isYourTurn, selectedCoord, gameState, players, pendingActions,
           <button
             className="submit-button"
             onClick={() => clickSubmit({actions: pendingActions})}
-            disabled={isSubmitButtonDisabled(gameState.isPlacementMode, shipsLeftToBePlaced)}
+            disabled={!isSubmitting && isSubmitButtonDisabled(gameState.isPlacementMode, shipsLeftToBePlaced)}
           >
             {getSubmitButtonText(
               isYourTurn,

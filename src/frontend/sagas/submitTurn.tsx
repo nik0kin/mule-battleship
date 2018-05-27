@@ -1,15 +1,15 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
+import { MulePlayTurnResponse } from 'mule-sdk-js';
 
 import { ClickSubmit, submitTurnSuccess, submitTurnFailure } from '../actions';
 import * as constants from '../constants';
 import { submitMuleTurn } from '../gamestate/mule';
-import { GameState } from '../types';
 
 // worker Saga: will be fired on CLICK_SUBMIT actions
 function* submitTurn(action: ClickSubmit) {
    try {
-      const gameState: GameState = yield call(submitMuleTurn, action.pendingTurn.actions);
-      yield put(submitTurnSuccess(gameState));
+      const playTurnResponse: MulePlayTurnResponse = yield call(submitMuleTurn, action.pendingTurn.actions);
+      yield put(submitTurnSuccess(playTurnResponse));
    } catch (e) {
       yield put(submitTurnFailure(e));
    }

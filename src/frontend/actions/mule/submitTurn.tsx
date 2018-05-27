@@ -1,16 +1,16 @@
+import { MulePlayTurnResponse } from 'mule-sdk-js';
 
 import * as constants from '../../constants';
-import { GameState } from '../../types';
 
 export interface SubmitTurnSuccess {
   type: constants.SUBMIT_TURN_SUCCESS;
-  gameState: GameState;
+  playTurnResponse: MulePlayTurnResponse;
 }
 
-export function submitTurnSuccess(gameState: GameState): SubmitTurnSuccess {
+export function submitTurnSuccess(playTurnResponse: MulePlayTurnResponse): SubmitTurnSuccess {
   return {
     type: constants.SUBMIT_TURN_SUCCESS,
-    gameState,
+    playTurnResponse,
   };
 }
 

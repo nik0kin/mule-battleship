@@ -5,7 +5,7 @@ import Layout from '../components/Layout';
 import * as actions from '../actions/';
 import { StoreState } from '../types/index';
 
-export function mapStateToProps({gameState, ui: {selectedCoord}, pendingTurn}: StoreState) {
+export function mapStateToProps({gameState, ui: {selectedCoord}, pendingTurn, isSubmitting}: StoreState) {
 
   return {
     isYourTurn: gameState.mule.isYourTurn,
@@ -13,6 +13,7 @@ export function mapStateToProps({gameState, ui: {selectedCoord}, pendingTurn}: S
     selectedCoord,
     gameState,
     pendingActions: pendingTurn.actions,
+    isSubmitting,
   };
 }
 
