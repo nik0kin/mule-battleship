@@ -33,7 +33,7 @@ X- update mule-frontend to link to battleship
 X- servers-notes folder in notes-repo
 X- update jenkins
   X- mule.tgp.io (domains)
-    - ssl
+   X- ssl
    X- runs newest jenkins
     X- jobs
       - watch/rebuild mdev/mule/mule-models
@@ -41,7 +41,7 @@ X- update jenkins
    X- nginx
    X- mule server
     X- uses zion.tgp.io for db
-      - lock down mongo port, it should only be accessible by localhost and mule.tgp.io
+     X- lock down mongo port, it should only be accessible by localhost and mule.tgp.io
 
 
  - Mule Backend doesnt catch bad id and doesnt send 404

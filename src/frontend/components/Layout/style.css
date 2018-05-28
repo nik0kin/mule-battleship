@@ -41,6 +41,10 @@ h1 {
   font-size: 1rem;
 }
 
+.submit-button:not([disabled]) {
+  cursor: pointer;
+}
+
 .gameboard {
   width: 600px;
 }

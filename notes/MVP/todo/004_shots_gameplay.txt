@@ -1,3 +1,52 @@
 
+  - Poll for new turn
 
- - Poll for new turn
+  - validateTurn
+    - only allow one action
+    - PlaceShips action requires !hasPlacedShips
+
+  - frontend isPlacementMode to false
+    - initial gamestate
+    - after SubmitTurn
+
+  - Dont show opponents ships (without shots)
+
+  - Shot Action
+    - validateQ
+    - doQ
+
+  - Shot UI/UX
+    - Submit Shot turn
+      - lock selection
+    - on Successful Submit
+      - unlock selection
+      - change if the current player is allowed to submit
+      - change right side description to tell the user about the last Shot
+
+
+-----------
+
+Shot Gameplay
+
+  1. User selects 1 Coord, that is not a previous Shot Coord
+
+  2. Submit.
+    Validate:
+      !_.includes(previousShots, (prevShot) => prevShot.id === newShot.id)
+    Do:
+      previousShots.push(newShot)
+
+      Check for ship hits
+        - mark shot as hit/miss for metadata
+        if Hit, check sunk,
+          - set ship.sunk=true and mark metadata?
+
+  3.
+    Current Player sees:
+      - Your Shot Hit/Missed at A4
+
+    Opponent Player sees:
+      - Your opponent fired a Shot at A4 and Hit/Missed
+
+    - playfield updates with X or /
+
