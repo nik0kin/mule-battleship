@@ -20,6 +20,7 @@ export interface GameState {
   theirGrid: Grid<Square>;
 
   isPlacementMode: boolean;
+  isOpponentPlacementMode: boolean;
 
   yourShips: Ship[];
   theirShips: Ship[];

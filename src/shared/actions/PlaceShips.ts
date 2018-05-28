@@ -3,7 +3,7 @@ import { Action, GameState, VariableMap } from 'mule-sdk-js';
 
 import {
   Alignment,
-  getPlayerVariablesFromGameState, PlayerVariablesMap, BattleshipPlayerVariables,
+  getPlayerVariablesFromGameState, PlayerVariablesMap,
   Ship,
 } from '../';
 import { Coord } from '../mule-common';
@@ -69,12 +69,10 @@ export function doesShipIdExistInShipPlacements(shipPlacements: ShipPlacement[],
   });
 }
 
-export function isPlacementMode(gameState: GameState): boolean {
+export function isPlacementMode(gameState: GameState, lobbyPlayerId: string): boolean {
   const playerVariables: PlayerVariablesMap = getPlayerVariablesFromGameState(gameState);
 
-  return _.some(playerVariables, (playerVars: BattleshipPlayerVariables) => {
-    return !playerVars.hasPlacedShips;
-  });
+  return !playerVariables[lobbyPlayerId].hasPlacedShips;
 }
 
 export function getAllShipsIncludingPendingActions(lobbyPlayerId: string, playersShips: Ship[], pendingActions: Action[]): Ship[] {

@@ -46,3 +46,6 @@ X- update jenkins
 
  - Mule Backend doesnt catch bad id and doesnt send 404
  - Mule SDK doesnt reject promise if its 400
+
+ - does Mule Backend catch it if a player players out of Turn
+   - I saw validateTurn reject a Turn but I expected it to reject because of the wrong player is submitting a Tur

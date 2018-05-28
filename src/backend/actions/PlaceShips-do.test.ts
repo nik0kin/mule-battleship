@@ -15,6 +15,7 @@ const mbackendSdkMock: Partial<MuleStateSdk> = {
     alignment: Alignment.Horizontal
   }),
   setPiece: () => null,
+  persistQ: () => Promise.resolve(),
 };
 
 describe('Action.do: PlaceShipsAction', () => {

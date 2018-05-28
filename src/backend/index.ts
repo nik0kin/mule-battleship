@@ -5,6 +5,7 @@ import { PLACE_SHIPS_MULE_ACTION } from '../shared';
 import customBoardSettingsValidator from './hooks/customBoardSettingsValidator';
 import boardGenerator from './hooks/boardGenerator';
 import gameStart from './hooks/gameStart';
+import validateTurn from './hooks/validateTurn';
 // import progressTurn from './hooks/progressTurn';
 import placeShipsAction from './actions/PlaceShips';
 
@@ -19,6 +20,7 @@ const bundleCode: BundleCode = {
   //  'FireShot': require('./actions/FireShot')
   },
 
+  validateTurn,
   // progressTurn
   // winCondition: require('./code/winCondition')
 };

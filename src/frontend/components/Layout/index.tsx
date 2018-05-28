@@ -40,7 +40,7 @@ function Layout({ isYourTurn, selectedCoord, gameState, players, pendingActions,
           <div className="current-turn-info">
             <div> Turn {gameState.mule.currentTurn} </div>
             <WaitingIndicator/>
-            <div className="short-description"> {getShortDescription(isYourTurn)} </div>
+            <div className="short-description"> {getShortDescription(isYourTurn, gameState.isPlacementMode)} </div>
           </div>
           <button
             className="submit-button"
@@ -51,6 +51,7 @@ function Layout({ isYourTurn, selectedCoord, gameState, players, pendingActions,
               isYourTurn,
               theirName,
               gameState.isPlacementMode,
+              gameState.isOpponentPlacementMode,
               shipsLeftToBePlaced,
               selectedCoord,
             )}
@@ -81,12 +82,17 @@ function getSubmitButtonText(
   isYourTurn: boolean,
   opponentName: string,
   isPlacementMode: boolean,
+  isOpponentPlacementMode: boolean,
   shipsLeftToBePlaced: number,
   selectedCoord?: Coord
 ): string {
 
   if (!isYourTurn) {
-    return `Waiting on ${opponentName}\'s Ship Placement`;
+    if (isOpponentPlacementMode) {
+      return `Waiting on ${opponentName}\'s Ship Placement`;
+    } else {
+      return `Waiting on ${opponentName}\ to Fire a Shot`;
+    }
   }
 
   if (shipsLeftToBePlaced) {
@@ -120,10 +126,18 @@ function getAmountOfShipsRemainingToPlace(isPlacementMode: boolean, pendingActio
   }
 }
 
-function getShortDescription(isYourTurn: boolean): string {
-  if (isYourTurn) {
-    return 'Your Placement';
+function getShortDescription(isYourTurn: boolean, isPlacementMode: boolean): string {
+  if  (isPlacementMode) {
+    if (isYourTurn) {
+      return 'Your Placement';
+    } else {
+      return 'Opponent Placement';
+    }
   } else {
-    return 'Opponent Placement';
+    if (isYourTurn) {
+      return 'Your Shot';
+    } else {
+      return 'Opponent Shot';
+    }
   }
 }

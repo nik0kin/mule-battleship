@@ -1,12 +1,12 @@
 
   - Poll for new turn
 
-  - validateTurn
+ X- validateTurn
     - only allow one action
     - PlaceShips action requires !hasPlacedShips
 
   - frontend isPlacementMode to false
-    - initial gamestate
+   X- initial gamestate
     - after SubmitTurn
 
   - Dont show opponents ships (without shots)

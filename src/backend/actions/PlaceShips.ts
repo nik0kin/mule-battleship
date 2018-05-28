@@ -111,6 +111,8 @@ function doQ(M: MuleStateSdk, lobbyPlayerId: string, _actionParams: VariableMap)
     M.setPiece('' + shipPlacement.shipId, getPieceStateFromShip(ship));
   });
 
+  M.setPlayerVariable(lobbyPlayerId, 'hasPlacedShips', true);
+
   return M.persistQ();
 }
 

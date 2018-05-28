@@ -143,7 +143,8 @@ export async function getBattleshipGameState(): Promise<GameState> {
     yourGrid: getGridFromGameBoard(gridSize, loadedGameBoard, currentPlayerRel),
     theirGrid: getGridFromGameBoard(gridSize, loadedGameBoard, opponentPlayerRel),
 
-    isPlacementMode: isPlacementMode(loadedGameState),
+    isPlacementMode: isPlacementMode(loadedGameState, currentPlayerRel),
+    isOpponentPlacementMode: isPlacementMode(loadedGameState, opponentPlayerRel),
 
     yourShips: getShipsFromGameState(loadedGameState, currentPlayerRel),
     theirShips: getShipsFromGameState(loadedGameState, opponentPlayerRel),
