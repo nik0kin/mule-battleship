@@ -31,16 +31,18 @@ x- see gen map & placement actions in a "real" mule environment
 X- update mule-frontend to link to battleship
 
 X- servers-notes folder in notes-repo
- - update jenkins
+X- update jenkins
   X- mule.tgp.io (domains)
     - ssl
    X- runs newest jenkins
-     - jobs
+    X- jobs
       - watch/rebuild mdev/mule/mule-models
       - watch/rebuild battleship
    X- nginx
-    - mule server
-     - uses zion.tgp.io for db
+   X- mule server
+    X- uses zion.tgp.io for db
       - lock down mongo port, it should only be accessible by localhost and mule.tgp.io
+
+
  - Mule Backend doesnt catch bad id and doesnt send 404
  - Mule SDK doesnt reject promise if its 400
