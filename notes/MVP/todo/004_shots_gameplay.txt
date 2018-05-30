@@ -1,15 +1,15 @@
 
-  - Poll for new turn
-    - every 30s check if history.currentTurn is different that state.gamestate.currentTurn
+ X- Poll for new turn
+   X- every 30s check if history.currentTurn is different that state.gamestate.currentTurn
     - redux
       - pollForNewTurn action/saga
        X- uses mule/data function checkForNewTurn(currentTurn: number): Promise<boolean>
        X- uses mule/data function getNewTurn(turnNumber: number): Promise<Turn>
-        - emits newTurn(getNewTurn())
-      - newTurn action
+       X- emits newTurn(getNewTurn())
+     X- newTurn action
         - turn: Turn
-      - newTurnReducer
-        - adds Turn to GameState
+     X- newTurnReducer
+       X- adds Turn to GameState
     - UX
       - ui.polledNewTurn = true
 
@@ -17,11 +17,11 @@
     - only allow one action
     - PlaceShips action requires !hasPlacedShips
 
-  - frontend isPlacementMode to false
+ X- frontend isPlacementMode to false
    X- initial gamestate
-    - after SubmitTurn
+   X- after SubmitTurn
 
-  - Dont show opponents ships (without shots)
+ X- Dont show opponents ships (without shots)
 
   - Shot Action
     - validateQ

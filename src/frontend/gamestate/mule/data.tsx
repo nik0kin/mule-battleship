@@ -147,7 +147,7 @@ export async function getBattleshipGameState(): Promise<GameState> {
     isOpponentPlacementMode: isPlacementMode(loadedGameState, opponentPlayerRel),
 
     yourShips: getShipsFromGameState(loadedGameState, currentPlayerRel),
-    theirShips: getShipsFromGameState(loadedGameState, opponentPlayerRel),
+    theirShips: [], // this should be hidden knowledge getSunkenShipsFromGameState(loadedGameState, opponentPlayerRel),
 
     yourShots: getShotsFromGameState(loadedGameState, currentPlayerRel),
     theirShots: getShotsFromGameState(loadedGameState, opponentPlayerRel),
