@@ -45,7 +45,9 @@ X- update jenkins
 
 
  - Mule Backend doesnt catch bad id and doesnt send 404
+  - example: http://localhost:313/webservices/games/5b048b2daebfc56553f52d77/history/888
  - Mule SDK doesnt reject promise if its 400
+
 
  - does Mule Backend catch it if a player players out of Turn
    - I saw validateTurn reject a Turn but I expected it to reject because of the wrong player is submitting a Tur

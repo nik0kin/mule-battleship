@@ -29,3 +29,6 @@ export type SUBMIT_TURN_SUCCESS = typeof SUBMIT_TURN_SUCCESS;
 
 export const SUBMIT_TURN_FAILURE = 'SUBMIT_TURN_FAILURE';
 export type SUBMIT_TURN_FAILURE = typeof SUBMIT_TURN_FAILURE;
+
+export const LOAD_NEW_TURN = 'LOAD_NEW_TURN';
+export type LOAD_NEW_TURN = typeof LOAD_NEW_TURN;

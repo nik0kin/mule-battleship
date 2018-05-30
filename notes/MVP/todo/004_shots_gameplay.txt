@@ -1,5 +1,17 @@
 
   - Poll for new turn
+    - every 30s check if history.currentTurn is different that state.gamestate.currentTurn
+    - redux
+      - pollForNewTurn action/saga
+       X- uses mule/data function checkForNewTurn(currentTurn: number): Promise<boolean>
+       X- uses mule/data function getNewTurn(turnNumber: number): Promise<Turn>
+        - emits newTurn(getNewTurn())
+      - newTurn action
+        - turn: Turn
+      - newTurnReducer
+        - adds Turn to GameState
+    - UX
+      - ui.polledNewTurn = true
 
  X- validateTurn
     - only allow one action
@@ -16,13 +28,14 @@
     - doQ
 
   - Shot UI/UX
+    - Right side description
     - Submit Shot turn
       - lock selection
     - on Successful Submit
       - unlock selection
       - change if the current player is allowed to submit
       - change right side description to tell the user about the last Shot
-
+    - Shot/Turn history
 
 -----------
 

@@ -8,7 +8,7 @@ import { loadMuleState } from './actions';
 import App from './App';
 import { generalReducer } from './reducers/index';
 import { StoreState, GameState } from './types/index';
-import { loadMuleStateSaga, submitTurnSaga } from './sagas';
+import { loadMuleStateSaga, pollForNewTurnSaga, submitTurnSaga } from './sagas';
 
 import './index.css';
 
@@ -34,6 +34,7 @@ export function bootstrapFrontend(): void {
   );
 
   sagaMiddleware.run(loadMuleStateSaga);
+  sagaMiddleware.run(pollForNewTurnSaga);
   sagaMiddleware.run(submitTurnSaga);
 
   // Setup React w/ Redux Store
