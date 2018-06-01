@@ -28,8 +28,8 @@
     "redux-saga": "^0.16.0"
   },
   "scripts": {
-    "packageSdk": "(yarn unlink mule-sdk-js && echo 'no link') && rm -rf ./node_modules/mule-sdk-js && yarn add nik0kin/mule-sdk-js#v3 --no-lockfile",
-    "devSdk": "(yarn unlink mule-sdk-js && echo 'no link') && rm -rf ./node_modules/mule-sdk-js && yarn link mule-sdk-js",
+    "packageSdk": "(yarn unlink mule-sdk-js || echo 'no link') && rm -rf ./node_modules/mule-sdk-js && yarn add nik0kin/mule-sdk-js#v3 --no-lockfile",
+    "devSdk": "(yarn unlink mule-sdk-js || echo 'no link') && rm -rf ./node_modules/mule-sdk-js && yarn link mule-sdk-js",
     "buildMockSdk": "./buildMockSdk.sh",
     "useMockSdk": "./useMockSdk.sh",
     "reMockSdk": "yarn run packageSdk && yarn run buildMockSdk && yarn run useMockSdk",
