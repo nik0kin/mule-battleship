@@ -12,7 +12,8 @@ const mbackendSdkMock: Partial<MuleStateSdk> = {
     ownerId: 'p1',
     shipType: ShipType.Battleship,
     coord: { x: -1, y: -1 },
-    alignment: Alignment.Horizontal
+    alignment: Alignment.Horizontal,
+    sunk: false,
   }),
 };
 

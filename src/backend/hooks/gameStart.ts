@@ -19,7 +19,8 @@ const gameStartHook: GameStartHook = (M: MuleStateSdk) => {
           ownerId: lobbyPlayerId,
           shipType,
           coord: { x: -1, y: -1 },
-          alignment: Alignment.Horizontal
+          alignment: Alignment.Horizontal,
+          sunk: false,
         };
         M.addPiece(getPieceStateFromShip(newShip));
       });

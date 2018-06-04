@@ -1,4 +1,4 @@
-import { GameState, PieceState } from 'mule-sdk-js';
+import { GameState, MuleStateSdk, PieceState } from 'mule-sdk-js';
 import { includes, values } from 'lodash';
 
 import { Alignment } from './types/alignment';
@@ -14,6 +14,7 @@ export function getPieceStateFromShip(ship: Ship): PieceState {
     ownerId: String(ship.ownerId),
     attributes: {
       alignment: ship.alignment,
+      sunk: ship.sunk,
     }
   };
 }
@@ -40,13 +41,22 @@ export function getShipFromPieceSpace(pieceState: PieceState): Ship {
     ownerId: pieceState.ownerId,
     shipType: getShipTypeFromClass(pieceState.class),
     coord: getCoordFromString(pieceState.locationId),
-    alignment: pieceState.attributes.alignment as Alignment
+    alignment: pieceState.attributes.alignment as Alignment,
+    sunk: pieceState.attributes.sunk as boolean,
   };
 }
 
-export function getShipsFromGameState(gameState: GameState, playerRel: string): Ship[] {
+export function getShipsFromGameState(gameState: GameState, lobbyPlayerId: string): Ship[] {
   return gameState.pieces
     .filter(isShipType)
-    .filter((pieceState: PieceState) => pieceState.ownerId === String(playerRel))
+    .filter((pieceState: PieceState) => pieceState.ownerId === String(lobbyPlayerId))
+    .map(getShipFromPieceSpace);
+}
+
+export function getShipsFromM(M: MuleStateSdk, lobbyPlayerId: string): Ship[] {
+  return M.getPieces({
+    ownerId: lobbyPlayerId,
+  })
+    .filter(isShipType)
     .map(getShipFromPieceSpace);
 }

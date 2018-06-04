@@ -24,8 +24,8 @@
  X- Dont show opponents ships (without shots)
 
   - Shot Action
-    - validateQ
-    - doQ
+   X- validateQ
+   X- doQ
 
   - Shot UI/UX
     - Right side description

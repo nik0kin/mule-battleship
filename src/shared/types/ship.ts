@@ -1,7 +1,8 @@
+import { map } from 'lodash';
 
-import { Coord } from '../mule-common';
+import { addCoords, Coord } from '../mule-common';
 
-import { Alignment } from './alignment';
+import { Alignment, getAlignmentOffset } from './alignment';
 
 export interface Ship {
   _id: string;
@@ -10,6 +11,7 @@ export interface Ship {
   shipType: ShipType;
   coord: Coord;
   alignment: Alignment;
+  sunk: boolean;
 }
 
 export enum ShipType {
@@ -89,4 +91,16 @@ export const ShipStructures: Map<ShipType, ShipStructure> = new Map([
 
 export function getShipStructure(shipType: ShipType): ShipStructure {
   return ShipStructures.get(shipType) as ShipStructure;
+}
+
+export function getShipStructureCoords(ship: Ship): Coord[] {
+  return map(
+    getShipStructure(ship.shipType).squares,
+    (relativeCoord: Coord) => {
+      return addCoords(
+        ship.coord,
+        getAlignmentOffset(relativeCoord, ship.alignment),
+      );
+    },
+  );
 }

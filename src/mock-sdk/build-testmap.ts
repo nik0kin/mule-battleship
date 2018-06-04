@@ -45,6 +45,7 @@ const ships: Ship[] = [
     shipType: ShipType.Carrier,
     coord: { x: 1, y: 1 },
     alignment: Alignment.Horizontal,
+    sunk: false,
   },
   {
     _id: '2',
@@ -53,6 +54,7 @@ const ships: Ship[] = [
     shipType: ShipType.Battleship,
     coord: { x: 1, y: 3 },
     alignment: Alignment.Vertical,
+    sunk: false,
   },
   {
     _id: '3',
@@ -61,6 +63,7 @@ const ships: Ship[] = [
     shipType: ShipType.Cruiser,
     coord: { x: 9, y: 1 },
     alignment: Alignment.Vertical,
+    sunk: false,
   },
   {
     _id: '4',
@@ -69,6 +72,7 @@ const ships: Ship[] = [
     shipType: ShipType.Destroyer,
     coord: { x: 5, y: 5 },
     alignment: Alignment.Horizontal,
+    sunk: false,
   },
   {
     _id: '5',
@@ -77,6 +81,7 @@ const ships: Ship[] = [
     shipType: ShipType.Destroyer,
     coord: { x: 5, y: 7 },
     alignment: Alignment.Horizontal,
+    sunk: false,
   },
   {
     _id: '6',
@@ -85,6 +90,7 @@ const ships: Ship[] = [
     shipType: ShipType.Submarine,
     coord: { x: 9, y: 9 },
     alignment: Alignment.Horizontal,
+    sunk: false,
   },
   {
     _id: '7',
@@ -93,6 +99,7 @@ const ships: Ship[] = [
     shipType: ShipType.Submarine,
     coord: { x: 4, y: 8 },
     alignment: Alignment.Horizontal,
+    sunk: false,
   },
 ];
 

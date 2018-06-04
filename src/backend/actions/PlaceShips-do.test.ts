@@ -12,10 +12,12 @@ const mbackendSdkMock: Partial<MuleStateSdk> = {
     ownerId: 'p1',
     shipType: ShipType.Battleship,
     coord: { x: -1, y: -1 },
-    alignment: Alignment.Horizontal
+    alignment: Alignment.Horizontal,
+    sunk: false,
   }),
   setPiece: () => null,
   persistQ: () => Promise.resolve(),
+  setPlayerVariable: () => null, // TODO add spys and check if hasPlacedShips has been set to true
 };
 
 describe('Action.do: PlaceShipsAction', () => {
