@@ -6,7 +6,7 @@ import { loadNewTurn, LoadMuleStateSuccess, setWinner } from '../actions';
 import * as constants from '../constants';
 import { checkForNewTurnAndWinner, getNewTurn, NewTurnAndWinner } from '../gamestate/mule';
 
-const POLL_INTERVAL = 15;
+const POLL_INTERVAL = 5;
 
 let isPolling: boolean = false;
 let isGameOver: boolean = false;
