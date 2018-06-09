@@ -1,4 +1,4 @@
-import { each, reduce, times } from 'lodash';
+import { each, filter, reduce, times } from 'lodash';
 
 import {
   initializeMuleSdk,
@@ -12,7 +12,7 @@ import {
 
 import {
   getGridFromGameBoard, getShipsFromGameState, getShotsFromGameState,
-  isPlacementMode, RULEBUNDLE_NAME
+  isPlacementMode, RULEBUNDLE_NAME, Ship,
 } from '../../../shared';
 import {
   GameState,
@@ -149,7 +149,7 @@ export async function getBattleshipGameState(): Promise<GameState> {
     isOpponentPlacementMode: isPlacementMode(loadedGameState, opponentPlayerRel),
 
     yourShips: getShipsFromGameState(loadedGameState, currentPlayerRel),
-    theirShips: [], // this should be hidden knowledge getSunkenShipsFromGameState(loadedGameState, opponentPlayerRel),
+    theirShips: getSunkenShipsFromGameState(loadedGameState, opponentPlayerRel),
 
     yourShots: getShotsFromGameState(loadedGameState, currentPlayerRel),
     theirShots: getShotsFromGameState(loadedGameState, opponentPlayerRel),
@@ -173,4 +173,8 @@ function getPreviousTurnsArray(fullHistory: History): Turn[] {
     turns = turns.concat(roundTurns);
   });
   return turns;
+}
+
+function getSunkenShipsFromGameState(gameState: MuleGameState, lobbyPlayerId: string): Ship[] {
+  return filter(getShipsFromGameState(gameState, lobbyPlayerId), (ship: Ship) => ship.sunk);
 }

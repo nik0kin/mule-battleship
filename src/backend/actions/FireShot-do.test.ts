@@ -1,7 +1,10 @@
 
 import { MuleStateSdk } from 'mule-sdk-js';
 
-import { Alignment, BattleshipPlayerVariables, getPieceStateFromShip, FireShotMuleActionParams, ShipType } from '../../shared';
+import {
+  Alignment, BattleshipPlayerVariables, FireShotMuleActionMetaData,
+  getPieceStateFromShip, FireShotMuleActionParams, ShipType,
+} from '../../shared';
 
 import fireShotAction from './FireShot';
 
@@ -57,8 +60,8 @@ describe('Action.do: FireShotAction', () => {
       hit: false,
     }];
     fireShotAction.doQ(mbackendSdkMock as MuleStateSdk, 'p1', validActionParams as any)
-      .then((metadata: any) => {
-        expect(metadata.shipSunk).toBeTruthy();
+      .then((metadata: FireShotMuleActionMetaData) => {
+        expect(metadata.sunkShip).toBeTruthy();
         done();
       });
   });
@@ -69,8 +72,8 @@ describe('Action.do: FireShotAction', () => {
       hit: false,
     }];
     fireShotAction.doQ(mbackendSdkMock as MuleStateSdk, 'p1', validActionParams as any)
-      .then((metadata: any) => {
-        expect(metadata.shipSunk).toBeFalsy();
+      .then((metadata: FireShotMuleActionMetaData) => {
+        expect(metadata.sunkShip).toBeFalsy();
         expect(metadata.newShot.hit).toBeTruthy();
         done();
       });

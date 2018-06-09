@@ -22,7 +22,7 @@ export function getFireShotMuleActionFromParams(params: FireShotMuleActionParams
 
 export interface FireShotMuleActionMetaData {
   newShot: Shot;
-  shipSunk: boolean;
+  sunkShip: Ship | undefined;
 }
 
 export function isShipSunk(ship: Ship, shots: Shot[]): boolean {

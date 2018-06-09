@@ -6,5 +6,5 @@ export function numberToLetter(i: number): string {
 }
 
 export function getBattleshipCoordString(coord: Coord): string {
-  return numberToLetter(coord.x + 1) + (coord.y + 1);
+  return numberToLetter(coord.y + 1) + (coord.x + 1);
 }

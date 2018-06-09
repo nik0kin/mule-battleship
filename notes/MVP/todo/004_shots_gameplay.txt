@@ -38,7 +38,7 @@
       - Full Screen message
    X- Shot/Turn history
    X- show shots on left ship list
-    - show sunk Ships
+   X- show sunk Ships
 
 -----------
 

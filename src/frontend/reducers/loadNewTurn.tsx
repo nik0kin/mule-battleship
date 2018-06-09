@@ -1,6 +1,9 @@
 import { Action } from 'mule-sdk-js';
 
-import { getAllShipsIncludingPendingActions, PLACE_SHIPS_MULE_ACTION, Shot } from '../../shared';
+import {
+  FireShotMuleActionMetaData, getAllShipsIncludingPendingActions,
+  PLACE_SHIPS_MULE_ACTION, Ship,
+} from '../../shared';
 
 import { StoreState } from '../types';
 import { LoadNewTurn } from '../actions';
@@ -36,12 +39,15 @@ export function loadNewTurnReducer(state: StoreState, loadNewTurn: LoadNewTurn):
         isSubmitting: false,
       };
     } else { // FIRE SHOT
+      const fireShotMetadata: FireShotMuleActionMetaData = (action.metadata as any);
+      const sunkShip: Ship | undefined = fireShotMetadata.sunkShip;
       return {
         ...state,
         gameState: {
           ...state.gameState,
           mule: newMuleState,
-          yourShots: [...state.gameState.yourShots, (action.metadata as any).newShot as any as Shot], // TODO make pure fn & interface for looking at an Actions metadata (per action type)
+          yourShots: [...state.gameState.yourShots, fireShotMetadata.newShot],
+          theirShips: sunkShip ? [...state.gameState.theirShips, sunkShip] : state.gameState.theirShips,
         },
         pendingTurn: emptyTurn,
         ui: getNoSelectedCoordUiState(state.ui),
@@ -64,12 +70,13 @@ export function loadNewTurnReducer(state: StoreState, loadNewTurn: LoadNewTurn):
         isSubmitting: false,
       };
   } else { // FIRE SHOT
+    const fireShotMetadata: FireShotMuleActionMetaData = (action.metadata as any);
     return {
       ...state,
       gameState: {
         ...state.gameState,
         mule: newMuleState,
-        theirShots: [...state.gameState.theirShots, (action.metadata as any).newShot as any as Shot], // TODO make pure fn & interface for looking at an Actions metadata (per action type)
+        theirShots: [...state.gameState.theirShots, fireShotMetadata.newShot], 
       },
       ui: getNoSelectedCoordUiState(state.ui),
       isSubmitting: false,

@@ -198,15 +198,17 @@ function getHintDescription(
     
       {!isPlacementMode && waslastTurnByPlayer &&
         <span>
-          {fireShotMeta.newShot.hit && <span>Your Shot HIT a Ship at {getBattleshipCoordString(fireShotMeta.newShot.coord)}!</span>}
+          {fireShotMeta.newShot.hit && <span> Your Shot HIT a Ship at {getBattleshipCoordString(fireShotMeta.newShot.coord)}! </span>}
           {!fireShotMeta.newShot.hit && <span>Your Shot missed at {getBattleshipCoordString(fireShotMeta.newShot.coord)}</span>}
+          {fireShotMeta.sunkShip && <span>You sunk a {fireShotMeta.sunkShip.shipType}!</span>}
           <p> Waiting for your opponent to take a Shot </p>
         </span>
       }
       {!isPlacementMode && !waslastTurnByPlayer &&
         <span>
-          {fireShotMeta.newShot.hit && <span> Your Ship has been hit at {getBattleshipCoordString(fireShotMeta.newShot.coord)}</span>}
+          {fireShotMeta.newShot.hit && <span> Your Ship has been hit at {getBattleshipCoordString(fireShotMeta.newShot.coord)}. </span>}
           {!fireShotMeta.newShot.hit && <span> Your opponent missed at {getBattleshipCoordString(fireShotMeta.newShot.coord)}</span>}
+          {fireShotMeta.sunkShip && <span>Your {fireShotMeta.sunkShip.shipType} has been sunk!</span>}
           <p> Please click below to select a target location to fire a Shot </p>
         </span>
       }

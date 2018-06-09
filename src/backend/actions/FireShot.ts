@@ -50,7 +50,7 @@ async function doQ(M: MuleStateSdk, lobbyPlayerId: string, _actionParams: Variab
   const gridSize: Coord = {x: 10, y: 10}; // M.getCustomBoardSettings();
   const playerVariables: BattleshipPlayerVariables = M.getPlayerVariables(lobbyPlayerId) as BattleshipPlayerVariables;
   const enemyShips: Ship[] = getShipsFromM(M, lobbyPlayerId === 'p1' ? 'p2' : 'p1');
-  let shipSunk: boolean = false;
+  let _isShipSunk: boolean = false;
 
   const newShot: Shot = {
     hit: false,
@@ -73,7 +73,7 @@ async function doQ(M: MuleStateSdk, lobbyPlayerId: string, _actionParams: Variab
 
     if (isShipSunk(shipGettingShot, allShots)) {
       shipGettingShot.sunk = true;
-      shipSunk = true;
+      _isShipSunk = true;
       M.setPiece(String(shipGettingShot.id), getPieceStateFromShip(shipGettingShot));
     }
   }
@@ -85,7 +85,7 @@ async function doQ(M: MuleStateSdk, lobbyPlayerId: string, _actionParams: Variab
 
   const metadata: FireShotMuleActionMetaData = {
     newShot,
-    shipSunk,
+    sunkShip: _isShipSunk ? shipGettingShot : undefined,
   };
 
   return metadata;
