@@ -5,8 +5,9 @@ import { Action } from 'mule-sdk-js';
 import './style.css';
 import { GameState } from '../../types';
 import {
-  Coord, doesShipIdExistInShipPlacements,
-  getAllShipsIncludingPendingActions, getInvalidShipPlacements, getPlaceShipsParamsFromAction, getShotOnSquare,
+  Coord, doesShipIdExistInShipPlacements, FireShotMuleActionMetaData,
+  getAllShipsIncludingPendingActions, getBattleshipCoordString, getInvalidShipPlacements,
+  getPlaceShipsParamsFromAction, getShotOnSquare,
   getShipOnSquare, isValidCoord,
   Ship, ShipPlacement,
   numberToLetter, Shot,
@@ -62,11 +63,12 @@ function Playfield({ gameState, selectedCoord, selectedShipBeingPlaced, pendingA
         )}
 
         <div className="hint">
-          Click the ship on the left, then click a spot on your grid, click again to rotate
-
-          {!!invalidShipPlacements.length && <div>
-            Fix colliding ships before you submit your ship placements.
-          </div>}
+          {getHintDescription(
+            gameState.isPlacementMode,
+            invalidShipPlacements.length > 0,
+            gameState.mule.previousTurns[gameState.mule.currentTurn - 2].playerTurns[gameState.mule.isYourTurn ? gameState.theirLobbyPlayerId : gameState.yourLobbyPlayerId].actions[0], // TODO helper fn?
+            !gameState.mule.isYourTurn,
+          )}
         </div>
       </div>
       <div className={theirShipsClassNames}>
@@ -182,4 +184,38 @@ function getRow(
   );
 }
 
+function getHintDescription(
+  isPlacementMode: boolean,
+  hasInvalidShipPlacements: boolean,
+  lastAction: Action,
+  waslastTurnByPlayer: boolean,
+): JSX.Element {
+  const fireShotMeta: FireShotMuleActionMetaData = lastAction.metadata as any as FireShotMuleActionMetaData;
+
+  return (
+    <div>
+      {isPlacementMode && <span>Click the ship on the left, then click a spot on your grid, click again to rotate</span>}
+    
+      {!isPlacementMode && waslastTurnByPlayer &&
+        <span>
+          {fireShotMeta.newShot.hit && <span>Your Shot HIT a Ship at {getBattleshipCoordString(fireShotMeta.newShot.coord)}!</span>}
+          {!fireShotMeta.newShot.hit && <span>Your Shot missed at {getBattleshipCoordString(fireShotMeta.newShot.coord)}</span>}
+          <p> Waiting for your opponent to take a Shot </p>
+        </span>
+      }
+      {!isPlacementMode && !waslastTurnByPlayer &&
+        <span>
+          {fireShotMeta.newShot.hit && <span> Your Ship has been hit at {getBattleshipCoordString(fireShotMeta.newShot.coord)}</span>}
+          {!fireShotMeta.newShot.hit && <span> Your opponent missed at {getBattleshipCoordString(fireShotMeta.newShot.coord)}</span>}
+          <p> Please click below to select a target location to fire a Shot </p>
+        </span>
+      }
+
+      {hasInvalidShipPlacements && <p>
+        Fix colliding ships before you submit your ship placements.
+      </p>}
+    </div>
+  );
+  
+}
 

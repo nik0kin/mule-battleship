@@ -28,13 +28,13 @@
    X- doQ
 
   - Shot UI/UX
-    - Right side description
+   X- Right side description
    X- Submit Shot turn
      X- lock selection
     - on Successful Submit
      X- unlock selection
      X- change if the current player is allowed to submit
-      - change right side description to tell the user about the last Shot
+     X- change right side description to tell the user about the last Shot
       - Full Screen message
    X- Shot/Turn history
    X- show shots on left ship list
