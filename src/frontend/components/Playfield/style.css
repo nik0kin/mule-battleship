@@ -101,3 +101,16 @@ td.miss-shot {
 td.selected {
   border: 2px solid black;
 }
+
+
+/* Game Over */
+
+table.shot-percentage {
+  border: 0;
+  width: 100%;
+}
+
+table.shot-percentage td {
+  border: 0;
+  padding: 3px;
+}

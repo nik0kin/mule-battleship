@@ -41,13 +41,20 @@ function Layout({ isYourTurn, selectedCoord, gameState, players, pendingActions,
           <div className="current-turn-info">
             <div> Turn {gameState.mule.currentTurn} </div>
             {false && !isYourTurn && <WaitingIndicator/>}
-            <div className="short-description"> {getShortDescription(isYourTurn, gameState.isPlacementMode)} </div>
+            <div className="short-description">
+              {getShortDescription(
+                isYourTurn,
+                gameState.isPlacementMode,
+                gameState.isGameOver,
+                gameState.yourLobbyPlayerId === gameState.mule.winner,
+              )}
+            </div>
           </div>
           <button
             className="submit-button"
             onClick={() => clickSubmit({actions: pendingActions})}
             disabled={
-              isSubmitting || !isYourTurn
+              isSubmitting || !isYourTurn || gameState.isGameOver
               || isSubmitButtonDisabled(
                 gameState.isPlacementMode,
                 shipsLeftToBePlaced,
@@ -61,6 +68,7 @@ function Layout({ isYourTurn, selectedCoord, gameState, players, pendingActions,
               theirName,
               gameState.isPlacementMode,
               gameState.isOpponentPlacementMode,
+              gameState.isGameOver,
               shipsLeftToBePlaced,
               selectedCoord,
             )}
@@ -103,9 +111,12 @@ function getSubmitButtonText(
   opponentName: string,
   isPlacementMode: boolean,
   isOpponentPlacementMode: boolean,
+  isGameOver: boolean,
   shipsLeftToBePlaced: number,
   selectedCoord?: Coord
 ): string {
+
+  if (isGameOver) return 'Game Over';
 
   if (!isYourTurn) {
     if (isOpponentPlacementMode) {
@@ -142,8 +153,15 @@ function getAmountOfShipsRemainingToPlace(isPlacementMode: boolean, pendingActio
   }
 }
 
-function getShortDescription(isYourTurn: boolean, isPlacementMode: boolean): string {
-  if  (isPlacementMode) {
+function getShortDescription(
+  isYourTurn: boolean,
+  isPlacementMode: boolean,
+  isGameOver: boolean,
+  isPlayerWinner: boolean,
+): string {
+  if (isGameOver) {
+    return isPlayerWinner ? 'You Won' : 'You Lost';
+  } else if (isPlacementMode) {
     if (isYourTurn) {
       return 'Your Placement';
     } else {

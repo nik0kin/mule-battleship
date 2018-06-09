@@ -9,3 +9,5 @@ New Turn modal - fades after 3s?
  - "New Turn: You sunk Bob's Cruiser!"
 
 Select opponents shot on currentPlayers grid
+
+Mobile usability

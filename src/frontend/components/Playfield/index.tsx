@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as _ from 'lodash';
+import { reduce, times } from 'lodash';
 import { Action } from 'mule-sdk-js';
 
 import './style.css';
@@ -65,9 +65,12 @@ function Playfield({ gameState, selectedCoord, selectedShipBeingPlaced, pendingA
         <div className="hint">
           {getHintDescription(
             gameState.isPlacementMode,
+            gameState.isGameOver,
+            gameState.mule.winner === gameState.yourLobbyPlayerId,
             invalidShipPlacements.length > 0,
             gameState.mule.previousTurns[gameState.mule.currentTurn - 2].playerTurns[gameState.mule.isYourTurn ? gameState.theirLobbyPlayerId : gameState.yourLobbyPlayerId].actions[0], // TODO helper fn?
             !gameState.mule.isYourTurn,
+            gameState, // yolo
           )}
         </div>
       </div>
@@ -103,7 +106,7 @@ function getGrid(
   selectedCoord?: Coord
 ) {
   let gridHtml: Array<JSX.Element> = [];
-  _.times(gridSize.y + 1, (i) => {
+  times(gridSize.y + 1, (i) => {
     gridHtml.push(getRow(
       isPlacementMode,
       lobbyPlayerId,
@@ -139,7 +142,7 @@ function getRow(
   selectedCoord?: Coord,
 ) {
   let rowHtml: Array<JSX.Element> = [];
-  _.times(gridSize.x + 1, (x) => {
+  times(gridSize.x + 1, (x) => {
     const coord: Coord = { x: x - 1, y: y - 1 };
     let _class: string = y === 0 ? 'top ' : '';
     _class += x === 0 ? 'left ' : '';
@@ -186,9 +189,12 @@ function getRow(
 
 function getHintDescription(
   isPlacementMode: boolean,
+  isGameOver: boolean,
+  isPlayerWinner: boolean,
   hasInvalidShipPlacements: boolean,
   lastAction: Action,
   waslastTurnByPlayer: boolean,
+  gameState: GameState,
 ): JSX.Element {
   const fireShotMeta: FireShotMuleActionMetaData = lastAction.metadata as any as FireShotMuleActionMetaData;
 
@@ -201,7 +207,7 @@ function getHintDescription(
           {fireShotMeta.newShot.hit && <span> Your Shot HIT a Ship at {getBattleshipCoordString(fireShotMeta.newShot.coord)}! </span>}
           {!fireShotMeta.newShot.hit && <span>Your Shot missed at {getBattleshipCoordString(fireShotMeta.newShot.coord)}</span>}
           {fireShotMeta.sunkShip && <span>You sunk a {fireShotMeta.sunkShip.shipType}!</span>}
-          <p> Waiting for your opponent to take a Shot </p>
+          {!isGameOver && <p> Waiting for your opponent to take a Shot </p>}
         </span>
       }
       {!isPlacementMode && !waslastTurnByPlayer &&
@@ -209,9 +215,10 @@ function getHintDescription(
           {fireShotMeta.newShot.hit && <span> Your Ship has been hit at {getBattleshipCoordString(fireShotMeta.newShot.coord)}. </span>}
           {!fireShotMeta.newShot.hit && <span> Your opponent missed at {getBattleshipCoordString(fireShotMeta.newShot.coord)}</span>}
           {fireShotMeta.sunkShip && <span>Your {fireShotMeta.sunkShip.shipType} has been sunk!</span>}
-          <p> Please click below to select a target location to fire a Shot </p>
+          {!isGameOver && <p> Please click below to select a target location to fire a Shot </p>}
         </span>
       }
+      {isGameOver && getGameOverDiv(isPlayerWinner, gameState)}
 
       {hasInvalidShipPlacements && <p>
         Fix colliding ships before you submit your ship placements.
@@ -221,3 +228,62 @@ function getHintDescription(
   
 }
 
+function getGameOverDiv(isPlayerWinner: boolean, gameState: GameState): JSX.Element {
+  
+  function getShotPercentableTableRow(playerName: string, shots: Shot[]): JSX.Element {
+    const hits: number = countHits(shots);
+    const misses: number = shots.length - hits;
+    return (
+      <tr>
+        <td>
+          {playerName}
+        </td>
+        <td>
+          {shots.length} Shots
+        </td>
+        <td>
+          {hits} Hits
+        </td>
+        <td>
+          {misses} Misses
+        </td>
+        <td>
+          {Math.floor((hits/shots.length) * 100)}% Hit Percent
+        </td>
+      </tr>
+    );
+  }
+  
+  // TODO calc based on Ship setup (18 = default total shipSquares)
+
+  return (
+    <div>
+      <p> {isPlayerWinner ? 'You Won' : 'You Lost'} </p>
+      <p>
+        <table className="shot-percentage">
+          <tbody>
+            {getShotPercentableTableRow(
+              gameState.mule.players[gameState.yourLobbyPlayerId].name,
+              gameState.yourShots,
+            )}
+            {getShotPercentableTableRow(
+              gameState.mule.players[gameState.theirLobbyPlayerId].name,
+              gameState.theirShots,
+            )}
+          </tbody>
+        </table>
+      </p>
+      {!isPlayerWinner && <p>
+        You needed {(18 - countHits(gameState.yourShots))} more hits to take out your opponents fleet
+      </p>}
+    </div>
+  );
+}
+
+function countHits(shots: Shot[]): number {
+  return reduce(
+    shots,
+    (total: number, shot: Shot) => total + (shot.hit ? 1 : 0),
+    0,
+  );
+}
