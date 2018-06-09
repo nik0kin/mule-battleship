@@ -20,6 +20,11 @@ export function getFireShotMuleActionFromParams(params: FireShotMuleActionParams
   } as Action;
 }
 
+export interface FireShotMuleActionMetaData {
+  newShot: Shot;
+  shipSunk: boolean;
+}
+
 export function isShipSunk(ship: Ship, shots: Shot[]): boolean {
   const shotHitsByCoord: {[stringCoord: string]: boolean} = reduce(
     shots,

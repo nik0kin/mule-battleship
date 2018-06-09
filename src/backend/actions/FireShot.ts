@@ -7,7 +7,7 @@ import {
 import {
   BattleshipPlayerVariables, Coord,
   getShipOnSquare, getShipsFromM, getShotOnSquare, getPieceStateFromShip, isShipSunk,
-  isValidCoord, FireShotMuleActionParams, setPlayerVariable, Ship, Shot,
+  isValidCoord, FireShotMuleActionParams, FireShotMuleActionMetaData, setPlayerVariable, Ship, Shot,
 } from '../../shared';
 
 
@@ -83,10 +83,12 @@ async function doQ(M: MuleStateSdk, lobbyPlayerId: string, _actionParams: Variab
 
   await M.persistQ();
 
-  return {
+  const metadata: FireShotMuleActionMetaData = {
     newShot,
     shipSunk,
   };
+
+  return metadata;
 }
 
 function toString(a: any): string {

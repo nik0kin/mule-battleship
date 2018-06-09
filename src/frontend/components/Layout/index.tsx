@@ -4,10 +4,11 @@ import { Action } from 'mule-sdk-js';
 
 import Playfield from '../../containers/Playfield';
 import ShipList from '../../containers/ShipList';
+import TurnList from '../../containers/TurnList';
 import { GameState, PlayerMap } from '../../types';
 import {
-  Coord, getPlaceShipsActionParamsFromMuleAction, getTotalShipsPerPlayer, isValidFireShotCoord,
-  numberToLetter, Shot,
+  Coord, getBattleshipCoordString, getPlaceShipsActionParamsFromMuleAction, getTotalShipsPerPlayer,
+  isValidFireShotCoord, Shot,
 } from '../../../shared';
 
 import { WaitingIndicator } from './waiting-indicator';
@@ -66,6 +67,8 @@ function Layout({ isYourTurn, selectedCoord, gameState, players, pendingActions,
           </button>
 
           <ShipList/>
+
+          <TurnList/>
 
           <div className="shot-list"/>
         </div>
@@ -128,10 +131,6 @@ function getSubmitButtonText(
   // TODO different message if its the other players turn
 
   return 'Select Fire Location';
-}
-
-function getBattleshipCoordString(coord: Coord): string {
-  return numberToLetter(coord.x + 1) + (coord.y + 1);
 }
 
 function getAmountOfShipsRemainingToPlace(isPlacementMode: boolean, pendingActions: Action[]): number {

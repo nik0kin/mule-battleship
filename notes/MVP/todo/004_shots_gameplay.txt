@@ -35,7 +35,10 @@
      X- unlock selection
      X- change if the current player is allowed to submit
       - change right side description to tell the user about the last Shot
-    - Shot/Turn history
+      - Full Screen message
+   X- Shot/Turn history
+    - show shots on left ship list
+    - show sunk Ships
 
 -----------
 

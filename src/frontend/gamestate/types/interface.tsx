@@ -1,3 +1,4 @@
+import { Turn } from 'mule-sdk-js';
 
 import { Ship, Grid, Square, Shot } from '../../../shared';
 
@@ -9,6 +10,7 @@ export interface GameState {
     players: PlayerMap;
     currentTurn: number;
     isYourTurn: boolean;
+    previousTurns: Turn[];
   };
 
   yourLobbyPlayerId: string;

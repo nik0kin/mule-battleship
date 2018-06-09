@@ -10,6 +10,7 @@ export function loadNewTurnReducer(state: StoreState, loadNewTurn: LoadNewTurn):
     ...state.gameState.mule,
     isYourTurn: !state.gameState.mule.isYourTurn,
     currentTurn: loadNewTurn.newTurn.turnNumber + 1,
+    previousTurns: [...state.gameState.mule.previousTurns, loadNewTurn.newTurn],
   };
 
   const whosTurn: string = state.gameState.mule.isYourTurn ? state.gameState.yourLobbyPlayerId : state.gameState.theirLobbyPlayerId;

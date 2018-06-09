@@ -1,4 +1,4 @@
-import { each, reduce } from 'lodash';
+import { each, reduce, times } from 'lodash';
 
 import {
   initializeMuleSdk,
@@ -7,7 +7,7 @@ import {
   GameState as MuleGameState,
   History,
   PlayersMap as MulePlayerMap,
-  User,
+  User, Turn,
 } from 'mule-sdk-js';
 
 import {
@@ -101,8 +101,9 @@ export async function getBattleshipGameState(): Promise<GameState> {
   // get GameState
   const loadedGameState: MuleGameState = await muleSDK.GameStates.readQ(loadedGameBoard.gameState);
 
-  // get History
-  const history: History = await muleSDK.Historys.readGamesHistoryQ(loadedGame._id);
+  // get History w/ Turns
+  const fullHistory: History = await muleSDK.Historys.readGamesFullHistoryQ(loadedGame._id);
+  const turnsArray: Turn[] = getPreviousTurnsArray(fullHistory);
 
   // TODO get Turns
 
@@ -124,14 +125,15 @@ export async function getBattleshipGameState(): Promise<GameState> {
 
   const gridSize = { x: 10, y: 10 };
 
-  const nextTurnsLobbyPlayerId: string = muleSDK.fn.getWhosTurnIsIt(history);
+  const nextTurnsLobbyPlayerId: string = muleSDK.fn.getWhosTurnIsIt(fullHistory);
 
   return {
     mule: {
       currentPlayer: players[currentPlayerRel],
       players,
-      currentTurn: history.currentTurn,
+      currentTurn: fullHistory.currentTurn,
       isYourTurn: currentPlayerRel === nextTurnsLobbyPlayerId,
+      previousTurns: turnsArray,
     },
 
     yourLobbyPlayerId: currentPlayerRel,
@@ -162,4 +164,13 @@ function getMuleApiPath(): string {
   } else {
     return '/webservices/';
   }
+}
+
+function getPreviousTurnsArray(fullHistory: History): Turn[] {
+  let turns: Turn[] = [];
+  times(fullHistory.currentRound, (roundI: number) => {
+    const roundTurns: Turn[] = fullHistory.turns[roundI] as Turn[];
+    turns = turns.concat(roundTurns);
+  });
+  return turns;
 }
