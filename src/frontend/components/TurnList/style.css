@@ -6,7 +6,7 @@
 
 .TurnList .turn-row {
   padding: 2px;
-  font-size: 1.1em;
+  font-size: .8rem;
 }
 
 .TurnList .turn-row:nth-child(2n+1) {

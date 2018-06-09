@@ -3,9 +3,9 @@ import * as _ from 'lodash';
 import { Action } from 'mule-sdk-js';
 
 import {
-  Coord, doesShipIdExistInShipPlacements,
-  getPlaceShipsParamsFromAction, getInvalidShipPlacements, getShipStructure, isShipPlaced,
-  Ship, ShipPlacement,
+  addCoords, Coord, doesShipIdExistInShipPlacements, getAlignmentOffset,
+  getPlaceShipsParamsFromAction, getInvalidShipPlacements, getShipStructure, getShotOnSquare,
+  isShipPlaced, Ship, ShipPlacement, Shot,
 } from '../../../shared';
 
 import './style.css';
@@ -18,6 +18,8 @@ export interface Props {
   gridSize: Coord;
   yourShips: Ship[];
   theirShips: Ship[];
+  yourShots: Shot[];
+  theirShots: Shot[];
   pendingActions: Action[];
   selectedShipBeingPlaced: number | undefined;
   selectShipListShip: SelectShipListShipFn;
@@ -29,6 +31,8 @@ function ShipList({
   gridSize,
   yourShips,
   theirShips,
+  yourShots,
+  theirShots,
   pendingActions,
   selectedShipBeingPlaced,
   selectShipListShip
@@ -45,12 +49,12 @@ function ShipList({
     <div className={'ShipList ' + (isPlacementMode ? 'placement-mode' : '')}>
       <div className="your-ship-list">
         <div className="list-title"> Your Ships </div>
-        {getShipList(yourShips, pendingActions, selectShipListShip, selectedShipBeingPlaced, invalidShipPlacements)}
+        {getShipList(yourShips, pendingActions, selectShipListShip, selectedShipBeingPlaced, invalidShipPlacements, theirShots)}
       </div>
 
       <div className="their-ship-list">
         <div className="list-title"> Opponent's Ships </div>
-        {getShipList(theirShips, [], _.noop, undefined, [])}
+        {getShipList(theirShips, [], _.noop, undefined, [], yourShots)}
       </div>
     </div>
   );
@@ -64,6 +68,7 @@ function getShipList(
   selectShipListShip: SelectShipListShipFn,
   selectedShipBeingPlaced: number | undefined,
   invalidShipPlacements: ShipPlacement[],
+  opponentShots: Shot[],
 ): JSX.Element {
   const sortedShips: Ship[] = _.sortBy(ships, (ship: Ship) => {
     return -getShipStructure(ship.shipType).squares.length; // longest first
@@ -80,7 +85,14 @@ function getShipList(
           {ship.shipType}
         </div>
         <div>
-          {getShipListShip(ship, selectedShipBeingPlaced === ship.id, isPlaced, isCollided, key)}
+          {getShipListShip(
+            ship,
+            selectedShipBeingPlaced === ship.id,
+            isPlaced,
+            isCollided,
+            opponentShots,
+            key
+          )}
         </div>
       </div>
     );
@@ -93,13 +105,35 @@ function getShipList(
   );
 }
 
-function getShipListShip(ship: Ship, isPlacing: boolean, isPlaced: boolean, isCollided: boolean, key: string): JSX.Element {
-  const length: number = getShipStructure(ship.shipType).squares.length; // TODO this needs to be changed to show non linear ship structures
+function getShipListShip(
+  ship: Ship,
+  isPlacing: boolean,
+  isPlaced: boolean,
+  isCollided: boolean,
+  opponentShots: Shot[],
+  key: string,
+): JSX.Element {
+  // TODO this needs to be changed to show non linear ship structures
+  const shipSquares: Coord[] = getShipStructure(ship.shipType).squares;
+  const length: number = shipSquares.length;
   const rowHtml: JSX.Element[] = [];
 
   _.times(length, (i) => {
+    let _class: string = 'ship ';
+    let cellContent: string = '';
+
+    const squareCoord: Coord = addCoords(ship.coord, getAlignmentOffset(shipSquares[i], ship.alignment));
+  
+    const possibleShot: Shot | undefined = getShotOnSquare(squareCoord, opponentShots);
+    if (possibleShot) {
+      _class += possibleShot.hit ? 'hit-shot ' : 'miss-shot ';
+      cellContent = possibleShot.hit ? 'X' : '/';
+    }
+
     rowHtml.push(
-      <td className="ship" key={key + '-s' + i}/>
+      <td className={_class} key={key + '-s' + i}>
+        {cellContent}
+      </td>
     );
   });
 

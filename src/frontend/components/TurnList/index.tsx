@@ -104,10 +104,11 @@ function getListItemFromAction(
 
   const fireShotMeta: FireShotMuleActionMetaData = action.metadata as any as FireShotMuleActionMetaData;
   subject = isOpponentsTurn ? opponentName : 'You';
+  const andString: string = ' and ' + (fireShotMeta.newShot.hit ? 'hit a ship' : 'missed');
 
   return (
     <div>
-      {turnNumber}. <span className="subject">{subject}</span> shot at <span className="coord">{getBattleshipCoordString(fireShotMeta.newShot.coord)}</span>
+      {turnNumber}. <span className="subject">{subject}</span> shot at <span className="coord">{getBattleshipCoordString(fireShotMeta.newShot.coord)}</span> {andString}
     </div>
   );
 }

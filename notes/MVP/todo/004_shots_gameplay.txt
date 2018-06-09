@@ -37,7 +37,7 @@
       - change right side description to tell the user about the last Shot
       - Full Screen message
    X- Shot/Turn history
-    - show shots on left ship list
+   X- show shots on left ship list
     - show sunk Ships
 
 -----------

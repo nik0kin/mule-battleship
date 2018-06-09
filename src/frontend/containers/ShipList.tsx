@@ -11,6 +11,8 @@ export function mapStateToProps({gameState, ui: {selectedShipBeingPlaced}, pendi
     gridSize: { x: gameState.width, y: gameState.height },
     yourShips: gameState.yourShips,
     theirShips: gameState.theirShips,
+    yourShots: gameState.yourShots,
+    theirShots: gameState.theirShots,
     pendingActions: pendingTurn.actions,
     selectedShipBeingPlaced,
   };
