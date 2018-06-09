@@ -11,6 +11,7 @@ export interface GameState {
     currentTurn: number;
     isYourTurn: boolean;
     previousTurns: Turn[];
+    winner: string | null; // lobbyPlayerId
   };
 
   yourLobbyPlayerId: string;
@@ -23,6 +24,7 @@ export interface GameState {
 
   isPlacementMode: boolean;
   isOpponentPlacementMode: boolean;
+  isGameOver: boolean;
 
   yourShips: Ship[];
   theirShips: Ship[];

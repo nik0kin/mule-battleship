@@ -2,15 +2,17 @@ import { Turn } from 'mule-sdk-js';
 import { delay } from 'redux-saga';
 import { all, call, fork, put, take } from 'redux-saga/effects';
 
-import { loadNewTurn, LoadMuleStateSuccess /*, SubmitTurnSuccess*/ } from '../actions';
+import { loadNewTurn, LoadMuleStateSuccess, setWinner } from '../actions';
 import * as constants from '../constants';
 import { checkForNewTurnAndWinner, getNewTurn, NewTurnAndWinner } from '../gamestate/mule';
+
+const POLL_INTERVAL = 15;
 
 let isPolling: boolean = false;
 
 let currentTurn: number = -1;
 
-// Worker Saga, Fired every 30 seconds
+// Worker Saga, Fired every x seconds
 function* pollForNewTurn() {
   if (isPolling || currentTurn <= 0) {
     return;
@@ -29,7 +31,7 @@ function* pollForNewTurn() {
   yield put(loadNewTurn(newTurn)); // (put means dispatch)
 
   if (newTurnAndWinner.winner) {
-    // yield put(setWinner(winner))
+    yield put(setWinner(newTurnAndWinner.winner));
   }
 
   currentTurn++;
@@ -40,8 +42,8 @@ function* pollScheduler() {
   yield call(delay, 10 * 1000); // cheap wait for load
 
   while (true) {
-    // Wait 30 seconds
-    yield call(delay, 30 * 1000);
+    // Wait x seconds
+    yield call(delay, POLL_INTERVAL * 1000);
 
     // Fork means we are creating a subprocess that will handle the polling
     yield fork(pollForNewTurn/*, additional args*/);
@@ -59,7 +61,6 @@ function* loadMuleStateWatcher() {
 function* submitTurnWatcher() {
   while (true) {
     // Take means the saga will block until SUBMIT_TURN_SUCCESS action is dispatched
-    /* const submitTurnSuccess: SubmitTurnSuccess = */
     yield take(constants.SUBMIT_TURN_SUCCESS);
 
     yield pollForNewTurn();

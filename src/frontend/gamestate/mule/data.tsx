@@ -134,6 +134,7 @@ export async function getBattleshipGameState(): Promise<GameState> {
       currentTurn: fullHistory.currentTurn,
       isYourTurn: currentPlayerRel === nextTurnsLobbyPlayerId,
       previousTurns: turnsArray,
+      winner: fullHistory.winner ? fullHistory.winner : null,
     },
 
     yourLobbyPlayerId: currentPlayerRel,
@@ -147,6 +148,7 @@ export async function getBattleshipGameState(): Promise<GameState> {
 
     isPlacementMode: isPlacementMode(loadedGameState, currentPlayerRel),
     isOpponentPlacementMode: isPlacementMode(loadedGameState, opponentPlayerRel),
+    isGameOver: !!fullHistory.winner,
 
     yourShips: getShipsFromGameState(loadedGameState, currentPlayerRel),
     theirShips: getSunkenShipsFromGameState(loadedGameState, opponentPlayerRel),
