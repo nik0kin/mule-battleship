@@ -13,6 +13,8 @@ let isGameOver: boolean = false;
 
 let currentTurn: number = -1;
 
+// TODO dont poll if game over or if its not your turn
+
 // Worker Saga, Fired every x seconds
 function* pollForNewTurn() {
   if (isPolling || currentTurn <= 0 || isGameOver) {

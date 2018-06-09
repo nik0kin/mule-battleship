@@ -248,7 +248,7 @@ function getGameOverDiv(isPlayerWinner: boolean, gameState: GameState): JSX.Elem
           {misses} Misses
         </td>
         <td>
-          {Math.floor((hits/shots.length) * 100)}% Hit Percent
+          {Math.floor((hits / shots.length) * 100)}% Hit Percent
         </td>
       </tr>
     );
