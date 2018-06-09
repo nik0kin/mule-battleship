@@ -29,11 +29,11 @@
 
   - Shot UI/UX
     - Right side description
-    - Submit Shot turn
-      - lock selection
+   X- Submit Shot turn
+     X- lock selection
     - on Successful Submit
-      - unlock selection
-      - change if the current player is allowed to submit
+     X- unlock selection
+     X- change if the current player is allowed to submit
       - change right side description to tell the user about the last Shot
     - Shot/Turn history
 

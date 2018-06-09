@@ -1,9 +1,9 @@
 import { every, reduce } from 'lodash';
-/*
-import { Action, GameState, VariableMap } from 'mule-sdk-js';
-*/
+
+import { Action, VariableMap } from 'mule-sdk-js';
+
 import {
-  Coord, getCoordString, getShipStructureCoords,
+  areCoordsEqual, Coord, getCoordString, getShipStructureCoords,
   Ship, Shot,
 } from '../';
 
@@ -11,6 +11,13 @@ export const FIRE_SHOT_MULE_ACTION: string = 'FireShot';
 
 export interface FireShotMuleActionParams {
   shotCoord: Coord;
+}
+
+export function getFireShotMuleActionFromParams(params: FireShotMuleActionParams): Action {
+  return {
+    type: FIRE_SHOT_MULE_ACTION,
+    params: params as any as VariableMap,
+  } as Action;
 }
 
 export function isShipSunk(ship: Ship, shots: Shot[]): boolean {
@@ -26,4 +33,12 @@ export function isShipSunk(ship: Ship, shots: Shot[]): boolean {
     getShipStructureCoords(ship),
     (coord: Coord) => shotHitsByCoord[getCoordString(coord)],
   );
+}
+
+export function isValidFireShotCoord(coord: Coord | undefined, previousShots: Shot[]): boolean {
+  if (!coord) return false;
+
+  return every(previousShots, (shot: Shot) => {
+  return !areCoordsEqual(coord, shot.coord);
+  });
 }

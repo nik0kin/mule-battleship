@@ -23,7 +23,7 @@ export interface ShipPlacement {
 
 export function getPlaceShipsMuleActionFromParams(placeShipsMuleActionParams: PlaceShipsMuleActionParams): Action {
   return {
-    type: 'PlaceShips',
+    type: PLACE_SHIPS_MULE_ACTION,
     params: placeShipsMuleActionParams as any as VariableMap,
   } as Action;
 }

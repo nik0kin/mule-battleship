@@ -2,9 +2,11 @@ import { SubmitTurnSuccess, SubmitTurnFailure } from '../actions';
 import { StoreState } from '../types';
 
 export function submitTurnSuccessReducer(state: StoreState, submitTurnSuccess: SubmitTurnSuccess): StoreState {
+  // this is probably obsolete, because loadNewTurn handles the rest
+  
   return {
     ...state,
-    isSubmitting: false,
+    // isSubmitting: false,
     // gameState: {
     //   ...state.gameState,
     //   mule: {

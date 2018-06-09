@@ -6,8 +6,8 @@ import Playfield from '../../containers/Playfield';
 import ShipList from '../../containers/ShipList';
 import { GameState, PlayerMap } from '../../types';
 import {
-  Coord, getPlaceShipsActionParamsFromMuleAction, getTotalShipsPerPlayer,
-  numberToLetter,
+  Coord, getPlaceShipsActionParamsFromMuleAction, getTotalShipsPerPlayer, isValidFireShotCoord,
+  numberToLetter, Shot,
 } from '../../../shared';
 
 import { WaitingIndicator } from './waiting-indicator';
@@ -39,13 +39,21 @@ function Layout({ isYourTurn, selectedCoord, gameState, players, pendingActions,
 
           <div className="current-turn-info">
             <div> Turn {gameState.mule.currentTurn} </div>
-            <WaitingIndicator/>
+            {false && !isYourTurn && <WaitingIndicator/>}
             <div className="short-description"> {getShortDescription(isYourTurn, gameState.isPlacementMode)} </div>
           </div>
           <button
             className="submit-button"
             onClick={() => clickSubmit({actions: pendingActions})}
-            disabled={!isSubmitting && isYourTurn && isSubmitButtonDisabled(gameState.isPlacementMode, shipsLeftToBePlaced)}
+            disabled={
+              isSubmitting || !isYourTurn
+              || isSubmitButtonDisabled(
+                gameState.isPlacementMode,
+                shipsLeftToBePlaced,
+                selectedCoord,
+                gameState.yourShots,
+              )
+            }
           >
             {getSubmitButtonText(
               isYourTurn,
@@ -72,10 +80,19 @@ function Layout({ isYourTurn, selectedCoord, gameState, players, pendingActions,
 
 export default Layout;
 
-function isSubmitButtonDisabled(isPlacementMode: boolean, shipsLeftToBePlaced: number): boolean {
-  const enabled: boolean = isPlacementMode && shipsLeftToBePlaced === 0; // || shot mode logic
-
-  return !enabled;
+function isSubmitButtonDisabled(
+  isPlacementMode: boolean,
+  shipsLeftToBePlaced: number,
+  selectedCoord: Coord | undefined,
+  previousShots: Shot[]
+): boolean {
+  if (isPlacementMode) {
+    return shipsLeftToBePlaced !== 0;
+  } else {
+    // FireShot mode
+    const enabled: boolean = isValidFireShotCoord(selectedCoord, previousShots);
+    return !enabled;
+  }
 }
 
 function getSubmitButtonText(

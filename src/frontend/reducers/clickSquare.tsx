@@ -2,9 +2,10 @@ import * as _ from 'lodash';
 import { Action } from 'mule-sdk-js';
 
 import {
-  Alignment, Coord,
+  Alignment, Coord, FireShotMuleActionParams, getFireShotMuleActionFromParams,
   getShipsFromPendingActions, getShipOnSquare, getPlaceShipsActionParamsFromMuleAction,
   getPlaceShipsActionWithNewShipPlacement, getPlaceShipsMuleActionFromParams, getRotatedAlignment,
+  isValidFireShotCoord,
   PlaceShipsMuleActionParams, Ship, ShipPlacement,
 } from '../../shared';
 
@@ -19,6 +20,9 @@ export function clickSquareReducer(state: StoreState, clickSquareAction: ClickSq
     x: clickSquareAction.x,
     y: clickSquareAction.y,
   };
+
+  // ignore click if submitting
+  if (state.isSubmitting) return state;
 
   if (
     state.gameState.isPlacementMode && state.ui.selectedShipBeingPlaced
@@ -74,17 +78,23 @@ export function clickSquareReducer(state: StoreState, clickSquareAction: ClickSq
   }
 
   if (clickSquareAction.lobbyPlayerId === state.gameState.theirLobbyPlayerId) {
-    // TODO shots logic
+    const pendingTurn: { actions: Action[]} = { actions: [] };
+
+    if (!state.gameState.isPlacementMode && state.gameState.mule.isYourTurn && isValidFireShotCoord(coord, state.gameState.yourShots)) {
+      // add pending FireShot Action
+      const action: FireShotMuleActionParams = {
+        shotCoord: coord,
+      };
+      pendingTurn.actions.push(getFireShotMuleActionFromParams(action));
+    }
 
     return {
       ...state,
       ui: {
         ...state.ui,
-        selectedCoord: { // select square
-          x: coord.x,
-          y: coord.y,
-        },
+        selectedCoord: coord, // select square
       },
+      pendingTurn
     };
   }
 
