@@ -4,3 +4,6 @@ ship outlines (on grid)
   - black, then red when ship is sunk?
 
   - rotate ship at square it was clicked
+
+New Turn modal - fades after 3s?
+ - "New Turn: You sunk Bob's Cruiser!"
