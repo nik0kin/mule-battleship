@@ -4,7 +4,7 @@ import { all, call, fork, put, take } from 'redux-saga/effects';
 
 import { loadNewTurn, LoadMuleStateSuccess /*, SubmitTurnSuccess*/ } from '../actions';
 import * as constants from '../constants';
-import { checkForNewTurn, getNewTurn } from '../gamestate/mule';
+import { checkForNewTurnAndWinner, getNewTurn, NewTurnAndWinner } from '../gamestate/mule';
 
 let isPolling: boolean = false;
 
@@ -18,8 +18,8 @@ function* pollForNewTurn() {
 
   isPolling = true;
 
-  const newTurnExists: boolean = yield checkForNewTurn(currentTurn);
-  if (!newTurnExists) {
+  const newTurnAndWinner: NewTurnAndWinner = yield checkForNewTurnAndWinner(currentTurn);
+  if (!newTurnAndWinner.newTurnExists) {
     console.log('no new turn');
     isPolling = false;
     return;
@@ -27,6 +27,10 @@ function* pollForNewTurn() {
 
   const newTurn: Turn = yield getNewTurn(currentTurn);
   yield put(loadNewTurn(newTurn)); // (put means dispatch)
+
+  if (newTurnAndWinner.winner) {
+    // yield put(setWinner(winner))
+  }
 
   currentTurn++;
   isPolling = false;

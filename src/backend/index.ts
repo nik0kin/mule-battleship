@@ -6,7 +6,7 @@ import customBoardSettingsValidator from './hooks/customBoardSettingsValidator';
 import boardGenerator from './hooks/boardGenerator';
 import gameStart from './hooks/gameStart';
 import validateTurn from './hooks/validateTurn';
-// import progressTurn from './hooks/progressTurn';
+import winCondition from './hooks/winCondition';
 import fireShipAction from './actions/FireShot';
 import placeShipsAction from './actions/PlaceShips';
 
@@ -22,8 +22,7 @@ const bundleCode: BundleCode = {
   },
 
   validateTurn,
-  // progressTurn
-  // winCondition: require('./code/winCondition')
+  winCondition,
 };
 
 export default bundleCode;

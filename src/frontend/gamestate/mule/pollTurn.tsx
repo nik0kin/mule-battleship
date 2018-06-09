@@ -2,14 +2,22 @@ import { History, SDK, Turn } from 'mule-sdk-js';
 
 import { getGameId, getSdk } from './data';
 
-export async function checkForNewTurn(currentTurn: number): Promise<boolean> {
+export interface NewTurnAndWinner {
+  newTurnExists: boolean;
+  winner: string | undefined;
+}
+
+export async function checkForNewTurnAndWinner(currentTurn: number): Promise<NewTurnAndWinner> {
   const sdk: SDK = getSdk();
 
-  if (!sdk) return false; // TODO make saga not start checking til game is loaded
+  if (!sdk) return { newTurnExists: false, winner: undefined }; // TODO make saga not start checking til game is loaded
 
   const history: History = await sdk.Historys.readGamesHistoryQ(getGameId());
 
-  return history.currentTurn !== currentTurn;
+  return {
+    newTurnExists: history.currentTurn !== currentTurn,
+    winner: history.winner,
+  };
 }
 
 export async function getNewTurn(turnNumber: number): Promise<Turn> {
