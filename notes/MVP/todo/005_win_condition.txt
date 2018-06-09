@@ -9,7 +9,7 @@
  X- frontend checks history.winner to see if someone has won
 
   - dont poll
-    - after game over
+   X- after game over
     - on your turn
 
-  - test full game
+ X- test full game

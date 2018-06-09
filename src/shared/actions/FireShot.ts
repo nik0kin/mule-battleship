@@ -25,6 +25,12 @@ export interface FireShotMuleActionMetaData {
   sunkShip: Ship | undefined;
 }
 
+export function getFireShotActionMetaData(action: Action | undefined): FireShotMuleActionMetaData | undefined {
+  if (!action || action.type !== FIRE_SHOT_MULE_ACTION) return;
+
+  return action.metadata as any as FireShotMuleActionMetaData;
+}
+
 export function isShipSunk(ship: Ship, shots: Shot[]): boolean {
   const shotHitsByCoord: {[stringCoord: string]: boolean} = reduce(
     shots,

@@ -11,3 +11,8 @@ New Turn modal - fades after 3s?
 Select opponents shot on currentPlayers grid
 
 Mobile usability
+
+Mule Frontend shortlist
+  - "waiting on you" status message
+  - "waiting on opponent" status message
+  - "Game Over - Won|Loss" 

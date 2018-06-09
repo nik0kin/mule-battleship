@@ -9,12 +9,13 @@ import { checkForNewTurnAndWinner, getNewTurn, NewTurnAndWinner } from '../games
 const POLL_INTERVAL = 15;
 
 let isPolling: boolean = false;
+let isGameOver: boolean = false;
 
 let currentTurn: number = -1;
 
 // Worker Saga, Fired every x seconds
 function* pollForNewTurn() {
-  if (isPolling || currentTurn <= 0) {
+  if (isPolling || currentTurn <= 0 || isGameOver) {
     return;
   }
 
@@ -30,7 +31,8 @@ function* pollForNewTurn() {
   const newTurn: Turn = yield getNewTurn(currentTurn);
   yield put(loadNewTurn(newTurn)); // (put means dispatch)
 
-  if (newTurnAndWinner.winner) {
+  if (!isGameOver && newTurnAndWinner.winner) {
+    isGameOver = true;
     yield put(setWinner(newTurnAndWinner.winner));
   }
 

@@ -6,7 +6,7 @@ import './style.css';
 import { GameState } from '../../types';
 import {
   Coord, doesShipIdExistInShipPlacements, FireShotMuleActionMetaData,
-  getAllShipsIncludingPendingActions, getBattleshipCoordString, getInvalidShipPlacements,
+  getAllShipsIncludingPendingActions, getBattleshipCoordString, getFireShotActionMetaData, getInvalidShipPlacements,
   getPlaceShipsParamsFromAction, getShotOnSquare,
   getShipOnSquare, isValidCoord,
   Ship, ShipPlacement,
@@ -68,7 +68,7 @@ function Playfield({ gameState, selectedCoord, selectedShipBeingPlaced, pendingA
             gameState.isGameOver,
             gameState.mule.winner === gameState.yourLobbyPlayerId,
             invalidShipPlacements.length > 0,
-            gameState.mule.previousTurns[gameState.mule.currentTurn - 2].playerTurns[gameState.mule.isYourTurn ? gameState.theirLobbyPlayerId : gameState.yourLobbyPlayerId].actions[0], // TODO helper fn?
+            getLastAction(gameState),
             !gameState.mule.isYourTurn,
             gameState, // yolo
           )}
@@ -192,11 +192,11 @@ function getHintDescription(
   isGameOver: boolean,
   isPlayerWinner: boolean,
   hasInvalidShipPlacements: boolean,
-  lastAction: Action,
+  lastAction: Action | undefined,
   waslastTurnByPlayer: boolean,
   gameState: GameState,
 ): JSX.Element {
-  const fireShotMeta: FireShotMuleActionMetaData = lastAction.metadata as any as FireShotMuleActionMetaData;
+  const fireShotMeta: FireShotMuleActionMetaData | undefined = getFireShotActionMetaData(lastAction);
 
   return (
     <div>
@@ -204,17 +204,17 @@ function getHintDescription(
     
       {!isPlacementMode && waslastTurnByPlayer &&
         <span>
-          {fireShotMeta.newShot.hit && <span> Your Shot HIT a Ship at {getBattleshipCoordString(fireShotMeta.newShot.coord)}! </span>}
-          {!fireShotMeta.newShot.hit && <span>Your Shot missed at {getBattleshipCoordString(fireShotMeta.newShot.coord)}</span>}
-          {fireShotMeta.sunkShip && <span>You sunk a {fireShotMeta.sunkShip.shipType}!</span>}
+          {fireShotMeta && fireShotMeta.newShot.hit && 'Your Shot HIT a Ship at ' + getBattleshipCoordString(fireShotMeta.newShot.coord) + '!'}
+          {fireShotMeta && !fireShotMeta.newShot.hit && 'Your Shot missed at ' + getBattleshipCoordString(fireShotMeta.newShot.coord)}
+          {fireShotMeta && fireShotMeta.sunkShip && ' You sunk a ' + fireShotMeta.sunkShip.shipType + '!'}
           {!isGameOver && <p> Waiting for your opponent to take a Shot </p>}
         </span>
       }
       {!isPlacementMode && !waslastTurnByPlayer &&
         <span>
-          {fireShotMeta.newShot.hit && <span> Your Ship has been hit at {getBattleshipCoordString(fireShotMeta.newShot.coord)}. </span>}
-          {!fireShotMeta.newShot.hit && <span> Your opponent missed at {getBattleshipCoordString(fireShotMeta.newShot.coord)}</span>}
-          {fireShotMeta.sunkShip && <span>Your {fireShotMeta.sunkShip.shipType} has been sunk!</span>}
+          {fireShotMeta && fireShotMeta.newShot.hit && 'Your Ship has been hit at ' + getBattleshipCoordString(fireShotMeta.newShot.coord) + '.'}
+          {fireShotMeta && !fireShotMeta.newShot.hit && 'Your opponent missed at ' + getBattleshipCoordString(fireShotMeta.newShot.coord)}
+          {fireShotMeta && fireShotMeta.sunkShip && ' Your ' + fireShotMeta.sunkShip.shipType + ' has been sunk!'}
           {!isGameOver && <p> Please click below to select a target location to fire a Shot </p>}
         </span>
       }
@@ -259,7 +259,7 @@ function getGameOverDiv(isPlayerWinner: boolean, gameState: GameState): JSX.Elem
   return (
     <div>
       <p> {isPlayerWinner ? 'You Won' : 'You Lost'} </p>
-      <p>
+      <div>
         <table className="shot-percentage">
           <tbody>
             {getShotPercentableTableRow(
@@ -272,7 +272,7 @@ function getGameOverDiv(isPlayerWinner: boolean, gameState: GameState): JSX.Elem
             )}
           </tbody>
         </table>
-      </p>
+      </div>
       {!isPlayerWinner && <p>
         You needed {(18 - countHits(gameState.yourShots))} more hits to take out your opponents fleet
       </p>}
@@ -286,4 +286,12 @@ function countHits(shots: Shot[]): number {
     (total: number, shot: Shot) => total + (shot.hit ? 1 : 0),
     0,
   );
+}
+
+function getLastAction(gameState: GameState): Action | undefined {
+  if (gameState.mule.currentTurn <= 1) return;
+
+  return gameState.mule.previousTurns[gameState.mule.currentTurn - 2].playerTurns[gameState.mule.isYourTurn 
+      ? gameState.theirLobbyPlayerId
+      : gameState.yourLobbyPlayerId].actions[0];
 }
