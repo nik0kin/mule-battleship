@@ -1,4 +1,4 @@
-import { History, SDK, Turn } from 'mule-sdk-js';
+import { LiteHistory, SDK, Turn } from 'mule-sdk-js';
 
 import { getGameId, getSdk } from './data';
 
@@ -12,7 +12,7 @@ export async function checkForNewTurnAndWinner(currentTurn: number): Promise<New
 
   if (!sdk) return { newTurnExists: false, winner: undefined }; // TODO make saga not start checking til game is loaded
 
-  const history: History = await sdk.Historys.readGamesHistoryQ(getGameId());
+  const history: LiteHistory = await sdk.Historys.readGamesHistoryQ(getGameId());
 
   return {
     newTurnExists: history.currentTurn !== currentTurn,

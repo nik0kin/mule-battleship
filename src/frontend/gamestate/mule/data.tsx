@@ -1,11 +1,10 @@
 import { each, filter, reduce, times } from 'lodash';
 
 import {
-  initializeMuleSdk,
+  initializeMuleSdk, FullRoundRobinHistory,
   SDK,
   Game, GameBoard,
   GameState as MuleGameState,
-  History,
   PlayersMap as MulePlayerMap,
   User, Turn,
 } from 'mule-sdk-js';
@@ -102,7 +101,7 @@ export async function getBattleshipGameState(): Promise<GameState> {
   const loadedGameState: MuleGameState = await muleSDK.GameStates.readQ(loadedGameBoard.gameState);
 
   // get History w/ Turns
-  const fullHistory: History = await muleSDK.Historys.readGamesFullHistoryQ(loadedGame._id);
+  const fullHistory: FullRoundRobinHistory = await muleSDK.Historys.readGamesFullHistoryQ(loadedGame._id) as FullRoundRobinHistory;
   const turnsArray: Turn[] = getPreviousTurnsArray(fullHistory);
 
   // TODO get Turns
@@ -168,10 +167,10 @@ function getMuleApiPath(): string {
   }
 }
 
-function getPreviousTurnsArray(fullHistory: History): Turn[] {
+function getPreviousTurnsArray(fullHistory: FullRoundRobinHistory): Turn[] {
   let turns: Turn[] = [];
   times(fullHistory.currentRound, (roundI: number) => {
-    const roundTurns: Turn[] = fullHistory.turns[roundI] as Turn[];
+    const roundTurns: Turn[] = fullHistory.turns[roundI];
     turns = turns.concat(roundTurns);
   });
   return turns;

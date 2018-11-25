@@ -12,7 +12,7 @@ const mockPlayerVars: BattleshipPlayerVariables = {
 
 const mbackendSdkMock: Partial<MuleStateSdk> = {
   getPlayerRels: () => ['p1', 'p2'],
-  addPiece: () => null,
+  addPiece: () => 1,
   persistQ: () => Promise.resolve(),
   getPlayerVariables: () => mockPlayerVars,
 };

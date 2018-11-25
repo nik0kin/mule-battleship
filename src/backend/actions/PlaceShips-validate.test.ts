@@ -6,9 +6,9 @@ import { Alignment, getPieceStateFromShip, ShipType /* PlaceShipsMuleActionParam
 import placeShipsAction from './PlaceShips';
 
 const mbackendSdkMock: Partial<MuleStateSdk> = {
-  getPiece: (pieceId: string) => getPieceStateFromShip({
-    _id: pieceId,
-    id: Number(pieceId),
+  getPiece: (pieceId: number) => getPieceStateFromShip({
+    _id: String(pieceId),
+    id: pieceId,
     ownerId: 'p1',
     shipType: ShipType.Battleship,
     coord: { x: -1, y: -1 },

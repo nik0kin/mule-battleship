@@ -5,7 +5,7 @@ import gameStart from './gameStart';
 
 const mbackendSdkMock: Partial<MuleStateSdk> = {
   getPlayerRels: () => ['p1', 'p2'],
-  addPiece: () => null,
+  addPiece: () => 1,
   persistQ: () => Promise.resolve(),
   setPlayerVariable: () => null,
 };
@@ -21,7 +21,7 @@ describe('Hook: gameStart', () => {
   it('should create 14 ships', (done) => {
     let shipCount: number = 0;
     mbackendSdkMock.addPiece = () => {
-      shipCount++;
+      return shipCount++;
     };
 
     gameStart(mbackendSdkMock as MuleStateSdk)

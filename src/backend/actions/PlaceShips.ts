@@ -39,7 +39,7 @@ function validateQ(M: MuleStateSdk, lobbyPlayerId: string, _actionParams: Variab
   _.each(actionParams.shipPlacements, (shipPlacement: ShipPlacement) => {
 
     // 2a. is shipId valid?
-    const shipPieceState: PieceState = M.getPiece('' + shipPlacement.shipId); // TODO can I get pieceStates by regular 'id' instead of '_id' ? (I think M does, it just needs updated types)
+    const shipPieceState: PieceState = M.getPiece(shipPlacement.shipId); // TODO can I get pieceStates by regular 'id' instead of '_id' ? (I think M does, it just needs updated types)
     if (!shipPieceState) {
       throw new Error('invalid shipId: ' + shipPlacement.shipId);
     }
@@ -105,10 +105,10 @@ function doQ(M: MuleStateSdk, lobbyPlayerId: string, _actionParams: VariableMap)
   };
 
   _.each(actionParams.shipPlacements, (shipPlacement: ShipPlacement) => {
-    const ship: Ship = getShipFromPieceSpace(M.getPiece('' + shipPlacement.shipId));
+    const ship: Ship = getShipFromPieceSpace(M.getPiece(shipPlacement.shipId));
     ship.coord = shipPlacement.coord;
     ship.alignment = shipPlacement.alignment;
-    M.setPiece('' + shipPlacement.shipId, getPieceStateFromShip(ship));
+    M.setPiece(shipPlacement.shipId, getPieceStateFromShip(ship));
   });
 
   M.setPlayerVariable(lobbyPlayerId, 'hasPlacedShips', true);

@@ -74,7 +74,7 @@ async function doQ(M: MuleStateSdk, lobbyPlayerId: string, _actionParams: Variab
     if (isShipSunk(shipGettingShot, allShots)) {
       shipGettingShot.sunk = true;
       _isShipSunk = true;
-      M.setPiece(String(shipGettingShot.id), getPieceStateFromShip(shipGettingShot));
+      M.setPiece(shipGettingShot.id, getPieceStateFromShip(shipGettingShot));
     }
   }
 
